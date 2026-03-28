@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mastexo — Soluciones Digitales para tu Negocio</title>
+  <meta name="description" content="Soluciones digitales para restaurantes, barberías, salones, tiendas y más. Prospectos listos para comprar en 14 días. Sin herramientas técnicas." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── TOKENS ──────────────────────────────────────────── */
+    :root {
+      --black:   #0A0A0A;
+      --white:   #FFFFFF;
+      --off:     #F7F4EF;
+      --gold:    #D4A853;
+      --gold-lt: #E8C87A;
+      --gray:    #888;
+      --border:  rgba(10,10,10,.1);
+      --border-w: rgba(255,255,255,.1);
+
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body:    'Syne', system-ui, sans-serif;
+
+      --ease: cubic-bezier(.25,.46,.45,.94);
+      --ease-out: cubic-bezier(.16,1,.3,1);
+    }
+
+    /* ─── RESET ───────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      color: var(--black);
+      background: var(--white);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ─── UTILITIES ───────────────────────────────────────── */
+    .container {
+      width: min(1160px, 100% - 3rem);
+      margin-inline: auto;
+    }
+    .gold { color: var(--gold); }
+
+    /* scroll reveal */
+    .r {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .8s var(--ease-out), transform .8s var(--ease-out);
+    }
+    .r.on { opacity: 1; transform: none; }
+    .r-d1 { transition-delay: .1s; }
+    .r-d2 { transition-delay: .2s; }
+    .r-d3 { transition-delay: .3s; }
+    .r-d4 { transition-delay: .4s; }
+
+    /* ─── NAV ─────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 100;
+      padding: 1.5rem 0;
+      mix-blend-mode: difference;
+      pointer-events: none;
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      pointer-events: auto;
+    }
+    .logo {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: .04em;
+    }
+    .nav-cta {
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--white);
+      padding: .5rem 1.25rem;
+      border: 1px solid rgba(255,255,255,.5);
+      border-radius: 2px;
+      transition: background .25s, color .25s, border-color .25s;
+    }
+    .nav-cta:hover {
+      background: var(--white);
+      color: var(--black);
+      border-color: var(--white);
+    }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: .75rem;
+      font-weight: 500;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--white);
+      transition: opacity .25s;
+    }
+    .nav-links a:hover { opacity: .5; }
+
+    /* ─── HERO ────────────────────────────────────────────── */
+    #hero {
+      min-height: 100dvh;
+      background: var(--black);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 0 6rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-line {
+      position: absolute;
+      background: rgba(255,255,255,.04);
+    }
+    .hero-line-v {
+      width: 1px;
+      top: 0; bottom: 0;
+    }
+    .hero-line-v:nth-child(1) { left: 25%; }
+    .hero-line-v:nth-child(2) { left: 50%; }
+    .hero-line-v:nth-child(3) { left: 75%; }
+    .hero-line-h {
+      height: 1px;
+      left: 0; right: 0;
+    }
+    .hero-line-h:nth-child(4) { top: 33%; }
+    .hero-line-h:nth-child(5) { top: 66%; }
+    .hero-gold-dot {
+      position: absolute;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      top: 33%; left: 25%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 20px rgba(212,168,83,.5);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+    .hero-eyebrow {
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+    }
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 9vw, 8rem);
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1.0;
+      letter-spacing: -.02em;
+      margin-bottom: 2.5rem;
+    }
+    .hero-headline em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .hero-bottom {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .hero-sub {
+      font-size: 1rem;
+      color: rgba(255,255,255,.5);
+      line-height: 1.65;
+      max-width: 380px;
+      font-weight: 400;
+    }
+    .hero-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 1rem;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      padding: 1rem 2.25rem;
+      background: var(--gold);
+      color: var(--black);
+      font-size: .82rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      transition: background .25s, transform .25s, box-shadow .25s;
+      white-space: nowrap;
+    }
+    .btn-primary:hover {
+      background: var(--gold-lt);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(212,168,83,.3);
+    }
+    .btn-primary .arrow { transition: transform .25s; }
+    .btn-primary:hover .arrow { transform: translateX(4px); }
+    .hero-proof {
+      font-size: .72rem;
+      color: rgba(255,255,255,.3);
+      font-weight: 500;
+      letter-spacing: .06em;
+      text-align: right;
+    }
+    .hero-proof strong {
+      color: rgba(255,255,255,.6);
+      font-weight: 600;
+    }
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .5rem;
+      color: rgba(255,255,255,.2);
+      font-size: .65rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+    .scroll-track {
+      width: 1px;
+      height: 48px;
+      background: rgba(255,255,255,.1);
+      position: relative;
+      overflow: hidden;
+    }
+    .scroll-track::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 50%;
+      background: rgba(255,255,255,.4);
+      animation: scrollDrop 2s ease-in-out infinite;
+    }
+    @keyframes scrollDrop {
+      0%   { transform: translateY(-100%); }
+      100% { transform: translateY(200%); }
+    }
+
+    /* ─── PAIN SECTION ────────────────────────────────────── */
+    #dolor {
+      background: var(--black);
+      padding: 8rem 0;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .dolor-header {
+      margin-bottom: 5rem;
+    }
+    .section-label {
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 1px;
+      background: var(--gold);
+    }
+    .section-title-lg {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -.01em;
+      color: var(--white);
+    }
+    .section-title-lg em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .pain-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,.08);
+    }
+    .pain-card {
+      background: var(--black);
+      padding: 3rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: background .35s;
+    }
+    .pain-card:hover { background: #111; }
+    .pain-num {
+      font-family: var(--font-display);
+      font-size: 5rem;
+      font-weight: 300;
+      color: rgba(255,255,255,.06);
+      line-height: 1;
+      margin-bottom: 1.5rem;
+      transition: color .35s;
+    }
+    .pain-card:hover .pain-num { color: rgba(212,168,83,.15); }
+    .pain-icon {
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .pain-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--white);
+      line-height: 1.25;
+      margin-bottom: 1rem;
+    }
+    .pain-text {
+      font-size: .88rem;
+      color: rgba(255,255,255,.4);
+      line-height: 1.75;
+      font-weight: 400;
+    }
+    .pain-card-line {
+      position: absolute;
+      bottom: 0; left: 0;
+      height: 2px;
+      width: 0;
+      background: var(--gold);
+      transition: width .5s var(--ease-out);
+    }
+    .pain-card:hover .pain-card-line { width: 100%; }
+
+    /* ─── SOLUTIONS ───────────────────────────────────────── */
+    #soluciones {
+      background: var(--off);
+      padding: 8rem 0;
+    }
+    .sol-header {
+      max-width: 640px;
+      margin-bottom: 5rem;
+    }
+    .section-title-lg.dark {
+      color: var(--black);
+    }
+    .sol-sub {
+      font-size: .95rem;
+      color: rgba(10,10,10,.5);
+      line-height: 1.75;
+      margin-top: 1.25rem;
+      max-width: 440px;
+    }
+    .sol-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: rgba(10,10,10,.08);
+    }
+    .sol-card {
+      background: var(--off);
+      padding: 3rem 2.5rem;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      transition: background .3s;
+    }
+    .sol-card:hover { background: var(--white); }
+    .sol-num {
+      font-family: var(--font-display);
+      font-size: 4.5rem;
+      font-weight: 300;
+      color: rgba(10,10,10,.07);
+      line-height: 1;
+      margin-bottom: 2rem;
+      transition: color .35s;
+    }
+    .sol-card:hover .sol-num { color: rgba(212,168,83,.25); }
+    .sol-title {
+      font-family: var(--font-display);
+      font-size: 1.65rem;
+      font-weight: 400;
+      color: var(--black);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    .sol-text {
+      font-size: .87rem;
+      color: rgba(10,10,10,.5);
+      line-height: 1.75;
+      flex: 1;
+    }
+    .sol-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 2rem;
+    }
+    .sol-tag::after {
+      content: '→';
+      transition: transform .25s;
+    }
+    .sol-card:hover .sol-tag::after { transform: translateX(4px); }
+
+    /* ─── VALUE PROP ──────────────────────────────────────── */
+    #valor {
+      background: var(--black);
+      padding: 10rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .valor-noise {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      background-size: 200px;
+      pointer-events: none;
+    }
+    .valor-inner { position: relative; z-index: 1; }
+    .valor-statement {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 7vw, 6.5rem);
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1.05;
+      letter-spacing: -.02em;
+      max-width: 900px;
+      margin-bottom: 3rem;
+    }
+    .valor-statement em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .valor-sub-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 4rem;
+      padding-top: 3rem;
+      border-top: 1px solid rgba(255,255,255,.08);
+      flex-wrap: wrap;
+    }
+    .valor-sub {
+      font-size: .95rem;
+      color: rgba(255,255,255,.45);
+      line-height: 1.8;
+      max-width: 400px;
+    }
+    .valor-stats {
+      display: flex;
+      gap: 3.5rem;
+      flex-shrink: 0;
+    }
+    .v-stat-num {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: .3rem;
+    }
+    .v-stat-num span { color: var(--gold); }
+    .v-stat-label {
+      font-size: .7rem;
+      color: rgba(255,255,255,.35);
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    /* ─── TESTIMONIALS ────────────────────────────────────── */
+    #testimonios {
+      background: var(--white);
+      padding: 8rem 0;
+    }
+    .testi-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 5rem;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .testi-card {
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      transition: border-color .3s, transform .35s var(--ease), box-shadow .35s;
+    }
+    .testi-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(10,10,10,.06);
+    }
+    .testi-card.featured {
+      background: var(--black);
+      border-color: var(--black);
+    }
+    .testi-result {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .testi-result-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+    .testi-quote {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-style: italic;
+      font-weight: 400;
+      color: var(--black);
+      line-height: 1.6;
+      flex: 1;
+    }
+    .testi-card.featured .testi-quote { color: var(--white); }
+    .testi-author {
+      display: flex;
+      align-items: center;
+      gap: .9rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+    .testi-card.featured .testi-author { border-color: rgba(255,255,255,.1); }
+    .testi-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--off);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .75rem;
+      font-weight: 700;
+      color: var(--black);
+      flex-shrink: 0;
+    }
+    .testi-card.featured .testi-avatar {
+      background: rgba(255,255,255,.1);
+      color: var(--white);
+    }
+    .testi-name {
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--black);
+      line-height: 1.3;
+    }
+    .testi-card.featured .testi-name { color: var(--white); }
+    .testi-role { font-size: .75rem; color: var(--gray); }
+    .testi-card.featured .testi-role { color: rgba(255,255,255,.4); }
+
+    /* ─── CTA SECTION ─────────────────────────────────────── */
+    #cta {
+      background: var(--off);
+      padding: 8rem 0;
+    }
+    .cta-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+    .cta-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      color: var(--black);
+      line-height: 1.15;
+      margin-bottom: 1.25rem;
+    }
+    .cta-title em { font-style: italic; color: var(--gold); }
+    .cta-sub {
+      font-size: .9rem;
+      color: rgba(10,10,10,.5);
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+    }
+    .cta-actions { display: flex; flex-direction: column; gap: .85rem; align-items: flex-start; }
+    .btn-wa {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      padding: .85rem 1.75rem;
+      background: #25D366;
+      color: var(--white);
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      transition: background .25s, transform .25s;
+    }
+    .btn-wa:hover { background: #1da851; transform: translateY(-2px); }
+    .cta-trust {
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+      margin-top: 1.5rem;
+    }
+    .cta-trust-item {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      font-size: .78rem;
+      color: rgba(10,10,10,.45);
+    }
+    .cta-trust-item::before {
+      content: '✓';
+      color: var(--gold);
+      font-weight: 700;
+      font-size: .7rem;
+    }
+    .cta-visual {
+      position: relative;
+    }
+    .cta-box {
+      background: var(--black);
+      padding: 3rem;
+    }
+    .cta-box-label {
+      font-size: .65rem;
+      font-weight: 600;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2rem;
+    }
+    .cta-box-stat {
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding: 1.5rem 0;
+    }
+    .cta-box-stat:last-child { padding-bottom: 0; }
+    .cta-box-num {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1;
+    }
+    .cta-box-num span { color: var(--gold); }
+    .cta-box-desc {
+      font-size: .8rem;
+      color: rgba(255,255,255,.4);
+      margin-top: .3rem;
+    }
+
+    /* ─── CONTACT ─────────────────────────────────────────── */
+    #contacto {
+      background: var(--white);
+      padding: 8rem 0;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 7rem;
+      align-items: start;
+    }
+    .contact-left .section-title-lg { font-size: clamp(2rem, 3.5vw, 3rem); }
+    .contact-desc {
+      font-size: .9rem;
+      color: rgba(10,10,10,.5);
+      line-height: 1.8;
+      margin-top: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+    .contact-detail {
+      display: flex;
+      align-items: flex-start;
+      gap: .9rem;
+      margin-bottom: 1.25rem;
+    }
+    .contact-detail-icon {
+      width: 32px; height: 32px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .85rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .contact-detail-label {
+      font-size: .68rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: .15rem;
+    }
+    .contact-detail-val {
+      font-size: .9rem;
+      font-weight: 500;
+      color: var(--black);
+    }
+    /* Form */
+    .form-group {
+      margin-bottom: 1.25rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .form-group label {
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(10,10,10,.5);
+      margin-bottom: .5rem;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      font-family: var(--font-body);
+      font-size: .9rem;
+      color: var(--black);
+      background: var(--off);
+      border: 1px solid transparent;
+      padding: .85rem 1rem;
+      outline: none;
+      transition: border-color .25s, background .25s;
+      border-radius: 0;
+      -webkit-appearance: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--gold);
+      background: var(--white);
+    }
+    .form-group textarea { resize: vertical; min-height: 0; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-submit {
+      width: 100%;
+      padding: 1.1rem;
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      border-radius: 0;
+      transition: background .25s, transform .25s;
+    }
+    .form-submit:hover { background: #1a1a1a; transform: translateY(-2px); }
+    .form-note {
+      text-align: center;
+      font-size: .72rem;
+      color: rgba(10,10,10,.35);
+      margin-top: .85rem;
+    }
+    #formSuccess {
+      display: none;
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+    .success-icon {
+      width: 56px; height: 56px;
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: var(--gold);
+      margin: 0 auto 1.5rem;
+    }
+    .success-title {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 400;
+      color: var(--black);
+      margin-bottom: .5rem;
+    }
+    .success-sub { font-size: .88rem; color: var(--gray); }
+
+    /* ─── FOOTER ──────────────────────────────────────────── */
+    footer {
+      background: var(--black);
+      padding: 4rem 0 2.5rem;
+    }
+    .footer-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: .04em;
+    }
+    .footer-logo span { color: var(--gold); }
+    .footer-tagline {
+      font-size: .75rem;
+      color: rgba(255,255,255,.3);
+      letter-spacing: .06em;
+      margin-top: .25rem;
+    }
+    .footer-links-row {
+      display: flex;
+      gap: 2.5rem;
+    }
+    .footer-links-row a {
+      font-size: .75rem;
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.35);
+      transition: color .25s;
+    }
+    .footer-links-row a:hover { color: var(--white); }
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: .72rem;
+      color: rgba(255,255,255,.2);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-bottom a { color: rgba(255,255,255,.3); transition: color .25s; }
+    .footer-bottom a:hover { color: var(--gold); }
+
+    /* ─── WA FLOAT ────────────────────────────────────────── */
+    .wa-float {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 200;
+    }
+    .wa-float a {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      background: #25D366;
+      color: var(--white);
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      padding: .75rem 1.25rem .75rem 1rem;
+      border-radius: 50px;
+      box-shadow: 0 6px 24px rgba(37,211,102,.3);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .wa-float a:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 32px rgba(37,211,102,.4);
+    }
+    .wa-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--white);
+      animation: waPulse 2s ease-in-out infinite;
+    }
+    @keyframes waPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .4; }
+    }
+
+    /* ─── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .pain-grid,
+      .sol-grid,
+      .testi-grid { grid-template-columns: 1fr; }
+      .cta-inner,
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .hero-bottom { flex-direction: column; align-items: flex-start; }
+      .hero-actions { align-items: flex-start; }
+      .hero-proof { text-align: left; }
+      .valor-stats { gap: 2rem; flex-wrap: wrap; }
+      .testi-header { flex-direction: column; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-links-row { flex-wrap: wrap; gap: 1.5rem; }
+      .wa-float a span { display: none; }
+      .wa-float a { padding: .9rem; border-radius: 50%; }
+    }
+    @media (max-width: 600px) {
+      .hero-headline { font-size: clamp(2.8rem, 12vw, 4rem); }
+      .valor-statement { font-size: clamp(2.2rem, 8vw, 3.5rem); }
+      .valor-stats { gap: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ──────────────────────────────────────────────── -->
+<nav>
+  <div class="container nav-inner">
+    <a href="#" class="logo">Mastexo</a>
+    <ul class="nav-links">
+      <li><a href="#dolor">Problema</a></li>
+      <li><a href="#soluciones">Soluciones</a></li>
+      <li><a href="#testimonios">Resultados</a></li>
+    </ul>
+    <a href="#contacto" class="nav-cta">Diagnóstico gratis</a>
+  </div>
+</nav>
+
+<!-- ── HERO ─────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="hero-line hero-line-v" style="left:25%"></div>
+  <div class="hero-line hero-line-v" style="left:50%"></div>
+  <div class="hero-line hero-line-v" style="left:75%"></div>
+  <div class="hero-line hero-line-h" style="top:33%"></div>
+  <div class="hero-line hero-line-h" style="top:66%"></div>
+  <div class="hero-gold-dot"></div>
+
+  <div class="container hero-content">
+    <div class="hero-eyebrow r">Para restaurantes · barberías · salones · tiendas · cafeterías · food trucks</div>
+    <h1 class="hero-headline r r-d1">
+      Resultados,<br><em>no herramientas.</em>
+    </h1>
+    <div class="hero-bottom r r-d2">
+      <p class="hero-sub">
+        Escala tu negocio sin tocar una sola herramienta técnica. Implementamos soluciones digitales que traen clientes a tu puerta, sin complicaciones.
+      </p>
+      <div class="hero-actions">
+        <a href="#contacto" class="btn-primary">
+          Quiero mi diagnóstico gratis
+          <span class="arrow">→</span>
+        </a>
+        <p class="hero-proof">
+          <strong>85+ negocios locales</strong> ya crecen con Mastexo
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <div class="scroll-track"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ── PAIN POINTS ───────────────────────────────────────── -->
+<section id="dolor">
+  <div class="container">
+    <div class="dolor-header r">
+      <div class="section-label">El problema</div>
+      <h2 class="section-title-lg">¿Te suena<br><em>familiar?</em></h2>
+    </div>
+    <div class="pain-grid">
+      <div class="pain-card r r-d1">
+        <div class="pain-num">01</div>
+        <div class="pain-icon">😤</div>
+        <h3 class="pain-title">Gastas en publicidad y los clientes no llegan</h3>
+        <p class="pain-text">Pagas anuncios, subes fotos, pero tu local sigue igual. El dinero se va y no sabes bien qué está fallando.</p>
+        <div class="pain-card-line"></div>
+      </div>
+      <div class="pain-card r r-d2">
+        <div class="pain-num">02</div>
+        <div class="pain-icon">⏳</div>
+        <h3 class="pain-title">Pierdes horas en WhatsApp en vez de atender tu negocio</h3>
+        <p class="pain-text">Respondes preguntas repetidas, agendas citas a mano, cotizas uno a uno. Todo eso es tiempo que no se recupera.</p>
+        <div class="pain-card-line"></div>
+      </div>
+      <div class="pain-card r r-d3">
+        <div class="pain-num">03</div>
+        <div class="pain-icon">📵</div>
+        <h3 class="pain-title">Tu presencia digital no refleja lo que realmente ofreces</h3>
+        <p class="pain-text">Tu negocio es bueno, pero en internet no se nota. Los clientes buscan, no te encuentran, y se van con la competencia.</p>
+        <div class="pain-card-line"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SOLUTIONS ─────────────────────────────────────────── -->
+<section id="soluciones">
+  <div class="container">
+    <div class="sol-header r">
+      <div class="section-label">Nuestras soluciones</div>
+      <h2 class="section-title-lg dark">Tres soluciones para<br><em>escalar tu negocio.</em></h2>
+      <p class="sol-sub">Sin configuraciones. Sin tecnicismos. Solo resultados concretos para tu restaurante, barbería, salón, tienda o cafetería.</p>
+    </div>
+    <div class="sol-grid">
+      <div class="sol-card r r-d1">
+        <div class="sol-num">A</div>
+        <h3 class="sol-title">La Máquina de Ventas Llave en Mano</h3>
+        <p class="sol-text">Te entregamos prospectos listos para comprar en 14 días. Sin que toques nada. Sin configuraciones. Sin dolores de cabeza. Tú solo atiendes.</p>
+        <div class="sol-tag">Prospectos calificados en 14 días</div>
+      </div>
+      <div class="sol-card r r-d2">
+        <div class="sol-num">B</div>
+        <h3 class="sol-title">El Activo de Alta Conversión</h3>
+        <p class="sol-text">Creamos o reparamos tu presencia digital para que cada visita valga dinero. Copywriting, diseño y estrategia para tu tipo de negocio específico.</p>
+        <div class="sol-tag">Cada clic vale dinero</div>
+      </div>
+      <div class="sol-card r r-d3">
+        <div class="sol-num">C</div>
+        <h3 class="sol-title">Flujo de Clientes Predecible</h3>
+        <p class="sol-text">Tráfico de Meta Ads directo a tu WhatsApp, sin rodeos. Personas reales interesadas en tu negocio, listas para agendar o comprar hoy.</p>
+        <div class="sol-tag">Tráfico directo a WhatsApp</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── VALUE PROPOSITION ──────────────────────────────────── -->
+<section id="valor">
+  <div class="valor-noise"></div>
+  <div class="container valor-inner">
+    <h2 class="valor-statement r">
+      Tu negocio no necesita<br>más empleados. Necesita<br><em>sistemas inteligentes.</em>
+    </h2>
+    <div class="valor-sub-row r r-d1">
+      <p class="valor-sub">
+        Implementamos un Setter de IA que atiende, califica y agenda citas 24/7 sin descanso. Más un sistema de administración invisible: solo manda fotos de tus gastos por WhatsApp y nuestra IA lleva la contabilidad por ti.
+      </p>
+      <div class="valor-stats">
+        <div>
+          <div class="v-stat-num">85<span>+</span></div>
+          <div class="v-stat-label">Negocios atendidos</div>
+        </div>
+        <div>
+          <div class="v-stat-num">14<span> días</span></div>
+          <div class="v-stat-label">Primeros resultados</div>
+        </div>
+        <div>
+          <div class="v-stat-num">24<span>/7</span></div>
+          <div class="v-stat-label">Sistema activo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ───────────────────────────────────────── -->
+<section id="testimonios">
+  <div class="container">
+    <div class="testi-header r">
+      <div>
+        <div class="section-label" style="color:var(--gold)">Resultados reales</div>
+        <h2 class="section-title-lg dark" style="font-size:clamp(2rem,4vw,3.5rem)">Lo dicen<br><em>nuestros clientes.</em></h2>
+      </div>
+      <a href="#contacto" class="btn-primary">Quiero resultados así →</a>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card r r-d1">
+        <div class="testi-result"><div class="testi-result-dot"></div>Reservas llenas en 3 semanas</div>
+        <p class="testi-quote">"Antes pasaba el día respondiendo WhatsApp. Ahora el sistema agenda solo y yo solo me preocupo de cortar bien. En 14 días ya tenía agenda llena."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">RV</div>
+          <div>
+            <div class="testi-name">Roberto Vega</div>
+            <div class="testi-role">Barbería Old School · Rancagua</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card featured r r-d2">
+        <div class="testi-result"><div class="testi-result-dot"></div>+3x ventas en el primer mes</div>
+        <p class="testi-quote">"Pensé que esto era para empresas grandes. Mastexo me demostró que un food truck también puede tener un sistema que vende solo. Mis ventas se triplicaron."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">PM</div>
+          <div>
+            <div class="testi-name">Patricia Morales</div>
+            <div class="testi-role">Food Truck Las Delicias · O'Higgins</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card r r-d3">
+        <div class="testi-result"><div class="testi-result-dot"></div>Local siempre con clientes</div>
+        <p class="testi-quote">"Tenía el salón bueno pero poca gente lo encontraba. Con Mastexo empezaron a llegar clientes nuevos cada semana. Sin que yo hiciera nada distinto."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">AL</div>
+          <div>
+            <div class="testi-name">Andrea Lagos</div>
+            <div class="testi-role">Salón de Belleza Lumina · Machalí</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ────────────────────────────────────────────────── -->
+<section id="cta">
+  <div class="container">
+    <div class="cta-inner">
+      <div class="r">
+        <div class="section-label">Siguiente paso</div>
+        <h2 class="cta-title">Listo en <em>14 días.</em><br>Sin complicaciones.</h2>
+        <p class="cta-sub">Agenda tu diagnóstico estratégico gratuito — sin compromisos, sin tecnicismos. Solo una conversación honesta sobre cómo hacer crecer tu restaurante, barbería, salón o tienda.</p>
+        <div class="cta-actions">
+          <a href="#contacto" class="btn-primary">Solicitar diagnóstico estratégico <span class="arrow">→</span></a>
+          <a href="https://wa.me/56912345678?text=Hola%20Mastexo%2C%20quiero%20saber%20m%C3%A1s" target="_blank" class="btn-wa">
+            💬 Escribir por WhatsApp
+          </a>
+        </div>
+        <div class="cta-trust">
+          <div class="cta-trust-item">Diagnóstico gratuito · Sin compromiso</div>
+          <div class="cta-trust-item">Resultados en 14 días</div>
+          <div class="cta-trust-item">85+ negocios locales confían en nosotros</div>
+        </div>
+      </div>
+      <div class="cta-visual r r-d2">
+        <div class="cta-box">
+          <div class="cta-box-label">En promedio, nuestros clientes logran</div>
+          <div class="cta-box-stat">
+            <div class="cta-box-num">14 <span>días</span></div>
+            <div class="cta-box-desc">para recibir los primeros prospectos</div>
+          </div>
+          <div class="cta-box-stat">
+            <div class="cta-box-num">24<span>/7</span></div>
+            <div class="cta-box-desc">tu sistema trabajando sin parar</div>
+          </div>
+          <div class="cta-box-stat">
+            <div class="cta-box-num">3<span>x</span></div>
+            <div class="cta-box-desc">retorno promedio sobre la inversión</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ────────────────────────────────────────────── -->
+<section id="contacto">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-left r">
+        <div class="section-label">Contacto</div>
+        <h2 class="section-title-lg dark">Hablemos de<br><em>tu negocio.</em></h2>
+        <p class="contact-desc">Cuéntanos sobre tu negocio. Te contactamos hoy mismo con un diagnóstico honesto y sin rodeos.</p>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">📍</div>
+          <div>
+            <div class="contact-detail-label">Ubicación</div>
+            <div class="contact-detail-val">Rancagua, Región de O'Higgins</div>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">✉️</div>
+          <div>
+            <div class="contact-detail-label">Email</div>
+            <div class="contact-detail-val">hola@mastexo.com</div>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">💬</div>
+          <div>
+            <div class="contact-detail-label">WhatsApp</div>
+            <div class="contact-detail-val">+56 9 1234 5678</div>
+          </div>
+        </div>
+      </div>
+      <div class="r r-d2">
+        <form id="contactForm" onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Tu nombre *</label>
+              <input type="text" placeholder="Juan Pérez" required />
+            </div>
+            <div class="form-group">
+              <label>Tipo de negocio *</label>
+              <select required>
+                <option value="">Selecciona tu negocio</option>
+                <option>Restaurante</option>
+                <option>Barbería</option>
+                <option>Salón de Belleza</option>
+                <option>Tienda / Retail</option>
+                <option>Cafetería</option>
+                <option>Food Truck / Carrito de comida</option>
+                <option>Otro</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>WhatsApp / Teléfono *</label>
+            <input type="tel" placeholder="+56 9 ..." required />
+          </div>
+          <div class="form-group">
+            <label>¿Cuál es tu principal desafío?</label>
+            <select>
+              <option value="">Selecciona una opción</option>
+              <option>No consigo suficientes clientes nuevos</option>
+              <option>Gasto en publicidad y no veo resultados</option>
+              <option>Pierdo tiempo respondiendo WhatsApp todo el día</option>
+              <option>Necesito más reservas o pedidos online</option>
+              <option>No tengo presencia digital profesional</option>
+              <option>Quiero clientes directo a mi WhatsApp</option>
+              <option>Otro</option>
+            </select>
+          </div>
+          <button type="submit" class="form-submit" id="submitBtn">
+            Quiero crecer →
+          </button>
+          <p class="form-note">🔒 Tu información es privada. Nunca hacemos spam.</p>
+        </form>
+        <div id="formSuccess">
+          <div class="success-icon">✓</div>
+          <div class="success-title">¡Mensaje recibido!</div>
+          <p class="success-sub">Te contactaremos hoy mismo. Prepárate para hacer crecer tu negocio.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">Maste<span>xo</span></div>
+        <div class="footer-tagline">Soluciones digitales que venden por ti.</div>
+      </div>
+      <div class="footer-links-row">
+        <a href="#dolor">Problema</a>
+        <a href="#soluciones">Soluciones</a>
+        <a href="#testimonios">Resultados</a>
+        <a href="#contacto">Contacto</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 Mastexo · Rancagua, Chile</span>
+      <span>Hecho con ♥ en Chile, para Chile</span>
+      <span><a href="#">Privacidad</a> · <a href="#">Términos</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ── WHATSAPP FLOAT ──────────────────────────────────────── -->
+<div class="wa-float">
+  <a href="https://wa.me/56912345678?text=Hola%20Mastexo!" target="_blank" rel="noopener">
+    <div class="wa-dot"></div>
+    <span>Escríbenos ahora</span>
+  </a>
+</div>
+
+<script>
+  // ── Scroll reveal ───────────────────────────────────────
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('on');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.r').forEach(el => io.observe(el));
+
+  // ── Form ────────────────────────────────────────────────
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.textContent = 'Enviando...';
+    btn.disabled = true;
+    setTimeout(() => {
+      document.getElementById('contactForm').style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+    }, 1000);
+  }
+
+  // ── Smooth scroll ───────────────────────────────────────
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+</script>
+</body>
+</html>
