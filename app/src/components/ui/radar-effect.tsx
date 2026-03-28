@@ -1,9 +1,9 @@
 "use client";
-import { motion } from "framer-motion";
+import { motion, type HTMLMotionProps } from "framer-motion";
 import { twMerge } from "tailwind-merge";
 import React from "react";
 
-interface CircleProps extends React.HTMLAttributes<HTMLDivElement> {
+interface CircleProps extends Omit<HTMLMotionProps<"div">, "ref"> {
   className?: string;
   idx: number;
   style?: React.CSSProperties;
