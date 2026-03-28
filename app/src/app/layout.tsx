@@ -80,6 +80,50 @@ export const metadata: Metadata = {
   },
 };
 
+const schemaMarkup = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: "Mastexo Digital",
+  url: "https://mastexo.com",
+  logo: "https://mastexo.com/og-image.png",
+  description:
+    "Agencia de marketing digital en Chile. Ayudamos a restaurantes, barberías, salones y tiendas locales a conseguir más clientes con presencia digital efectiva.",
+  telephone: "+56929709420",
+  email: "contactos@mastexo.com",
+  address: {
+    "@type": "PostalAddress",
+    addressCountry: "CL",
+    addressRegion: "O'Higgins",
+    addressLocality: "Rancagua",
+  },
+  areaServed: {
+    "@type": "Country",
+    name: "Chile",
+  },
+  sameAs: ["https://www.instagram.com/mastexodigital/"],
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday"],
+      opens: "08:00",
+      closes: "18:00",
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: "Friday",
+      opens: "09:00",
+      closes: "18:00",
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: "Saturday",
+      opens: "10:00",
+      closes: "18:00",
+    },
+  ],
+  priceRange: "$$",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -90,6 +134,12 @@ export default function RootLayout({
       lang="es"
       className={`${cormorant.variable} ${syne.variable} h-full antialiased`}
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }}
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-[#0A0A0A]">
         {children}
         <Analytics />
