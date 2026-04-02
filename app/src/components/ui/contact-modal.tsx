@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowRight, CheckCircle2, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import emailjs from "@emailjs/browser";
 import { trackEvent } from "@/components/Analytics";
 
 interface ContactModalProps {
@@ -85,21 +84,22 @@ export function ContactModal({ isOpen, category, onClose }: ContactModalProps) {
     setUserName(firstName);
 
     try {
-      const result = await emailjs.send(
-        "service_5zmc5gr",
-        "template_b4n8wro",
-        {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
           name: form.name,
           business: form.business,
           email: form.email,
           whatsapp: form.whatsapp,
           category: form.category,
-          message: form.improve,
-        },
-        "axXbsYPr6fXJrDwJu"
-      );
+          improve: form.improve,
+          budget: form.budget || "",
+        }),
+      });
 
-      console.log("SUCCESS", result.text);
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.error ?? "Error desconocido");
 
       // Save lead to dashboard (fire-and-forget)
       fetch("/api/leads", {

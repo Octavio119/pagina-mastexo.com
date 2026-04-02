@@ -3,6 +3,70 @@ import fs from "fs";
 import path from "path";
 import nodemailer from "nodemailer";
 
+// ── Input validation helpers ──────────────────────────────────────────────────
+function isValidEmail(email: string): boolean {
+  if (/[\r\n]/.test(email)) return false;
+  return /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(email);
+}
+
+function isValidPhone(phone: string): boolean {
+  const digits = phone.replace(/\D/g, "");
+  return digits.length >= 7 && digits.length <= 15;
+}
+
+// ── In-memory rate limiting (5 submissions / IP / hour) ──────────────────────
+type RateEntry = { count: number; resetAt: number };
+const leadsRateMap = new Map<string, RateEntry>();
+const LEADS_RATE_LIMIT = 5;
+const LEADS_RATE_WINDOW_MS = 60 * 60 * 1000;
+
+function checkLeadsRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const entry = leadsRateMap.get(ip);
+  if (!entry || now > entry.resetAt) {
+    leadsRateMap.set(ip, { count: 1, resetAt: now + LEADS_RATE_WINDOW_MS });
+    return true;
+  }
+  if (entry.count >= LEADS_RATE_LIMIT) return false;
+  entry.count++;
+  return true;
+}
+
+const VALID_STATUSES = new Set(["new", "contacted", "closed"]);
+
+// ── Brute-force protection for admin routes (10 failed attempts / IP / 15 min)
+type LoginEntry = { failures: number; lockedUntil: number };
+const loginAttemptMap = new Map<string, LoginEntry>();
+const MAX_LOGIN_FAILURES = 10;
+const LOGIN_LOCK_MS = 15 * 60 * 1000;
+
+function checkAdminAccess(req: NextRequest): "ok" | "locked" | "unauthorized" {
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    req.headers.get("x-real-ip") ??
+    "unknown";
+  const now = Date.now();
+  const entry = loginAttemptMap.get(ip);
+
+  // Check if currently locked
+  if (entry && now < entry.lockedUntil) return "locked";
+
+  const authorized = req.headers.get("x-admin-key") === process.env.ADMIN_PASSWORD;
+
+  if (!authorized) {
+    const failures = (entry ? entry.failures : 0) + 1;
+    loginAttemptMap.set(ip, {
+      failures,
+      lockedUntil: failures >= MAX_LOGIN_FAILURES ? now + LOGIN_LOCK_MS : 0,
+    });
+    return "unauthorized";
+  }
+
+  // On success, clear failures
+  loginAttemptMap.delete(ip);
+  return "ok";
+}
+
 interface Lead {
   id: string;
   name: string;
@@ -34,13 +98,14 @@ function writeLeads(leads: Lead[]) {
   fs.writeFileSync(DATA_FILE, JSON.stringify(leads, null, 2));
 }
 
-function isAuthorized(req: NextRequest) {
-  return req.headers.get("x-admin-key") === process.env.ADMIN_PASSWORD;
-}
 
 // GET /api/leads — list all leads (admin only)
 export async function GET(req: NextRequest) {
-  if (!isAuthorized(req)) {
+  const access = checkAdminAccess(req);
+  if (access === "locked") {
+    return NextResponse.json({ error: "Demasiados intentos. Intenta en 15 minutos." }, { status: 429 });
+  }
+  if (access === "unauthorized") {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const leads = readLeads();
@@ -94,17 +159,61 @@ async function sendLeadEmail(lead: Lead) {
 
 // POST /api/leads — save new lead from contact form (no auth needed)
 export async function POST(req: NextRequest) {
-  const body = await req.json();
+  // Rate limiting
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    req.headers.get("x-real-ip") ??
+    "unknown";
+
+  if (!checkLeadsRateLimit(ip)) {
+    return NextResponse.json(
+      { ok: false, error: "Demasiados intentos. Intenta de nuevo en una hora." },
+      { status: 429 }
+    );
+  }
+
+  const body = await req.json().catch(() => null);
+  if (!body) {
+    return NextResponse.json({ ok: false, error: "Petición inválida" }, { status: 400 });
+  }
+
+  const { name, business, email, whatsapp, category, message, budget } = body;
+
+  // Required fields
+  if (!name || !business || !email || !whatsapp) {
+    return NextResponse.json({ ok: false, error: "Faltan campos requeridos" }, { status: 400 });
+  }
+
+  // Length limits
+  if (
+    String(name).length > 100 ||
+    String(business).length > 100 ||
+    String(email).length > 254 ||
+    String(whatsapp).length > 20 ||
+    String(message ?? "").length > 2000
+  ) {
+    return NextResponse.json({ ok: false, error: "Datos demasiado largos" }, { status: 400 });
+  }
+
+  // Format validation
+  if (!isValidEmail(String(email))) {
+    return NextResponse.json({ ok: false, error: "Email inválido" }, { status: 400 });
+  }
+
+  if (!isValidPhone(String(whatsapp))) {
+    return NextResponse.json({ ok: false, error: "Número de WhatsApp inválido" }, { status: 400 });
+  }
+
   const leads = readLeads();
   const lead: Lead = {
     id: crypto.randomUUID(),
-    name: body.name ?? "",
-    business: body.business ?? "",
-    email: body.email ?? "",
-    whatsapp: body.whatsapp ?? "",
-    category: body.category ?? "General",
-    message: body.message ?? "",
-    budget: body.budget ?? "",
+    name: String(name),
+    business: String(business),
+    email: String(email),
+    whatsapp: String(whatsapp),
+    category: String(category ?? "General"),
+    message: String(message ?? ""),
+    budget: String(budget ?? ""),
     status: "new",
     createdAt: new Date().toISOString(),
   };
@@ -119,16 +228,27 @@ export async function POST(req: NextRequest) {
 
 // PATCH /api/leads — update lead status (admin only)
 export async function PATCH(req: NextRequest) {
-  if (!isAuthorized(req)) {
+  const access = checkAdminAccess(req);
+  if (access === "locked") {
+    return NextResponse.json({ error: "Demasiados intentos. Intenta en 15 minutos." }, { status: 429 });
+  }
+  if (access === "unauthorized") {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const { id, status } = await req.json();
+  const body = await req.json().catch(() => null);
+  if (!body) {
+    return NextResponse.json({ error: "Petición inválida" }, { status: 400 });
+  }
+  const { id, status } = body;
+  if (!id || !VALID_STATUSES.has(status)) {
+    return NextResponse.json({ error: "id o status inválido" }, { status: 400 });
+  }
   const leads = readLeads();
   const idx = leads.findIndex((l) => l.id === id);
   if (idx === -1) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
-  leads[idx].status = status;
+  leads[idx].status = status as Lead["status"];
   writeLeads(leads);
   return NextResponse.json({ ok: true });
 }
