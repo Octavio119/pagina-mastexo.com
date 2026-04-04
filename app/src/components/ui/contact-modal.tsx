@@ -9,6 +9,7 @@ import { trackEvent } from "@/components/Analytics";
 interface ContactModalProps {
   isOpen: boolean;
   category: string;
+  initialImprove?: string;
   onClose: () => void;
 }
 
@@ -26,7 +27,7 @@ const categoryEmojis: Record<string, string> = {
 const WA_NUMBER = "56929709420";
 const WA_MESSAGE = encodeURIComponent("Hola, acabo de solicitar un diagnóstico en Mastexo.");
 
-export function ContactModal({ isOpen, category, onClose }: ContactModalProps) {
+export function ContactModal({ isOpen, category, initialImprove = "", onClose }: ContactModalProps) {
   const [step, setStep] = useState<"form" | "success">("form");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -39,14 +40,14 @@ export function ContactModal({ isOpen, category, onClose }: ContactModalProps) {
     email: "",
     whatsapp: "",
     category: category,
-    improve: "",
+    improve: initialImprove,
     budget: "",
   });
 
-  // sync category when it changes from outside
+  // sync category and improve when they change from outside
   useEffect(() => {
-    setForm((f) => ({ ...f, category }));
-  }, [category]);
+    setForm((f) => ({ ...f, category, improve: initialImprove || f.improve }));
+  }, [category, initialImprove]);
 
   // reset on close
   useEffect(() => {

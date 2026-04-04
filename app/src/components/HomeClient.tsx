@@ -14,9 +14,11 @@ import { ContactModal } from "@/components/ui/contact-modal";
 export default function HomeClient() {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedImprove, setSelectedImprove] = useState("");
 
-  const openModal = (category = "") => {
+  const openModal = (category = "", improve = "") => {
     setSelectedCategory(category);
+    setSelectedImprove(improve);
     setModalOpen(true);
   };
 
@@ -33,6 +35,7 @@ export default function HomeClient() {
       <ContactModal
         isOpen={modalOpen}
         category={selectedCategory || "General"}
+        initialImprove={selectedImprove}
         onClose={() => setModalOpen(false)}
       />
     </>
