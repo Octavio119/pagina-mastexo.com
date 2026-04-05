@@ -47,12 +47,11 @@ export default function StickyHeader({ onOpenModal }: Props) {
               aria-label="Volver al inicio"
             >
               <Image
-                src="/logo-mastexo.png"
+                src="/logo1.jpg"
                 alt="Mastexo Digital"
-                width={110}
-                height={40}
-                className="h-9 w-auto object-contain"
-                style={{ filter: "brightness(0) invert(1)" }}
+                width={130}
+                height={48}
+                className="h-10 w-auto object-contain rounded-sm"
                 priority
               />
             </button>

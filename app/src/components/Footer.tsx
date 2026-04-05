@@ -13,12 +13,11 @@ export default function Footer() {
           <div className="mb-5">
             <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label="Volver al inicio">
               <Image
-                src="/logo-mastexo.png"
+                src="/logo1.jpg"
                 alt="Mastexo Digital"
                 width={130}
                 height={48}
-                className="h-11 w-auto object-contain cursor-pointer"
-                style={{ filter: "brightness(0) invert(1) opacity(0.9)" }}
+                className="h-11 w-auto object-contain cursor-pointer rounded-sm"
               />
             </button>
           </div>
