@@ -11,14 +11,16 @@ export default function Footer() {
         {/* Marca */}
         <div>
           <div className="mb-5">
-            <Image
-              src="/logo.png"
-              alt="Mastexo Digital"
-              width={130}
-              height={48}
-              className="h-11 w-auto object-contain"
-              style={{ filter: "brightness(0) invert(1) opacity(0.9)" }}
-            />
+            <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label="Volver al inicio">
+              <Image
+                src="/logo-mastexo.png"
+                alt="Mastexo Digital"
+                width={130}
+                height={48}
+                className="h-11 w-auto object-contain cursor-pointer"
+                style={{ filter: "brightness(0) invert(1) opacity(0.9)" }}
+              />
+            </button>
           </div>
           <p className="text-sm text-gray-400 leading-relaxed mb-5">
             Soluciones digitales para negocios que quieren crecer en internet sin complicaciones.

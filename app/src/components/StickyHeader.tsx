@@ -47,7 +47,7 @@ export default function StickyHeader({ onOpenModal }: Props) {
               aria-label="Volver al inicio"
             >
               <Image
-                src="/logo.png"
+                src="/logo-mastexo.png"
                 alt="Mastexo Digital"
                 width={110}
                 height={40}
