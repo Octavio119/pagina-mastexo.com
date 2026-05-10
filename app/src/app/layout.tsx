@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Syne } from "next/font/google";
+import { Syne, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@/components/Analytics";
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-display",
+const syne = Syne({
+  variable: "--font-syne",
   subsets: ["latin"],
-  weight: ["300", "400", "600"],
-  style: ["normal", "italic"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
-const syne = Syne({
-  variable: "--font-body",
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
 });
 
 const BASE_URL = "https://mastexo.com";
@@ -21,13 +21,14 @@ const BASE_URL = "https://mastexo.com";
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "Mastexo — Resultados, no herramientas",
+    default: "Mastexo — Resultados, no complicaciones",
     template: "%s | Mastexo",
   },
   description:
-    "Escalamos tu negocio sin sistemas complejos. Leads que convierten, presencia que vende, clientes directo a tu WhatsApp. Para restaurantes, barberías, salones y tiendas en Chile.",
+    "Diseñamos páginas web y soluciones digitales que convierten visitantes en clientes reales. Para restaurantes, barberías, salones y tiendas en LATAM.",
   keywords: [
     "marketing digital Chile",
+    "páginas web negocios LATAM",
     "más clientes para restaurantes",
     "publicidad barberías",
     "marketing salones belleza",
@@ -42,7 +43,7 @@ export const metadata: Metadata = {
     locale: "es_CL",
     url: BASE_URL,
     siteName: "Mastexo",
-    title: "Mastexo — Resultados, no herramientas",
+    title: "Mastexo — Resultados digitales, no complicaciones",
     description:
       "Más clientes en 14 días para restaurantes, barberías, salones y tiendas. Sin complicaciones técnicas.",
     images: [
@@ -50,15 +51,15 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Mastexo — Marketing digital para negocios locales en Chile",
+        alt: "Mastexo — Marketing digital para negocios locales en LATAM",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mastexo — Resultados, no herramientas",
+    title: "Mastexo — Resultados digitales, no complicaciones",
     description:
-      "Más clientes en 14 días. Sin complicaciones técnicas. Para negocios locales en Chile.",
+      "Más clientes en 14 días. Sin complicaciones técnicas. Para negocios locales en LATAM.",
     images: ["/og-image.png"],
   },
   robots: {
@@ -87,7 +88,7 @@ const schemaMarkup = {
   url: "https://mastexo.com",
   logo: "https://mastexo.com/og-image.png",
   description:
-    "Agencia de marketing digital en Chile. Ayudamos a restaurantes, barberías, salones y tiendas locales a conseguir más clientes con presencia digital efectiva.",
+    "Agencia de marketing digital en LATAM. Ayudamos a restaurantes, barberías, salones y tiendas locales a conseguir más clientes con presencia digital efectiva.",
   telephone: "+56929709420",
   email: "contactos@mastexo.com",
   address: {
@@ -96,43 +97,18 @@ const schemaMarkup = {
     addressRegion: "O'Higgins",
     addressLocality: "Rancagua",
   },
-  areaServed: {
-    "@type": "Country",
-    name: "Chile",
-  },
-  sameAs: ["https://www.instagram.com/mastexodigital/"],
-  openingHoursSpecification: [
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday"],
-      opens: "08:00",
-      closes: "18:00",
-    },
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: "Friday",
-      opens: "09:00",
-      closes: "18:00",
-    },
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: "Saturday",
-      opens: "10:00",
-      closes: "18:00",
-    },
-  ],
+  areaServed: { "@type": "Country", name: "Chile" },
+  sameAs: ["https://www.instagram.com/mastexo.digital"],
   priceRange: "$$",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
       lang="es"
-      className={`${cormorant.variable} ${syne.variable} h-full antialiased`}
+      className={`${syne.variable} ${dmSans.variable} h-full antialiased`}
     >
       <head>
         <script
@@ -140,7 +116,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-[#0A0A0A]">
+      <body className="min-h-full flex flex-col bg-[#05111F]">
         {children}
         <Analytics />
       </body>
