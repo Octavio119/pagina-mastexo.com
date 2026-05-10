@@ -184,15 +184,28 @@ const T = {
 type Lang = 'es' | 'en'
 
 // ─────────────────────────────────────────
-// CONTEXT
+// CONTEXT  (lang + scrollY — one listener shared by all)
 // ─────────────────────────────────────────
-const LangCtx = createContext<{ lang: Lang; toggle: () => void }>({ lang: 'es', toggle: () => {} })
-const useLang = () => useContext(LangCtx)
-const useT = () => { const { lang } = useLang(); return T[lang] }
+const AppCtx = createContext<{ lang: Lang; toggle: () => void; scrollY: number }>({ lang: 'es', toggle: () => {}, scrollY: 0 })
+const useLang   = () => useContext(AppCtx)
+const useT      = () => { const { lang } = useLang(); return T[lang] }
+const useScrollY = () => useContext(AppCtx).scrollY
 
 // ─────────────────────────────────────────
 // HOOKS
 // ─────────────────────────────────────────
+
+// Internal — called once in HomeClient root, result passed via AppCtx
+function useScrollListener() {
+  const [y, setY] = useState(0)
+  useEffect(() => {
+    const h = () => setY(window.scrollY)
+    window.addEventListener('scroll', h, { passive: true })
+    return () => window.removeEventListener('scroll', h)
+  }, [])
+  return y
+}
+
 function useInView(threshold = 0.15) {
   const ref = useRef<HTMLDivElement>(null)
   const [inView, setInView] = useState(false)
@@ -221,16 +234,6 @@ function useCounter(target: number, inView: boolean, duration = 1500) {
     return () => cancelAnimationFrame(raf)
   }, [inView, target, duration])
   return count
-}
-
-function useScrollY() {
-  const [y, setY] = useState(0)
-  useEffect(() => {
-    const h = () => setY(window.scrollY)
-    window.addEventListener('scroll', h, { passive: true })
-    return () => window.removeEventListener('scroll', h)
-  }, [])
-  return y
 }
 
 const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
@@ -281,7 +284,7 @@ const STYLES = `
 // ─────────────────────────────────────────
 function Navbar() {
   const t = useT(); const { lang, toggle } = useLang()
-  const scrollY = useScrollY()
+  const scrollY = useScrollY()           // reads from AppCtx — no new listener
   const [open, setOpen] = useState(false)
   const scrolled = scrollY > 60
 
@@ -331,7 +334,7 @@ function Navbar() {
             {t.nav.cta}
           </button>
           {/* Hamburger */}
-          <button onClick={() => setOpen(o => !o)} className="md:hidden ml-2 cursor-pointer bg-transparent border-none" style={{ color:'#fff' }}>
+          <button type="button" onClick={() => setOpen(o => !o)} aria-label={open ? 'Cerrar menú' : 'Abrir menú'} className="md:hidden ml-2 cursor-pointer bg-transparent border-none" style={{ color:'#fff' }}>
             {open ? <X size={24}/> : <Menu size={24}/>}
           </button>
         </div>
@@ -539,7 +542,7 @@ function StatCard({ prefix, target, suffix, label, inView, delay, last }:
     <div className="text-center transition-all duration-700"
       style={{ opacity:inView?1:0, transform:inView?'translateY(0)':'translateY(24px)', transitionDelay:`${delay}s`, borderRight:!last?'1px solid rgba(255,255,255,.1)':'none' }}>
       <div style={{ fontFamily:FD, fontWeight:800, fontSize:'clamp(36px,5vw,56px)', color:'#00E5FF', lineHeight:1 }}>
-        {prefix}{inView ? count : target}{suffix}
+        {prefix}{count}{suffix}
       </div>
       <div style={{ fontFamily:FB, fontSize:14, color:'rgba(255,255,255,.6)', marginTop:8 }}>{label}</div>
     </div>
@@ -626,7 +629,7 @@ function TestimonialsSection() {
         </div>
 
         <div className="flex items-center justify-center gap-4 mt-8">
-          <button onClick={prev} className="w-12 h-12 mx-glass rounded-full flex items-center justify-center cursor-pointer transition-all duration-200" style={{ color:'#fff' }}
+          <button type="button" onClick={prev} aria-label="Testimonio anterior" className="w-12 h-12 mx-glass rounded-full flex items-center justify-center cursor-pointer transition-all duration-200" style={{ color:'#fff' }}
             onMouseEnter={e => (e.currentTarget.style.borderColor='rgba(0,229,255,.5)')}
             onMouseLeave={e => (e.currentTarget.style.borderColor='')}>
             <ChevronLeft size={20}/>
@@ -637,7 +640,7 @@ function TestimonialsSection() {
                 style={{ width:cur===i?24:8, height:8, background:cur===i?'#00E5FF':'#E8F0F8' }}/>
             ))}
           </div>
-          <button onClick={next} className="w-12 h-12 mx-glass rounded-full flex items-center justify-center cursor-pointer transition-all duration-200" style={{ color:'#fff' }}
+          <button type="button" onClick={next} aria-label="Siguiente testimonio" className="w-12 h-12 mx-glass rounded-full flex items-center justify-center cursor-pointer transition-all duration-200" style={{ color:'#fff' }}
             onMouseEnter={e => (e.currentTarget.style.borderColor='rgba(0,229,255,.5)')}
             onMouseLeave={e => (e.currentTarget.style.borderColor='')}>
             <ChevronRight size={20}/>
@@ -733,7 +736,7 @@ function WhySection() {
             <div key={i} className="mx-glass rounded-2xl p-8 transition-all duration-700 cursor-default"
               style={{ opacity:inView?1:0, transform:inView?'translateY(0)':'translateY(24px)', transitionDelay:`${i*.15}s` }}
               onMouseEnter={e => (e.currentTarget.style.transform='translateY(-6px)')}
-              onMouseLeave={e => (e.currentTarget.style.transform=inView?'translateY(0)':'translateY(24px)')}>
+              onMouseLeave={e => (e.currentTarget.style.transform='translateY(0)')}>
               <div className="w-12 h-12 rounded-full flex items-center justify-center text-2xl mb-4" style={{ background:`${c.cc}22` }}>{c.icon}</div>
               <h3 style={{ fontFamily:FD, fontWeight:700, fontSize:20, color:'#fff', marginBottom:8 }}>{c.title}</h3>
               <p style={{ fontFamily:FB, fontSize:14, color:'rgba(255,255,255,.65)', lineHeight:1.6, marginBottom:16 }}>{c.desc}</p>
@@ -765,13 +768,15 @@ function CTASection() {
   const [status, setStatus] = useState<'idle'|'loading'|'success'>('idle')
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); setStatus('loading')
+    e.preventDefault()
     const msg = `Hola Mastexo, me llamo ${form.name}, tengo ${form.business} de tipo ${form.type} y quiero mejorar: ${form.message||'sin mensaje adicional'}. Mi contacto: ${form.contact}`
+    // Open WhatsApp synchronously to preserve the user-gesture chain (setTimeout breaks it)
+    window.open(`${WA_BASE}?text=${encodeURIComponent(msg)}`, '_blank')
+    setStatus('loading')
     setTimeout(() => {
-      window.open(`${WA_BASE}?text=${encodeURIComponent(msg)}`, '_blank')
       setStatus('success')
       setTimeout(() => setStatus('idle'), 5000)
-    }, 500)
+    }, 400)
   }
 
   const iStyle: React.CSSProperties = { width:'100%', border:'1.5px solid #E8F0F8', borderRadius:12, padding:'14px 16px', fontFamily:FB, fontSize:15, color:'#0A2540', background:'#fff', outline:'none', transition:'border-color .2s' }
@@ -857,13 +862,13 @@ function Footer() {
             </button>
             <p style={{ fontFamily:FB, fontSize:14, color:'rgba(255,255,255,.5)', lineHeight:1.6, marginBottom:20 }}>{t.footer.tagline}</p>
             <div className="flex gap-3">
-              <a href={IG} target="_blank" rel="noopener noreferrer"
+              <a href={IG} target="_blank" rel="noopener noreferrer" aria-label="Instagram de Mastexo"
                 className="w-10 h-10 mx-glass rounded-full flex items-center justify-center cursor-pointer transition-all duration-200"
                 onMouseEnter={e => (e.currentTarget.style.borderColor='rgba(0,229,255,.5)')}
                 onMouseLeave={e => (e.currentTarget.style.borderColor='')}>
                 <IgIcon size={18} color="#fff"/>
               </a>
-              <a href={WA_GENERIC} target="_blank" rel="noopener noreferrer"
+              <a href={WA_GENERIC} target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp"
                 className="w-10 h-10 mx-glass rounded-full flex items-center justify-center cursor-pointer transition-all duration-200"
                 onMouseEnter={e => (e.currentTarget.style.borderColor='rgba(0,229,255,.5)')}
                 onMouseLeave={e => (e.currentTarget.style.borderColor='')}>
@@ -979,7 +984,7 @@ function BottomNav() {
 // ─────────────────────────────────────────
 function WhatsAppFAB() {
   return (
-    <a href={WA_GENERIC} target="_blank" rel="noopener noreferrer" className="fixed z-40" style={{ bottom:100, right:24 }}>
+    <a href={WA_GENERIC} target="_blank" rel="noopener noreferrer" aria-label="Abrir WhatsApp" className="fixed z-40" style={{ bottom:100, right:24 }}>
       <div className="relative w-14 h-14">
         <div className="absolute inset-0 rounded-full mx-pulse" style={{ background:'#25D366', opacity:.4 }}/>
         <div className="absolute inset-0 rounded-full mx-pulse" style={{ background:'#25D366', opacity:.25, animationDelay:'.6s' }}/>
@@ -1000,7 +1005,7 @@ function WhatsAppFAB() {
 function SocialProofToast() {
   const t = useT()
   const [visible, setVisible] = useState(false)
-  const [idx, setIdx] = useState(0)
+  const [idx, setIdx] = useState(t.toasts.length - 1)  // init to last so first show = index 0
 
   useEffect(() => {
     const show = () => {
@@ -1051,6 +1056,7 @@ function ScrollProgress() {
 // ─────────────────────────────────────────
 export default function HomeClient() {
   const [lang, setLang] = useState<Lang>('es')
+  const scrollY = useScrollListener()   // single scroll listener for the whole page
 
   useEffect(() => {
     try {
@@ -1069,23 +1075,21 @@ export default function HomeClient() {
   }, [])
 
   return (
-    <LangCtx.Provider value={{ lang, toggle }}>
+    <AppCtx.Provider value={{ lang, toggle, scrollY }}>
       <style dangerouslySetInnerHTML={{ __html: STYLES }}/>
       <ScrollProgress/>
       <Navbar/>
-      <main>
-        <HeroSection/>
-        <BusinessSelector/>
-        <StatsSection/>
-        <TestimonialsSection/>
-        <ProcessSection/>
-        <WhySection/>
-        <CTASection/>
-      </main>
+      <HeroSection/>
+      <BusinessSelector/>
+      <StatsSection/>
+      <TestimonialsSection/>
+      <ProcessSection/>
+      <WhySection/>
+      <CTASection/>
       <Footer/>
       <BottomNav/>
       <WhatsAppFAB/>
       <SocialProofToast/>
-    </LangCtx.Provider>
+    </AppCtx.Provider>
   )
 }

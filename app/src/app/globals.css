@@ -122,10 +122,10 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
+    /* bg-background removed: landing page sets bg-[#05111F] via layout.tsx className */
   }
   html {
-    @apply font-sans;
     scroll-behavior: smooth;
   }
 }
