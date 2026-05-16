@@ -366,6 +366,19 @@ const STYLES = `
     box-shadow: 0 24px 60px rgba(0,0,0,.5), 0 0 40px rgba(108,99,255,.08);
   }
 
+  .mx-process-card {
+    border-top:    1px solid rgba(255,255,255,.06);
+    border-right:  1px solid rgba(255,255,255,.06);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    border-left:   3px solid #6C63FF;
+  }
+  .mx-process-card:hover {
+    border-top-color:    rgba(108,99,255,.3);
+    border-right-color:  rgba(108,99,255,.3);
+    border-bottom-color: rgba(108,99,255,.3);
+    box-shadow: 0 8px 40px rgba(108,99,255,.08);
+  }
+
   /* Focus rings — visible for keyboard nav */
   :focus-visible {
     outline: 2px solid rgba(108,99,255,.8);
@@ -637,20 +650,40 @@ function BusinessSelector() {
       <div className="max-w-5xl mx-auto">
         <div className={`text-center mb-16 transition-all duration-700 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <p style={{ fontFamily:FB, fontWeight:600, fontSize:11, letterSpacing:'.18em', color:'#6C63FF', textTransform:'uppercase', marginBottom:14 }}>{t.sel.label}</p>
-          <h2 style={{ fontFamily:FD, fontWeight:700, fontSize:'clamp(28px,5vw,48px)', color:C.text, marginBottom:16, letterSpacing:'-.03em' }}>{t.sel.h2}</h2>
+          <h2 style={{ fontFamily:FD, fontWeight:800, fontSize:'clamp(32px,4vw,52px)', color:C.text, marginBottom:16, letterSpacing:'-.03em' }}>{t.sel.h2}</h2>
           <p style={{ fontFamily:FB, fontSize:16, color:C.muted, maxWidth:460, margin:'0 auto', lineHeight:1.7 }}>{t.sel.sub}</p>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
           {t.cats.map((cat, i) => (
             <button key={i} onClick={() => setActive(active===i ? null : i)}
-              className="rounded-2xl p-5 text-left cursor-pointer transition-all duration-250 mx-card-hover"
+              className="text-left cursor-pointer"
               style={{
-                background: active===i ? 'rgba(108,99,255,.08)' : C.surface,
-                border: active===i ? '1px solid rgba(108,99,255,.3)' : `1px solid ${C.border}`,
-                boxShadow: active===i ? '0 0 0 4px rgba(108,99,255,.06)' : 'none',
+                background: active===i ? 'rgba(108,99,255,.06)' : 'rgba(13,17,23,.8)',
+                border: active===i ? '1px solid #6C63FF' : '1px solid rgba(255,255,255,.06)',
+                borderRadius: 16, padding: '28px 24px',
+                transition: 'all .25s ease',
+              }}
+              onMouseEnter={e => {
+                if (active === i) return
+                const el = e.currentTarget as HTMLElement
+                el.style.borderColor = 'rgba(108,99,255,.4)'
+                el.style.background = '#141B24'
+                el.style.boxShadow = '0 8px 32px rgba(108,99,255,.12)'
+                el.style.transform = 'translateY(-4px)'
+              }}
+              onMouseLeave={e => {
+                if (active === i) return
+                const el = e.currentTarget as HTMLElement
+                el.style.borderColor = 'rgba(255,255,255,.06)'
+                el.style.background = 'rgba(13,17,23,.8)'
+                el.style.boxShadow = 'none'
+                el.style.transform = 'translateY(0)'
               }}>
-              <div style={{ fontSize:28, marginBottom:10 }}>{cat.icon}</div>
+              <div className="flex items-center justify-center mb-4"
+                style={{ width:48, height:48, borderRadius:12, background:'rgba(108,99,255,.12)', fontSize:22, flexShrink:0 }}>
+                {cat.icon}
+              </div>
               <div style={{ fontFamily:FB, fontWeight:600, fontSize:14, color:C.text, marginBottom:4 }}>{cat.name}</div>
               <div style={{ fontFamily:FB, fontSize:12, color:C.subtle, lineHeight:1.5 }}>{cat.desc}</div>
             </button>
@@ -705,15 +738,19 @@ function StatCard({ prefix, target, suffix, label, inView, delay, last }:
   { prefix:string; target:number; suffix:string; label:string; inView:boolean; delay:number; last:boolean }) {
   const count = useCounter(target, inView)
   return (
-    <div className="text-center transition-all duration-700 px-4"
+    <div className="text-center transition-all duration-700 py-2 px-6"
       style={{
         opacity:inView?1:0, transform:inView?'translateY(0)':'translateY(28px)', transitionDelay:`${delay}s`,
-        borderRight:!last?`1px solid ${C.border}`:'none'
+        borderRight:!last?'1px solid rgba(255,255,255,.06)':'none',
       }}>
-      <div className="mx-gradient-text" style={{ fontFamily:FD, fontWeight:800, fontSize:'clamp(40px,6vw,64px)', lineHeight:1 }}>
+      <div style={{
+        fontFamily:FD, fontWeight:800, fontSize:'clamp(48px,6vw,80px)', lineHeight:1,
+        background:'linear-gradient(135deg,#fff 30%,#6C63FF 100%)',
+        WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text',
+      }}>
         {prefix}{count}{suffix}
       </div>
-      <div style={{ fontFamily:FB, fontSize:13, color:C.subtle, marginTop:8, letterSpacing:'.02em' }}>{label}</div>
+      <div style={{ fontFamily:FB, fontSize:13, color:'rgba(255,255,255,.4)', marginTop:10, letterSpacing:'.05em', textTransform:'uppercase' }}>{label}</div>
     </div>
   )
 }
@@ -730,9 +767,10 @@ function StatsSection() {
   ]
 
   return (
-    <section id="resultados" ref={ref} className="py-24 px-5 md:px-8" style={{ background:'#0a0b10', borderTop:`1px solid ${C.border}` }}>
+    <section id="resultados" ref={ref} className="px-5 md:px-8"
+      style={{ background:C.surface, borderTop:'1px solid rgba(255,255,255,.06)', borderBottom:'1px solid rgba(255,255,255,.06)', paddingTop:80, paddingBottom:80 }}>
       <div className="max-w-4xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4">
           {stats.map((s, i) => (
             <StatCard key={i} {...s} inView={inView} delay={i*0.12} last={i===stats.length-1}/>
           ))}
@@ -764,62 +802,97 @@ function TestimonialsSection() {
     return () => { if (timerRef.current) clearInterval(timerRef.current) }
   }, [startTimer])
 
+  const cardStyle: React.CSSProperties = {
+    background: 'rgba(13,17,23,.9)',
+    border: '1px solid rgba(255,255,255,.06)',
+    borderRadius: 20,
+    transition: 'border-color .25s, transform .25s',
+  }
+
   return (
-    <section className="py-32 px-5 md:px-8" style={{ background:C.bg, borderTop:`1px solid ${C.border}` }}>
-      <div className="max-w-4xl mx-auto">
+    <section className="py-32 px-5 md:px-8 relative overflow-hidden" style={{ background:C.bg, borderTop:'1px solid rgba(255,255,255,.06)' }}>
+      {/* Radial background */}
+      <div className="absolute inset-0 pointer-events-none" style={{ background:'radial-gradient(ellipse 60% 50% at 50% 50%,rgba(108,99,255,.04) 0%,transparent 70%)' }}/>
+
+      <div className="max-w-5xl mx-auto relative z-10">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-16">
           <h2 style={{ fontFamily:FD, fontWeight:700, fontSize:'clamp(24px,4vw,40px)', color:C.text, letterSpacing:'-.03em' }}>{t.testi.title}</h2>
-          <div className="flex items-center gap-2 flex-shrink-0 px-4 py-2 rounded-full" style={{ border:`1px solid ${C.border}` }}>
-            <span style={{ color:'#f59e0b', fontSize:13 }}>★★★★★</span>
-            <span style={{ fontFamily:FB, fontSize:12, color:C.subtle }}>{t.testi.rating}</span>
+          <div className="flex items-center gap-2 flex-shrink-0 px-4 py-2 rounded-full"
+            style={{ background:'rgba(255,184,0,.1)', border:'1px solid rgba(255,184,0,.2)' }}>
+            <span style={{ color:'#FFB800', fontSize:13 }}>★★★★★</span>
+            <span style={{ fontFamily:FB, fontSize:12, color:'rgba(255,184,0,.85)', fontWeight:600 }}>{t.testi.rating}</span>
           </div>
         </div>
 
-        <div className="relative overflow-hidden"
-          onMouseEnter={() => { if (timerRef.current) clearInterval(timerRef.current) }}
-          onMouseLeave={startTimer}>
-          <div className="flex transition-transform duration-600 ease-out" style={{ transform:`translateX(-${cur*100}%)`, transitionTimingFunction:'cubic-bezier(.16,1,.3,1)' }}>
-            {items.map((item, i) => (
-              <div key={i} className="w-full flex-shrink-0 px-1">
-                <div className="mx-glass mx-gradient-border rounded-2xl p-8 md:p-10">
-                  <div style={{ fontFamily:'Georgia,serif', fontSize:56, lineHeight:.75, marginBottom:20, background:'linear-gradient(135deg,#6C63FF,#a78bfa)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>&ldquo;</div>
-                  <p style={{ fontFamily:FB, fontSize:17, color:'rgba(241,245,249,.85)', lineHeight:1.75, marginBottom:28 }}>{item.text}</p>
-                  <div className="flex items-center gap-4">
-                    <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
-                      style={{ background:'rgba(108,99,255,.07)', border:'1px solid rgba(108,99,255,.12)' }}>{item.icon}</div>
-                    <div>
-                      <div style={{ fontFamily:FB, fontWeight:600, fontSize:14, color:C.text }}>{item.biz}</div>
-                      <div style={{ fontFamily:FB, fontSize:12, color:C.subtle }}>{item.city}</div>
+        {/* Desktop: 3-column grid */}
+        <div className="hidden md:grid grid-cols-3 gap-5">
+          {items.slice(0, 3).map((item, i) => (
+            <div key={i} className="p-8 cursor-default"
+              style={cardStyle}
+              onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor='rgba(108,99,255,.3)'; el.style.transform='translateY(-4px)' }}
+              onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor='rgba(255,255,255,.06)'; el.style.transform='' }}>
+              <div style={{ fontFamily:'Georgia,serif', fontSize:48, lineHeight:1, marginBottom:16, color:'#6C63FF' }}>&ldquo;</div>
+              <p style={{ fontFamily:FB, fontSize:14, color:'rgba(241,245,249,.8)', lineHeight:1.75, marginBottom:24 }}>{item.text}</p>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
+                  style={{ background:'rgba(108,99,255,.08)', border:'1px solid rgba(108,99,255,.12)' }}>{item.icon}</div>
+                <div>
+                  <div style={{ fontFamily:FB, fontWeight:600, fontSize:13, color:C.text }}>{item.biz}</div>
+                  <div style={{ fontFamily:FB, fontSize:12, color:C.subtle }}>{item.city}</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Mobile: slider */}
+        <div className="md:hidden">
+          <div className="relative overflow-hidden"
+            onMouseEnter={() => { if (timerRef.current) clearInterval(timerRef.current) }}
+            onMouseLeave={startTimer}>
+            <div className="flex" style={{ transform:`translateX(-${cur*100}%)`, transition:'transform .6s cubic-bezier(.16,1,.3,1)' }}>
+              {items.map((item, i) => (
+                <div key={i} className="w-full flex-shrink-0 px-0.5">
+                  <div className="p-8" style={cardStyle}>
+                    <div style={{ fontFamily:'Georgia,serif', fontSize:48, lineHeight:1, marginBottom:16, color:'#6C63FF' }}>&ldquo;</div>
+                    <p style={{ fontFamily:FB, fontSize:15, color:'rgba(241,245,249,.85)', lineHeight:1.75, marginBottom:24 }}>{item.text}</p>
+                    <div className="flex items-center gap-4">
+                      <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
+                        style={{ background:'rgba(108,99,255,.08)', border:'1px solid rgba(108,99,255,.12)' }}>{item.icon}</div>
+                      <div>
+                        <div style={{ fontFamily:FB, fontWeight:600, fontSize:14, color:C.text }}>{item.biz}</div>
+                        <div style={{ fontFamily:FB, fontSize:12, color:C.subtle }}>{item.city}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
 
-        <div className="flex items-center justify-center gap-5 mt-10">
-          <button type="button" onClick={prev} aria-label="Anterior"
-            className="w-11 h-11 mx-glass rounded-full flex items-center justify-center cursor-pointer mx-btn-ghost transition-all duration-200"
-            style={{ color:C.muted }}>
-            <ChevronLeft size={18}/>
-          </button>
-          <div className="flex gap-1 items-center" role="tablist" aria-label="Testimonios">
-            {items.map((item, i) => (
-              <button key={i} role="tab" aria-selected={cur===i} aria-label={`Ver testimonio de ${item.biz}`}
-                onClick={() => setCur(i)}
-                className="cursor-pointer flex items-center justify-center transition-all duration-300"
-                style={{ minWidth:44, minHeight:44, background:'transparent', border:'none', padding:'0 4px' }}>
-                <span className="rounded-full block transition-all duration-300"
-                  style={{ width:cur===i?20:6, height:6, background:cur===i?'#6C63FF':'rgba(255,255,255,.2)' }}/>
-              </button>
-            ))}
+          <div className="flex items-center justify-center gap-5 mt-8">
+            <button type="button" onClick={prev} aria-label="Anterior"
+              className="w-11 h-11 mx-glass rounded-full flex items-center justify-center cursor-pointer mx-btn-ghost transition-all duration-200"
+              style={{ color:C.muted }}>
+              <ChevronLeft size={18}/>
+            </button>
+            <div className="flex gap-1 items-center" role="tablist" aria-label="Testimonios">
+              {items.map((item, i) => (
+                <button key={i} role="tab" aria-selected={cur===i} aria-label={`Ver testimonio de ${item.biz}`}
+                  onClick={() => setCur(i)}
+                  className="cursor-pointer flex items-center justify-center transition-all duration-300"
+                  style={{ minWidth:44, minHeight:44, background:'transparent', border:'none', padding:'0 4px' }}>
+                  <span className="rounded-full block transition-all duration-300"
+                    style={{ width:cur===i?20:6, height:6, background:cur===i?'#6C63FF':'rgba(255,255,255,.2)' }}/>
+                </button>
+              ))}
+            </div>
+            <button type="button" onClick={next} aria-label="Siguiente"
+              className="w-11 h-11 mx-glass rounded-full flex items-center justify-center cursor-pointer mx-btn-ghost transition-all duration-200"
+              style={{ color:C.muted }}>
+              <ChevronRight size={18}/>
+            </button>
           </div>
-          <button type="button" onClick={next} aria-label="Siguiente"
-            className="w-11 h-11 mx-glass rounded-full flex items-center justify-center cursor-pointer mx-btn-ghost transition-all duration-200"
-            style={{ color:C.muted }}>
-            <ChevronRight size={18}/>
-          </button>
         </div>
       </div>
     </section>
@@ -846,39 +919,47 @@ function ProcessSection() {
           {t.proc.title}
         </h2>
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 md:gap-0">
           {steps.map((s, i) => (
-            <div key={i} className="rounded-2xl p-7 transition-all duration-700 relative overflow-hidden mx-card-hover"
-              style={{
-                background:C.surface, border:`1px solid ${C.border}`,
-                opacity:inView?1:0, transform:inView?'translateY(0)':'translateY(24px)', transitionDelay:`${i*.18}s`,
-              }}>
-              <div className="absolute right-5 top-0 select-none pointer-events-none"
-                style={{ fontFamily:FD, fontWeight:800, fontSize:88, color:'rgba(255,255,255,.025)', lineHeight:1, letterSpacing:'-.04em' }}>{s.num}</div>
-              <div className="flex items-start gap-4 relative z-10">
-                <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ background:`${s.color}12`, border:`1px solid ${s.color}25` }}>
-                  <s.Icon size={18} color={s.color}/>
+            <React.Fragment key={i}>
+              {i > 0 && (
+                <div className="hidden md:flex h-8 items-stretch" style={{ paddingLeft: 22 }}>
+                  <div style={{ borderLeft:'2px dashed rgba(108,99,255,.2)', width:0, height:'100%' }}/>
                 </div>
-                <div className="flex-1">
-                  <h3 style={{ fontFamily:FD, fontWeight:700, fontSize:19, color:C.text, marginBottom:8, letterSpacing:'-.02em' }}>{s.title}</h3>
-                  <p style={{ fontFamily:FB, fontSize:14, color:C.muted, lineHeight:1.65 }}>{s.desc}</p>
-                  {s.chip && (
-                    <span className="inline-block mt-4 px-3 py-1.5 rounded-full text-xs"
-                      style={{ background:`${s.color}12`, color:s.color, fontFamily:FB, fontWeight:600, border:`1px solid ${s.color}25`, letterSpacing:'.02em' }}>
-                      {s.chip.text}
-                    </span>
-                  )}
-                  {s.cta && s.ctaFn && (
-                    <button onClick={s.ctaFn}
-                      className="mt-4 mx-btn-primary px-5 py-2.5 text-sm cursor-pointer"
-                      style={{ fontFamily:FD, fontWeight:700, fontSize:13 }}>
-                      {s.cta}
-                    </button>
-                  )}
+              )}
+              <div className="rounded-2xl p-7 relative overflow-hidden mx-process-card"
+                style={{
+                  background:C.surface,
+                  opacity:inView?1:0, transform:inView?'translateY(0)':'translateY(24px)',
+                  transition:`opacity .7s ${i*.18}s, transform .7s cubic-bezier(.16,1,.3,1) ${i*.18}s, border-color .3s 0s, box-shadow .3s 0s`,
+                }}>
+                <div className="absolute right-5 top-0 select-none pointer-events-none"
+                  style={{ fontFamily:FD, fontWeight:800, fontSize:96, color:'rgba(108,99,255,.06)', lineHeight:1, letterSpacing:'-.04em' }}>{s.num}</div>
+                <div className="flex items-start gap-4 relative z-10">
+                  <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{ background:`${s.color}15`, border:`1px solid ${s.color}30` }}>
+                    <s.Icon size={18} color={s.color}/>
+                  </div>
+                  <div className="flex-1">
+                    <h3 style={{ fontFamily:FD, fontWeight:700, fontSize:19, color:C.text, marginBottom:8, letterSpacing:'-.02em' }}>{s.title}</h3>
+                    <p style={{ fontFamily:FB, fontSize:14, color:C.muted, lineHeight:1.65 }}>{s.desc}</p>
+                    {s.chip && (
+                      <span className="inline-block mt-4 px-4 py-1.5 text-xs"
+                        style={{ background:'rgba(108,99,255,.12)', color:'#9B93FF', fontFamily:FB, fontWeight:600, border:'1px solid rgba(108,99,255,.25)', letterSpacing:'.02em', borderRadius:50 }}>
+                        {s.chip.text}
+                      </span>
+                    )}
+                    {s.cta && s.ctaFn && (
+                      <button onClick={s.ctaFn}
+                        className="mt-4 mx-btn-primary px-5 py-2.5 text-sm cursor-pointer"
+                        style={{ fontFamily:FD, fontWeight:700, fontSize:13 }}>
+                        {s.cta}
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
+            </React.Fragment>
           ))}
         </div>
 
@@ -922,24 +1003,28 @@ function WhySection() {
                 background:C.surface, border:`1px solid ${C.border}`,
                 opacity:inView?1:0, transform:inView?'translateY(0)':'translateY(28px)', transitionDelay:`${i*.12}s`
               }}>
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
-                style={{ background:`${c.color}0F`, border:`1px solid ${c.color}20` }}>
-                <c.Icon size={20} color={c.color}/>
+              <div className="flex items-center justify-center mb-6"
+                style={{ width:56, height:56, borderRadius:16, background:'linear-gradient(135deg,rgba(108,99,255,.12),rgba(108,99,255,.05))', border:'1px solid rgba(108,99,255,.15)' }}>
+                <c.Icon size={24} color={c.color}/>
               </div>
-              <h3 style={{ fontFamily:FD, fontWeight:700, fontSize:19, color:C.text, marginBottom:10, letterSpacing:'-.02em' }}>{c.title}</h3>
+              <h3 style={{ fontFamily:FD, fontWeight:700, fontSize:20, color:C.text, marginBottom:10, letterSpacing:'-.02em' }}>{c.title}</h3>
               <p style={{ fontFamily:FB, fontSize:14, color:C.muted, lineHeight:1.68, marginBottom:16 }}>{c.desc}</p>
-              <span className="inline-block px-3 py-1.5 rounded-full text-xs"
-                style={{ background:`${c.color}10`, color:c.color, fontFamily:FB, fontWeight:600, border:`1px solid ${c.color}20`, letterSpacing:'.02em' }}>
+              <span className="inline-block px-4 py-1.5 text-xs"
+                style={{ background:'rgba(108,99,255,.12)', color:'#9B93FF', fontFamily:FB, fontWeight:600, border:'1px solid rgba(108,99,255,.25)', letterSpacing:'.02em', borderRadius:50 }}>
                 {c.chip}
               </span>
             </div>
           ))}
         </div>
 
-        <div className="rounded-2xl p-10 md:p-14 text-center relative overflow-hidden"
-          style={{ background:'rgba(255,255,255,.02)', border:`1px solid ${C.border}` }}>
-          <div className="absolute inset-0 pointer-events-none" style={{ background:'radial-gradient(ellipse 60% 80% at 50% 50%,rgba(139,92,246,.06) 0%,transparent 70%)' }}/>
-          <h3 className="relative z-10" style={{ fontFamily:FD, fontWeight:700, fontSize:'clamp(18px,3vw,28px)', color:C.text, marginBottom:28, letterSpacing:'-.02em' }}>
+        <div className="p-10 md:p-14 text-center relative overflow-hidden"
+          style={{
+            background:'linear-gradient(135deg,rgba(108,99,255,.15) 0%,rgba(0,212,255,.05) 100%)',
+            border:'1px solid rgba(108,99,255,.2)',
+            borderRadius:24,
+            boxShadow:'0 0 80px rgba(108,99,255,.1)',
+          }}>
+          <h3 style={{ fontFamily:FD, fontWeight:800, fontSize:'clamp(24px,3vw,40px)', color:C.text, marginBottom:28, letterSpacing:'-.02em' }}>
             {t.why.megaTitle}
           </h3>
           <button onClick={() => scrollTo('contacto')}
@@ -1075,11 +1160,11 @@ function CTASection() {
 function Footer() {
   const t = useT()
   const lh = (e: React.MouseEvent<HTMLElement>, out = false) => {
-    (e.currentTarget as HTMLElement).style.color = out ? 'rgba(241,245,249,.35)' : 'rgba(241,245,249,.8)'
+    (e.currentTarget as HTMLElement).style.color = out ? 'rgba(241,245,249,.35)' : '#6C63FF'
   }
 
   return (
-    <footer style={{ background:C.bg, borderTop:`1px solid ${C.border}`, paddingTop:72, paddingBottom:36 }}>
+    <footer style={{ background:C.bg, borderTop:'1px solid rgba(255,255,255,.06)', paddingTop:72, paddingBottom:36 }}>
       <div className="max-w-7xl mx-auto px-5 md:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 mb-14">
           <div>
@@ -1160,8 +1245,8 @@ function Footer() {
 
         <div style={{ borderTop:`1px solid ${C.border}`, paddingTop:24 }}
           className="flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p style={{ fontFamily:FB, fontSize:12, color:'rgba(241,245,249,.2)' }}>{t.footer.copy}</p>
-          <p style={{ fontFamily:FB, fontSize:12, color:'rgba(241,245,249,.2)' }}>{t.footer.region}</p>
+          <p style={{ fontFamily:FB, fontSize:12, color:'rgba(241,245,249,.25)' }}>{t.footer.copy}</p>
+          <p style={{ fontFamily:FB, fontSize:12, color:'rgba(241,245,249,.25)' }}>{t.footer.region}</p>
         </div>
       </div>
     </footer>
