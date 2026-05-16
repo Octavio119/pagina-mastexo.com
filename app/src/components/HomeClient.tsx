@@ -264,6 +264,9 @@ const STYLES = `
   @keyframes gridPulse     { 0%,100%{opacity:.04} 50%{opacity:.07} }
   @keyframes gridMove      { from{background-position:0 0} to{background-position:60px 60px} }
   @keyframes heroCardFloat { 0%,100%{transform:translateY(0px)} 50%{transform:translateY(-8px)} }
+  @keyframes slideInLeft   { from{opacity:0;transform:translateX(-24px)} to{opacity:1;transform:translateX(0)} }
+  @keyframes slideOutLeft  { from{opacity:1;transform:translateX(0)} to{opacity:0;transform:translateX(-24px)} }
+  @keyframes pulseDot      { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.45;transform:scale(.75)} }
 
   .mx-fade-up  { animation: fadeUp .8s cubic-bezier(.16,1,.3,1) forwards; }
   .mx-fade-in  { animation: fadeIn .6s ease forwards; }
@@ -407,6 +410,25 @@ const STYLES = `
     .mx-fade-up,.mx-fade-in,.mx-float,.mx-pulse,.mx-slide-in{animation:none!important;opacity:1!important;transform:none!important}
   }
 `
+
+// ─────────────────────────────────────────
+// SHARED UI COMPONENTS
+// ─────────────────────────────────────────
+function SectionDivider() {
+  return (
+    <div style={{ height:1, background:'linear-gradient(90deg,transparent,rgba(108,99,255,.3),transparent)' }}/>
+  )
+}
+
+function SectionLabel({ text }: { text: string }) {
+  return (
+    <p style={{
+      fontFamily:FB, fontWeight:600, fontSize:11, letterSpacing:'.12em',
+      color:'#6C63FF', textTransform:'uppercase', marginBottom:14,
+      borderLeft:'2px solid #6C63FF', paddingLeft:8,
+    }}>{text}</p>
+  )
+}
 
 // ─────────────────────────────────────────
 // NAVBAR
@@ -646,10 +668,10 @@ function BusinessSelector() {
     `${WA_BASE}?text=Hola%20Mastexo%2C%20tengo%20un%20negocio%20de%20tipo%20${encodeURIComponent(name)}%20y%20quiero%20un%20diagn%C3%B3stico%20gratuito.`
 
   return (
-    <section id="soluciones" ref={ref} className="py-32 px-5 md:px-8" style={{ background:C.bg, borderTop:`1px solid ${C.border}` }}>
+    <section id="soluciones" ref={ref} className="py-32 px-5 md:px-8" style={{ background:C.bg }}>
       <div className="max-w-5xl mx-auto">
         <div className={`text-center mb-16 transition-all duration-700 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <p style={{ fontFamily:FB, fontWeight:600, fontSize:11, letterSpacing:'.18em', color:'#6C63FF', textTransform:'uppercase', marginBottom:14 }}>{t.sel.label}</p>
+          <div className="flex justify-center"><SectionLabel text={t.sel.label}/></div>
           <h2 style={{ fontFamily:FD, fontWeight:800, fontSize:'clamp(32px,4vw,52px)', color:C.text, marginBottom:16, letterSpacing:'-.03em' }}>{t.sel.h2}</h2>
           <p style={{ fontFamily:FB, fontSize:16, color:C.muted, maxWidth:460, margin:'0 auto', lineHeight:1.7 }}>{t.sel.sub}</p>
         </div>
@@ -768,7 +790,7 @@ function StatsSection() {
 
   return (
     <section id="resultados" ref={ref} className="px-5 md:px-8"
-      style={{ background:C.surface, borderTop:'1px solid rgba(255,255,255,.06)', borderBottom:'1px solid rgba(255,255,255,.06)', paddingTop:80, paddingBottom:80 }}>
+      style={{ background:C.surface, paddingTop:80, paddingBottom:80 }}>
       <div className="max-w-4xl mx-auto">
         <div className="grid grid-cols-2 md:grid-cols-4">
           {stats.map((s, i) => (
@@ -810,7 +832,7 @@ function TestimonialsSection() {
   }
 
   return (
-    <section className="py-32 px-5 md:px-8 relative overflow-hidden" style={{ background:C.bg, borderTop:'1px solid rgba(255,255,255,.06)' }}>
+    <section className="py-32 px-5 md:px-8 relative overflow-hidden" style={{ background:C.bg }}>
       {/* Radial background */}
       <div className="absolute inset-0 pointer-events-none" style={{ background:'radial-gradient(ellipse 60% 50% at 50% 50%,rgba(108,99,255,.04) 0%,transparent 70%)' }}/>
 
@@ -913,7 +935,7 @@ function ProcessSection() {
   ]
 
   return (
-    <section id="proceso" ref={ref} className="py-32 px-5 md:px-8" style={{ background:'#0a0b10', borderTop:`1px solid ${C.border}` }}>
+    <section id="proceso" ref={ref} className="py-32 px-5 md:px-8" style={{ background:'#0a0b10' }}>
       <div className="max-w-2xl mx-auto">
         <h2 className="text-center mb-16" style={{ fontFamily:FD, fontWeight:700, fontSize:'clamp(26px,5vw,44px)', color:C.text, letterSpacing:'-.03em' }}>
           {t.proc.title}
@@ -990,7 +1012,7 @@ function WhySection() {
   ]
 
   return (
-    <section className="py-32 px-5 md:px-8" style={{ background:C.bg, borderTop:`1px solid ${C.border}` }}>
+    <section className="py-32 px-5 md:px-8" style={{ background:C.bg }}>
       <div className="max-w-5xl mx-auto" ref={ref}>
         <h2 className="text-center mb-16" style={{ fontFamily:FD, fontWeight:700, fontSize:'clamp(26px,5vw,48px)', color:C.text, letterSpacing:'-.03em' }}>
           {t.why.title}{' '}<span className="mx-gradient-text">{t.why.accent}</span>
@@ -1073,7 +1095,7 @@ function CTASection() {
   }
 
   return (
-    <section id="contacto" className="py-32 px-5 md:px-8" style={{ background:'#0a0b10', borderTop:`1px solid ${C.border}` }}>
+    <section id="contacto" className="py-32 px-5 md:px-8" style={{ background:'#0a0b10' }}>
       <div className="max-w-xl mx-auto">
         <div className="text-center mb-12">
           <h2 style={{ fontFamily:FD, fontWeight:800, fontSize:'clamp(28px,6vw,52px)', color:C.text, marginBottom:14, letterSpacing:'-.04em' }}>{t.form.h2}</h2>
@@ -1264,8 +1286,8 @@ function BottomNav() {
   return (
     <div className="fixed bottom-6 left-1/2 z-50 transition-all duration-400"
       style={{ transform:'translateX(-50%)', opacity:visible?1:0, pointerEvents:visible?'auto':'none', transitionTimingFunction:'cubic-bezier(.16,1,.3,1)' }}>
-      <div className="flex items-center gap-4 px-5 py-2.5 rounded-full"
-        style={{ background:'rgba(7,8,12,.92)', backdropFilter:'blur(28px)', border:'1px solid rgba(255,255,255,.08)', boxShadow:'0 8px 40px rgba(0,0,0,.5)' }}>
+      <div className="flex items-center gap-4"
+        style={{ background:'rgba(6,8,15,.95)', backdropFilter:'blur(20px)', WebkitBackdropFilter:'blur(20px)', border:'1px solid rgba(255,255,255,.08)', borderRadius:50, boxShadow:'0 8px 40px rgba(0,0,0,.5)', padding:'8px 8px 8px 20px' }}>
         <span className="mx-gradient-text" style={{ fontFamily:FD, fontWeight:800, fontSize:18 }}>M</span>
         <div style={{ width:1, height:16, background:'rgba(255,255,255,.1)' }}/>
         <div className="hidden sm:flex items-center gap-5">
@@ -1276,16 +1298,16 @@ function BottomNav() {
           ].map(link => (
             <button key={link.id} onClick={() => scrollTo(link.id)}
               className="cursor-pointer bg-transparent border-none transition-colors duration-200"
-              style={{ fontFamily:FB, fontSize:12, color:'rgba(241,245,249,.45)', letterSpacing:'.02em' }}
-              onMouseEnter={e => (e.currentTarget.style.color=C.text)}
-              onMouseLeave={e => (e.currentTarget.style.color='rgba(241,245,249,.45)')}>
+              style={{ fontFamily:FB, fontSize:13, color:'rgba(255,255,255,.5)', letterSpacing:'.02em' }}
+              onMouseEnter={e => (e.currentTarget.style.color='#fff')}
+              onMouseLeave={e => (e.currentTarget.style.color='rgba(255,255,255,.5)')}>
               {link.l}
             </button>
           ))}
         </div>
         <a href={WA_GENERIC} target="_blank" rel="noopener noreferrer"
-          className="mx-btn-primary rounded-full px-4 py-1.5 cursor-pointer"
-          style={{ fontFamily:FD, fontWeight:700, fontSize:12 }}>
+          className="btn-whatsapp cursor-pointer"
+          style={{ fontFamily:FD, fontWeight:700, fontSize:12, borderRadius:50, padding:'8px 16px' }}>
           {t.bnav.cta}
         </a>
       </div>
@@ -1297,19 +1319,31 @@ function BottomNav() {
 // WHATSAPP FAB
 // ─────────────────────────────────────────
 function WhatsAppFAB() {
+  const [showTip, setShowTip] = useState(false)
   return (
-    <a href={WA_GENERIC} target="_blank" rel="noopener noreferrer" aria-label="Abrir WhatsApp" className="fixed z-40" style={{ bottom:96, right:24 }}>
-      <div className="relative w-13 h-13">
-        <div className="absolute inset-0 rounded-full mx-pulse" style={{ background:'#25D366', opacity:.3 }}/>
-        <div className="absolute inset-0 rounded-full mx-pulse" style={{ background:'#25D366', opacity:.18, animationDelay:'.7s' }}/>
-        <div className="relative w-13 h-13 rounded-full flex items-center justify-center transition-all duration-200"
-          style={{ width:52, height:52, background:'linear-gradient(135deg,#25D366,#128C7E)', boxShadow:'0 4px 24px rgba(37,211,102,.35)', zIndex:1 }}
-          onMouseEnter={e => (e.currentTarget.style.transform='scale(1.1)')}
-          onMouseLeave={e => (e.currentTarget.style.transform='')}>
-          <MessageCircle size={26} color="#fff" fill="#fff"/>
-        </div>
+    <div className="fixed z-40 flex items-center gap-3" style={{ bottom:96, right:24 }}>
+      <div style={{
+        opacity:showTip?1:0, transform:showTip?'translateX(0)':'translateX(8px)',
+        transition:'opacity .2s ease, transform .2s ease', pointerEvents:'none',
+        background:'rgba(13,17,23,.95)', border:'1px solid rgba(255,255,255,.1)',
+        borderRadius:8, padding:'6px 12px', whiteSpace:'nowrap',
+      }}>
+        <span style={{ fontFamily:FB, fontSize:12, color:'rgba(241,245,249,.85)' }}>Chatea con nosotros</span>
       </div>
-    </a>
+      <a href={WA_GENERIC} target="_blank" rel="noopener noreferrer" aria-label="Abrir WhatsApp"
+        onMouseEnter={() => setShowTip(true)} onMouseLeave={() => setShowTip(false)}>
+        <div className="relative" style={{ width:52, height:52 }}>
+          <div className="absolute inset-0 rounded-full mx-pulse" style={{ background:'#25D366', opacity:.25 }}/>
+          <div className="absolute inset-0 rounded-full mx-pulse" style={{ background:'#25D366', opacity:.15, animationDelay:'.7s' }}/>
+          <div className="absolute inset-0 rounded-full flex items-center justify-center"
+            style={{ background:'#25D366', boxShadow:'0 4px 20px rgba(37,211,102,.4)', zIndex:1, transition:'transform .2s ease, box-shadow .2s ease' }}
+            onMouseEnter={e => { e.currentTarget.style.transform='scale(1.08)'; e.currentTarget.style.boxShadow='0 6px 28px rgba(37,211,102,.6)' }}
+            onMouseLeave={e => { e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow='0 4px 20px rgba(37,211,102,.4)' }}>
+            <MessageCircle size={24} color="#fff" fill="#fff"/>
+          </div>
+        </div>
+      </a>
+    </div>
   )
 }
 
@@ -1319,24 +1353,57 @@ function WhatsAppFAB() {
 function SocialProofToast() {
   const t = useT()
   const [visible, setVisible] = useState(false)
+  const [leaving, setLeaving] = useState(false)
   const [idx, setIdx] = useState(t.toasts.length - 1)
 
   useEffect(() => {
     const show = () => {
       setIdx(i => (i + 1) % t.toasts.length)
+      setLeaving(false)
       setVisible(true)
-      setTimeout(() => setVisible(false), 4200)
+      setTimeout(() => {
+        setLeaving(true)
+        setTimeout(() => { setVisible(false); setLeaving(false) }, 350)
+      }, 4000)
     }
     const init = setTimeout(show, 6000)
     const interval = setInterval(show, 17000)
     return () => { clearTimeout(init); clearInterval(interval) }
   }, [t.toasts.length])
 
+  if (!visible) return null
+
+  const toast = t.toasts[idx]
+  const sp = toast.indexOf(' ')
+  const icon = sp > -1 ? toast.slice(0, sp) : '🔔'
+  const text = sp > -1 ? toast.slice(sp + 1) : toast
+
   return (
-    <div className="fixed z-40 pointer-events-none transition-all duration-500"
-      style={{ bottom:108, left:16, maxWidth:272, opacity:visible?1:0, transform:visible?'translateX(0)':'translateX(-20px)' }}>
-      <div className="mx-glass-strong rounded-xl px-4 py-3" style={{ background:'rgba(7,8,12,.92)' }}>
-        <p style={{ fontFamily:FB, fontSize:12, color:'rgba(241,245,249,.75)', lineHeight:1.45 }}>{t.toasts[idx]}</p>
+    <div className="fixed z-40 pointer-events-none" style={{ bottom:108, left:16, maxWidth:300, animation: leaving ? 'slideOutLeft .35s ease forwards' : 'slideInLeft .4s ease forwards' }}>
+      <div style={{
+        background:'rgba(13,17,23,.95)',
+        backdropFilter:'blur(20px)',
+        WebkitBackdropFilter:'blur(20px)',
+        border:'1px solid rgba(108,99,255,.25)',
+        borderRadius:14,
+        boxShadow:'0 8px 32px rgba(0,0,0,.5)',
+        padding:'12px 14px',
+        display:'flex', alignItems:'center', gap:12,
+      }}>
+        <div style={{
+          width:36, height:36, borderRadius:'50%',
+          background:'rgba(108,99,255,.15)',
+          border:'1px solid rgba(108,99,255,.2)',
+          display:'flex', alignItems:'center', justifyContent:'center',
+          fontSize:16, flexShrink:0,
+        }}>{icon}</div>
+        <div style={{ flex:1, minWidth:0 }}>
+          <p style={{ fontFamily:FB, fontSize:12, color:'rgba(241,245,249,.8)', lineHeight:1.4, margin:0 }}>{text}</p>
+          <div style={{ display:'flex', alignItems:'center', gap:5, marginTop:5 }}>
+            <span style={{ width:6, height:6, borderRadius:'50%', background:'#25D366', boxShadow:'0 0 8px #25D366', animation:'pulseDot 1.8s ease-in-out infinite', display:'inline-block', flexShrink:0 }}/>
+            <span style={{ fontFamily:FB, fontSize:10, color:'rgba(241,245,249,.4)', letterSpacing:'.02em' }}>En vivo</span>
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -1408,11 +1475,17 @@ export default function HomeClient() {
       <Navbar/>
       <main id="main-content">
         <HeroSection/>
+        <SectionDivider/>
         <BusinessSelector/>
+        <SectionDivider/>
         <StatsSection/>
+        <SectionDivider/>
         <TestimonialsSection/>
+        <SectionDivider/>
         <ProcessSection/>
+        <SectionDivider/>
         <WhySection/>
+        <SectionDivider/>
         <CTASection/>
       </main>
       <Footer/>
