@@ -41,8 +41,8 @@ const C = {
   cyan:    '#22d3ee',
   violet:  '#8b5cf6',
   text:    '#f1f5f9',
-  muted:   'rgba(241,245,249,.45)',
-  subtle:  'rgba(241,245,249,.2)',
+  muted:   'rgba(241,245,249,.62)',  // ~5.2:1 contrast on #07080C
+  subtle:  'rgba(241,245,249,.35)',  // ~3:1 — use only for decorative text
 }
 
 // ─────────────────────────────────────────
@@ -363,6 +363,11 @@ const STYLES = `
     overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
   }
 
+  /* Prevent iOS auto-zoom on input focus */
+  @media(max-width:768px){
+    input, select, textarea { font-size: 16px !important; }
+  }
+
   @media(prefers-reduced-motion:reduce){
     .mx-fade-up,.mx-fade-in,.mx-float,.mx-pulse,.mx-slide-in{animation:none!important;opacity:1!important;transform:none!important}
   }
@@ -386,58 +391,69 @@ function Navbar() {
 
   return (
     <>
-      <nav
-        className="fixed top-0 left-0 right-0 z-[100] transition-all duration-500"
-        style={{
-          height: 64,
-          background: scrolled ? 'rgba(7,8,12,.85)' : 'transparent',
-          backdropFilter: scrolled ? 'blur(20px) saturate(1.5)' : 'none',
-          borderBottom: scrolled ? '1px solid rgba(255,255,255,.06)' : '1px solid transparent',
-        }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 h-full flex items-center gap-4">
-          <button onClick={() => window.scrollTo({ top:0, behavior:'smooth' })} className="flex items-center gap-2.5 cursor-pointer bg-transparent border-none">
-            <Image src="/logo1.jpg" alt="Mastexo" width={30} height={30} className="rounded-full object-cover opacity-95"/>
-            <span style={{ fontFamily:FD, fontWeight:700, fontSize:18, color:'#f1f5f9', letterSpacing:'-.01em' }}>Mastexo</span>
-          </button>
+      {/* Floating pill navbar — premium SaaS style */}
+      <div className="fixed top-4 left-0 right-0 z-[100] flex justify-center px-4 pointer-events-none">
+        <nav
+          className="pointer-events-auto w-full max-w-5xl transition-all duration-500"
+          style={{
+            height: 52,
+            background: scrolled ? 'rgba(7,8,12,.88)' : 'rgba(7,8,12,.55)',
+            backdropFilter: 'blur(24px) saturate(1.6)',
+            WebkitBackdropFilter: 'blur(24px) saturate(1.6)',
+            border: scrolled ? '1px solid rgba(255,255,255,.1)' : '1px solid rgba(255,255,255,.07)',
+            borderRadius: 9999,
+            boxShadow: scrolled ? '0 8px 40px rgba(0,0,0,.5)' : '0 4px 20px rgba(0,0,0,.3)',
+          }}>
+          <div className="h-full flex items-center px-4 gap-3">
+            <button onClick={() => window.scrollTo({ top:0, behavior:'smooth' })} className="flex items-center gap-2 cursor-pointer bg-transparent border-none min-w-0 flex-shrink-0">
+              <Image src="/logo1.jpg" alt="Mastexo" width={26} height={26} className="rounded-full object-cover opacity-90"/>
+              <span style={{ fontFamily:FD, fontWeight:700, fontSize:16, color:'#f1f5f9', letterSpacing:'-.01em', whiteSpace:'nowrap' }}>Mastexo</span>
+            </button>
 
-          <div className="flex-1"/>
+            <div className="flex-1"/>
 
-          <div className="hidden md:flex items-center gap-7">
-            {links.map(l => (
-              <button key={l.id} onClick={() => scrollTo(l.id)}
-                className="cursor-pointer bg-transparent border-none transition-colors duration-200"
-                style={{ fontFamily:FB, fontSize:13, fontWeight:500, color:'rgba(241,245,249,.5)', letterSpacing:'.01em' }}
-                onMouseEnter={e => (e.currentTarget.style.color='rgba(241,245,249,.9)')}
-                onMouseLeave={e => (e.currentTarget.style.color='rgba(241,245,249,.5)')}>
-                {l.label}
-              </button>
-            ))}
+            <div className="hidden md:flex items-center gap-5">
+              {links.map(l => (
+                <button key={l.id} onClick={() => scrollTo(l.id)}
+                  className="cursor-pointer bg-transparent border-none transition-colors duration-200 whitespace-nowrap"
+                  style={{ fontFamily:FB, fontSize:13, fontWeight:500, color:'rgba(241,245,249,.55)', letterSpacing:'.01em' }}
+                  onMouseEnter={e => (e.currentTarget.style.color='rgba(241,245,249,.95)')}
+                  onMouseLeave={e => (e.currentTarget.style.color='rgba(241,245,249,.55)')}>
+                  {l.label}
+                </button>
+              ))}
+            </div>
+
+            <div style={{ width:1, height:16, background:'rgba(255,255,255,.1)', flexShrink:0 }} className="hidden md:block"/>
+
+            <button onClick={toggle} aria-label={`Cambiar idioma a ${lang === 'es' ? 'inglés' : 'español'}`}
+              className="flex items-center gap-1 px-2.5 py-1.5 rounded-full cursor-pointer transition-all duration-200 flex-shrink-0"
+              style={{ fontFamily:FB, fontSize:11, fontWeight:600, letterSpacing:'.06em', border:'1px solid rgba(255,255,255,.1)', background:'transparent' }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(34,211,238,.3)' }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(255,255,255,.1)' }}>
+              {(['es','en'] as Lang[]).map((l,i) => (
+                <React.Fragment key={l}>
+                  {i > 0 && <span style={{ color:'rgba(255,255,255,.18)', margin:'0 1px' }}>|</span>}
+                  <span style={{ color: lang===l ? '#22d3ee' : 'rgba(255,255,255,.35)', fontWeight: lang===l ? 700 : 400 }}>{l.toUpperCase()}</span>
+                </React.Fragment>
+              ))}
+            </button>
+
+            <button onClick={() => scrollTo('contacto')}
+              className="hidden md:block mx-btn-primary px-4 py-2 cursor-pointer flex-shrink-0"
+              style={{ fontFamily:FD, fontSize:12, fontWeight:700, letterSpacing:'.01em' }}>
+              {t.nav.cta}
+            </button>
+
+            <button type="button" onClick={() => setOpen(o => !o)}
+              aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
+              className="md:hidden cursor-pointer bg-transparent border-none flex-shrink-0 min-w-[44px] min-h-[44px] flex items-center justify-center"
+              style={{ color:'#f1f5f9' }}>
+              {open ? <X size={20}/> : <Menu size={20}/>}
+            </button>
           </div>
-
-          <button onClick={toggle} aria-label={`Cambiar idioma a ${lang === 'es' ? 'inglés' : 'español'}`}
-            className="flex items-center gap-1 px-2.5 py-1 rounded-full cursor-pointer transition-colors duration-200 ml-1"
-            style={{ fontFamily:FB, fontSize:11, fontWeight:600, letterSpacing:'.06em', border:'1px solid rgba(255,255,255,.1)', background:'transparent' }}>
-            {(['es','en'] as Lang[]).map((l,i) => (
-              <React.Fragment key={l}>
-                {i > 0 && <span style={{ color:'rgba(255,255,255,.18)', margin:'0 1px' }}>|</span>}
-                <span style={{ color: lang===l ? '#22d3ee' : 'rgba(255,255,255,.3)', fontWeight: lang===l ? 700 : 400 }}>{l.toUpperCase()}</span>
-              </React.Fragment>
-            ))}
-          </button>
-
-          <button onClick={() => scrollTo('contacto')}
-            className="hidden md:block mx-btn-primary px-5 py-2.5 cursor-pointer ml-1"
-            style={{ fontFamily:FD, fontSize:13, letterSpacing:'.01em' }}>
-            {t.nav.cta}
-          </button>
-
-          <button type="button" onClick={() => setOpen(o => !o)}
-            aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
-            className="md:hidden ml-1 cursor-pointer bg-transparent border-none" style={{ color:'#f1f5f9' }}>
-            {open ? <X size={22}/> : <Menu size={22}/>}
-          </button>
-        </div>
-      </nav>
+        </nav>
+      </div>
 
       {open && (
         <div className="fixed inset-0 z-[99] md:hidden flex flex-col items-center justify-center gap-10"
@@ -505,7 +521,7 @@ function HeroSection() {
             animationDelay:`${d.delay}s`, animationDuration:`${d.dur}s` }}/>
       ))}
 
-      <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-8 pt-32 pb-24 text-center">
+      <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-8 pt-28 pb-24 text-center">
         {/* Badge */}
         <div className="inline-flex items-center gap-2 mx-glass rounded-full px-4 py-2 mb-10 mx-fade-up"
           style={{ animationDelay:'.05s', opacity:0, borderColor:'rgba(34,211,238,.15)' }}>
@@ -766,11 +782,15 @@ function TestimonialsSection() {
             style={{ color:C.muted }}>
             <ChevronLeft size={18}/>
           </button>
-          <div className="flex gap-2" role="tablist" aria-label="Testimonios">
+          <div className="flex gap-1 items-center" role="tablist" aria-label="Testimonios">
             {items.map((item, i) => (
               <button key={i} role="tab" aria-selected={cur===i} aria-label={`Ver testimonio de ${item.biz}`}
-                onClick={() => setCur(i)} className="rounded-full cursor-pointer transition-all duration-300"
-                style={{ width:cur===i?20:6, height:6, background:cur===i?'#22d3ee':'rgba(255,255,255,.15)' }}/>
+                onClick={() => setCur(i)}
+                className="cursor-pointer flex items-center justify-center transition-all duration-300"
+                style={{ minWidth:44, minHeight:44, background:'transparent', border:'none', padding:'0 4px' }}>
+                <span className="rounded-full block transition-all duration-300"
+                  style={{ width:cur===i?20:6, height:6, background:cur===i?'#22d3ee':'rgba(255,255,255,.2)' }}/>
+              </button>
             ))}
           </div>
           <button type="button" onClick={next} aria-label="Siguiente"
