@@ -116,7 +116,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-[#05111F]">
+      <body className="min-h-full flex flex-col bg-[#07080C]">
         {children}
         <Analytics />
       </body>

@@ -9,7 +9,7 @@ import React, {
   useContext,
 } from 'react'
 import Image from 'next/image'
-import { Menu, X, ChevronLeft, ChevronRight, MessageCircle, Check } from 'lucide-react'
+import { Menu, X, ChevronLeft, ChevronRight, MessageCircle, Check, MessageSquare, Zap, TrendingUp, Users, Timer, Layers } from 'lucide-react'
 
 function IgIcon({ size = 18, color = '#fff' }: { size?: number; color?: string }) {
   return (
@@ -33,6 +33,18 @@ const EMAIL = 'contactos@mastexo.com'
 const FD = "var(--font-syne), 'Syne', sans-serif"
 const FB = "var(--font-dm-sans), 'DM Sans', sans-serif"
 
+// Premium palette
+const C = {
+  bg:      '#07080C',
+  surface: 'rgba(255,255,255,.03)',
+  border:  'rgba(255,255,255,.07)',
+  cyan:    '#22d3ee',
+  violet:  '#8b5cf6',
+  text:    '#f1f5f9',
+  muted:   'rgba(241,245,249,.45)',
+  subtle:  'rgba(241,245,249,.2)',
+}
+
 // ─────────────────────────────────────────
 // TRANSLATIONS
 // ─────────────────────────────────────────
@@ -40,10 +52,10 @@ const T = {
   es: {
     nav: { solutions: 'Soluciones', process: 'Proceso', results: 'Resultados', contact: 'Contacto', cta: 'Diagnóstico gratis' },
     hero: {
-      badge: '🏆 +85 negocios ya confían en Mastexo · LATAM',
+      badge: '+85 negocios ya confían en Mastexo · LATAM',
       h1a: 'Resultados digitales,', h1b: 'no complicaciones.',
       sub: 'Diseñamos páginas web y soluciones digitales que convierten visitantes en clientes reales. Para restaurantes, barberías, salones y tiendas en LATAM.',
-      cta1: 'Solicitar diagnóstico gratis →', cta2: 'Ver cómo funciona →',
+      cta1: 'Solicitar diagnóstico gratis', cta2: 'Ver cómo funciona',
       s1n: '+85', s1l: 'Negocios activos', s2n: '14', s2l: 'Días al primer cliente', s3n: '3×', s3l: 'Más reservas promedio',
       cardName: 'Barbería Ali - Santiago', cardQuote: 'En dos semanas llegaban clientes por Instagram',
     },
@@ -60,7 +72,7 @@ const T = {
       s1t:'Cuéntanos tu negocio', s1d:'Completa el diagnóstico gratuito en 2 min. Sin tecnicismos, solo cuéntanos qué necesitas mejorar.', s1cta:'Diagnóstico gratis',
       s2t:'Diseñamos la solución', s2d:'Creamos estrategia personalizada: web, redes, publicidad o todo junto.', s2chip:'En 48hs tienes propuesta',
       s3t:'Empiezas a recibir clientes', s3d:'En 14 días tienes prospectos reales listos para comprar.', s3chip:'Garantía 14 días',
-      cta:'Empezar ahora → es gratis →', ctaNote:'Sin tarjeta · Sin contratos · Cancela cuando quieras',
+      cta:'Empezar ahora · es gratis', ctaNote:'Sin tarjeta · Sin contratos · Cancela cuando quieras',
     },
     why: {
       title:'Todo lo que necesitas', accent:'para crecer',
@@ -68,13 +80,13 @@ const T = {
       c2t:'Más tiempo', c2d:'Automatizamos publicaciones, anuncios y respuestas. Tú te enfocas en tu negocio.', c2chip:'8+ horas semanales libres',
       c3t:'Menos complicaciones', c3d:'No necesitas saber de marketing ni tecnología. Nosotros manejamos todo.', c3chip:'0 herramientas que aprender',
       megaTitle:'Esto es exactamente lo que necesitas para hacer crecer tu negocio.',
-      megaCta:'Diagnóstico gratuito → Empieza hoy →', megaChip:'85+ negocios ya confían en Mastexo · Sin costo · Sin compromiso',
+      megaCta:'Diagnóstico gratuito · Empieza hoy', megaChip:'85+ negocios ya confían en Mastexo · Sin costo · Sin compromiso',
     },
     form: {
       h2:'¿Listo para más clientes?', sub:'Completa el formulario y te contactamos hoy mismo.',
       ph_name:'Tu nombre', ph_biz:'Tu negocio', ph_type:'Tipo de negocio', ph_contact:'WhatsApp o Email', ph_msg:'¿Qué quieres mejorar? (opcional)',
       submit:'Solicitar diagnóstico gratuito →', sending:'Enviando...', success:'✓ ¡Listo! Te contactamos hoy',
-      note:'Sin costo · Sin compromiso · Respuesta hoy mismo', altTitle:'¿Prefieres hablar ahora?', waCta:'💬 Abrir WhatsApp',
+      note:'Sin costo · Sin compromiso · Respuesta hoy mismo', altTitle:'¿Prefieres hablar ahora?', waCta:'Abrir WhatsApp',
     },
     footer: {
       tagline:'Soluciones digitales para negocios que quieren crecer en internet sin complicaciones.',
@@ -111,10 +123,10 @@ const T = {
   en: {
     nav: { solutions:'Solutions', process:'Process', results:'Results', contact:'Contact', cta:'Free diagnosis' },
     hero: {
-      badge:'🏆 +85 businesses already trust Mastexo · LATAM',
+      badge:'+85 businesses already trust Mastexo · LATAM',
       h1a:'Digital results,', h1b:'no complications.',
       sub:'We design websites and digital solutions that turn visitors into real customers. For restaurants, barbershops, salons and stores across LATAM.',
-      cta1:'Request free diagnosis →', cta2:'See how it works →',
+      cta1:'Request free diagnosis', cta2:'See how it works',
       s1n:'+85', s1l:'Active businesses', s2n:'14', s2l:'Days to first client', s3n:'3×', s3l:'Average booking increase',
       cardName:'Ali Barbershop - Santiago', cardQuote:'Clients started coming via Instagram in two weeks',
     },
@@ -131,7 +143,7 @@ const T = {
       s1t:'Tell us about your business', s1d:"Complete the free diagnosis in 2 min. No tech jargon, just tell us what you need to improve.", s1cta:'Free diagnosis',
       s2t:'We design the solution', s2d:'We create a personalized strategy: web, social, advertising or all together.', s2chip:'Proposal in 48hs',
       s3t:'You start getting clients', s3d:'In 14 days you have real prospects ready to buy.', s3chip:'14-day guarantee',
-      cta:"Start now → it's free →", ctaNote:'No card · No contracts · Cancel anytime',
+      cta:"Start now · it's free", ctaNote:'No card · No contracts · Cancel anytime',
     },
     why: {
       title:'Everything you need', accent:'to grow',
@@ -139,13 +151,13 @@ const T = {
       c2t:'More time', c2d:'We automate posts, ads and responses. You focus on your business.', c2chip:'8+ free weekly hours',
       c3t:'Less complexity', c3d:"You don't need to know marketing or tech. We handle everything.", c3chip:'0 tools to learn',
       megaTitle:'This is exactly what you need to grow your business.',
-      megaCta:'Free diagnosis → Start today →', megaChip:'85+ businesses trust Mastexo · No cost · No commitment',
+      megaCta:'Free diagnosis · Start today', megaChip:'85+ businesses trust Mastexo · No cost · No commitment',
     },
     form: {
       h2:'Ready for more clients?', sub:"Fill out the form and we'll reach out today.",
       ph_name:'Your name', ph_biz:'Your business', ph_type:'Business type', ph_contact:'WhatsApp or Email', ph_msg:'What do you want to improve? (optional)',
       submit:'Request free diagnosis →', sending:'Sending...', success:"✓ Done! We'll contact you today",
-      note:'No cost · No commitment · Reply today', altTitle:'Prefer to talk now?', waCta:'💬 Open WhatsApp',
+      note:'No cost · No commitment · Reply today', altTitle:'Prefer to talk now?', waCta:'Open WhatsApp',
     },
     footer: {
       tagline:'Digital solutions for businesses that want to grow online without complications.',
@@ -184,18 +196,16 @@ const T = {
 type Lang = 'es' | 'en'
 
 // ─────────────────────────────────────────
-// CONTEXT  (lang + scrollY — one listener shared by all)
+// CONTEXT
 // ─────────────────────────────────────────
 const AppCtx = createContext<{ lang: Lang; toggle: () => void; scrollY: number }>({ lang: 'es', toggle: () => {}, scrollY: 0 })
-const useLang   = () => useContext(AppCtx)
-const useT      = () => { const { lang } = useLang(); return T[lang] }
+const useLang    = () => useContext(AppCtx)
+const useT       = () => { const { lang } = useLang(); return T[lang] }
 const useScrollY = () => useContext(AppCtx).scrollY
 
 // ─────────────────────────────────────────
 // HOOKS
 // ─────────────────────────────────────────
-
-// Internal — called once in HomeClient root, result passed via AppCtx
 function useScrollListener() {
   const [y, setY] = useState(0)
   useEffect(() => {
@@ -206,7 +216,7 @@ function useScrollListener() {
   return y
 }
 
-function useInView(threshold = 0.15) {
+function useInView(threshold = 0.12) {
   const ref = useRef<HTMLDivElement>(null)
   const [inView, setInView] = useState(false)
   useEffect(() => {
@@ -218,7 +228,7 @@ function useInView(threshold = 0.15) {
   return { ref, inView }
 }
 
-function useCounter(target: number, inView: boolean, duration = 1500) {
+function useCounter(target: number, inView: boolean, duration = 1600) {
   const [count, setCount] = useState(0)
   useEffect(() => {
     if (!inView) return
@@ -226,7 +236,7 @@ function useCounter(target: number, inView: boolean, duration = 1500) {
     const start = performance.now()
     const step = (now: number) => {
       const p = Math.min((now - start) / duration, 1)
-      const eased = 1 - Math.pow(1 - p, 3)
+      const eased = 1 - Math.pow(1 - p, 4)
       setCount(Math.floor(eased * target))
       if (p < 1) { raf = requestAnimationFrame(step) } else { setCount(target) }
     }
@@ -242,40 +252,103 @@ const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ b
 // GLOBAL CSS
 // ─────────────────────────────────────────
 const STYLES = `
-  @keyframes fadeInUp  { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
-  @keyframes float     { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
-  @keyframes pulseRing { 0%{transform:scale(1);opacity:.6} 100%{transform:scale(1.7);opacity:0} }
-  @keyframes slideIn   { from{opacity:0;transform:translateX(24px)} to{opacity:1;transform:translateX(0)} }
+  @keyframes fadeUp    { from{opacity:0;transform:translateY(32px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeIn    { from{opacity:0} to{opacity:1} }
+  @keyframes float     { 0%,100%{transform:translateY(0px)} 50%{transform:translateY(-14px)} }
+  @keyframes pulseRing { 0%{transform:scale(1);opacity:.5} 100%{transform:scale(1.75);opacity:0} }
+  @keyframes slideIn   { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:translateX(0)} }
+  @keyframes shimmer   { 0%{background-position:200% center} 100%{background-position:-200% center} }
+  @keyframes gridPulse { 0%,100%{opacity:.04} 50%{opacity:.07} }
 
-  .mx-anim-in    { animation: fadeInUp .7s ease-out forwards; }
-  .mx-float      { animation: float 4s ease-in-out infinite; }
-  .mx-pulse      { animation: pulseRing 1.8s ease-out infinite; }
-  .mx-slide-in   { animation: slideIn .4s ease-out; }
+  .mx-fade-up  { animation: fadeUp .8s cubic-bezier(.16,1,.3,1) forwards; }
+  .mx-fade-in  { animation: fadeIn .6s ease forwards; }
+  .mx-float    { animation: float 5s ease-in-out infinite; }
+  .mx-pulse    { animation: pulseRing 2s ease-out infinite; }
+  .mx-slide-in { animation: slideIn .45s cubic-bezier(.16,1,.3,1); }
 
   .mx-glass {
-    background: rgba(255,255,255,.04);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,.08);
-    box-shadow: inset 0 1px 1px rgba(255,255,255,.08), 0 24px 48px rgba(0,0,0,.3);
-    position: relative; overflow: hidden;
+    background: rgba(255,255,255,.03);
+    backdrop-filter: blur(24px) saturate(1.4);
+    -webkit-backdrop-filter: blur(24px) saturate(1.4);
+    border: 1px solid rgba(255,255,255,.07);
   }
-  .mx-glass::before {
-    content:''; position:absolute; inset:0; border-radius:inherit; padding:1px;
-    background: linear-gradient(135deg,rgba(255,255,255,.2) 0%,rgba(255,255,255,.04) 40%,transparent 60%,rgba(0,229,255,.12) 100%);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor; mask-composite: exclude; pointer-events:none;
+  .mx-glass-strong {
+    background: rgba(255,255,255,.05);
+    backdrop-filter: blur(32px) saturate(1.6);
+    -webkit-backdrop-filter: blur(32px) saturate(1.6);
+    border: 1px solid rgba(255,255,255,.1);
   }
-  .mx-glass-light {
-    background: rgba(255,255,255,.92);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(10,37,64,.08);
-    box-shadow: 0 8px 40px rgba(10,37,64,.1);
+
+  .mx-gradient-text {
+    background: linear-gradient(135deg, #22d3ee 0%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
+  .mx-gradient-border {
+    position: relative;
+  }
+  .mx-gradient-border::before {
+    content:'';
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    padding:1px;
+    background:linear-gradient(135deg,rgba(34,211,238,.3),rgba(139,92,246,.3));
+    -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+    mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;
+    pointer-events:none;
+  }
+
+  .mx-btn-primary {
+    position:relative; overflow:hidden;
+    background: linear-gradient(135deg, #06b6d4 0%, #7c3aed 100%);
+    color:#fff; font-weight:700; border-radius:9999px;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 0 40px rgba(34,211,238,.2), 0 0 80px rgba(139,92,246,.1);
+  }
+  .mx-btn-primary:hover {
+    transform: scale(1.03) translateY(-1px);
+    box-shadow: 0 0 60px rgba(34,211,238,.35), 0 0 100px rgba(139,92,246,.2);
+  }
+  .mx-btn-primary:active { transform:scale(.97); }
+  .mx-btn-primary::after {
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(135deg,rgba(255,255,255,.15) 0%,transparent 60%);
+    border-radius:inherit;
+  }
+
+  .mx-btn-ghost {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,.12);
+    color: rgba(255,255,255,.8);
+    border-radius: 9999px;
+    transition: border-color .2s, background .2s, color .2s;
+  }
+  .mx-btn-ghost:hover {
+    border-color: rgba(34,211,238,.4);
+    background: rgba(34,211,238,.05);
+    color: #fff;
+  }
+
+  .mx-grid-bg {
+    background-image: linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px), linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
+    background-size: 64px 64px;
+    animation: gridPulse 6s ease-in-out infinite;
+  }
+
+  .mx-card-hover {
+    transition: transform .3s cubic-bezier(.16,1,.3,1), border-color .3s, box-shadow .3s;
+  }
+  .mx-card-hover:hover {
+    transform: translateY(-6px);
+    border-color: rgba(34,211,238,.25) !important;
+    box-shadow: 0 24px 60px rgba(0,0,0,.4), 0 0 40px rgba(34,211,238,.06);
+  }
+
   @media(prefers-reduced-motion:reduce){
-    .mx-anim-in,.mx-float,.mx-pulse,.mx-slide-in{animation:none!important}
+    .mx-fade-up,.mx-fade-in,.mx-float,.mx-pulse,.mx-slide-in{animation:none!important;opacity:1!important;transform:none!important}
   }
 `
 
@@ -284,9 +357,9 @@ const STYLES = `
 // ─────────────────────────────────────────
 function Navbar() {
   const t = useT(); const { lang, toggle } = useLang()
-  const scrollY = useScrollY()           // reads from AppCtx — no new listener
+  const scrollY = useScrollY()
   const [open, setOpen] = useState(false)
-  const scrolled = scrollY > 60
+  const scrolled = scrollY > 40
 
   const links = [
     { label: t.nav.solutions, id: 'soluciones' },
@@ -297,64 +370,77 @@ function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-[100] transition-all duration-300"
-        style={{ height:68, background: scrolled ? 'rgba(5,17,31,.88)' : 'transparent', backdropFilter: scrolled ? 'blur(16px)' : 'none' }}>
-        <div className="max-w-7xl mx-auto px-4 md:px-6 h-full flex items-center gap-3">
-          {/* Logo */}
-          <button onClick={() => window.scrollTo({ top:0, behavior:'smooth' })} className="flex items-center gap-2 cursor-pointer bg-transparent border-none">
-            <Image src="/logo1.jpg" alt="Mastexo" width={32} height={32} className="rounded-full object-cover"/>
-            <span style={{ fontFamily:FD, fontWeight:700, fontSize:20, color:'#fff' }}>Mastexo</span>
+      <nav
+        className="fixed top-0 left-0 right-0 z-[100] transition-all duration-500"
+        style={{
+          height: 64,
+          background: scrolled ? 'rgba(7,8,12,.85)' : 'transparent',
+          backdropFilter: scrolled ? 'blur(20px) saturate(1.5)' : 'none',
+          borderBottom: scrolled ? '1px solid rgba(255,255,255,.06)' : '1px solid transparent',
+        }}>
+        <div className="max-w-7xl mx-auto px-5 md:px-8 h-full flex items-center gap-4">
+          <button onClick={() => window.scrollTo({ top:0, behavior:'smooth' })} className="flex items-center gap-2.5 cursor-pointer bg-transparent border-none">
+            <Image src="/logo1.jpg" alt="Mastexo" width={30} height={30} className="rounded-full object-cover opacity-95"/>
+            <span style={{ fontFamily:FD, fontWeight:700, fontSize:18, color:'#f1f5f9', letterSpacing:'-.01em' }}>Mastexo</span>
           </button>
+
           <div className="flex-1"/>
-          {/* Desktop nav links */}
-          <div className="hidden md:flex items-center gap-6">
+
+          <div className="hidden md:flex items-center gap-7">
             {links.map(l => (
-              <button key={l.id} onClick={() => scrollTo(l.id)} className="cursor-pointer bg-transparent border-none transition-colors duration-200"
-                style={{ fontFamily:FB, fontSize:14, fontWeight:500, color:'rgba(255,255,255,.7)' }}
-                onMouseEnter={e => (e.currentTarget.style.color='#fff')}
-                onMouseLeave={e => (e.currentTarget.style.color='rgba(255,255,255,.7)')}>
+              <button key={l.id} onClick={() => scrollTo(l.id)}
+                className="cursor-pointer bg-transparent border-none transition-colors duration-200"
+                style={{ fontFamily:FB, fontSize:13, fontWeight:500, color:'rgba(241,245,249,.5)', letterSpacing:'.01em' }}
+                onMouseEnter={e => (e.currentTarget.style.color='rgba(241,245,249,.9)')}
+                onMouseLeave={e => (e.currentTarget.style.color='rgba(241,245,249,.5)')}>
                 {l.label}
               </button>
             ))}
           </div>
-          {/* Lang toggle */}
-          <button onClick={toggle} className="mx-glass rounded-full px-3 py-1 flex items-center gap-1 cursor-pointer text-xs ml-2" style={{ fontFamily:FB }}>
+
+          <button onClick={toggle}
+            className="flex items-center gap-1 px-2.5 py-1 rounded-full cursor-pointer transition-colors duration-200 ml-1"
+            style={{ fontFamily:FB, fontSize:11, fontWeight:600, letterSpacing:'.06em', border:'1px solid rgba(255,255,255,.1)', background:'transparent' }}>
             {(['es','en'] as Lang[]).map((l,i) => (
               <React.Fragment key={l}>
-                {i > 0 && <span style={{ color:'rgba(255,255,255,.25)', margin:'0 1px' }}>|</span>}
-                <span style={{ color: lang===l ? '#00E5FF' : 'rgba(255,255,255,.4)', fontWeight: lang===l ? 700 : 400 }}>{l.toUpperCase()}</span>
+                {i > 0 && <span style={{ color:'rgba(255,255,255,.18)', margin:'0 1px' }}>|</span>}
+                <span style={{ color: lang===l ? '#22d3ee' : 'rgba(255,255,255,.3)', fontWeight: lang===l ? 700 : 400 }}>{l.toUpperCase()}</span>
               </React.Fragment>
             ))}
           </button>
-          {/* Desktop CTA */}
-          <button onClick={() => scrollTo('contacto')} className="hidden md:block rounded-full px-5 py-2.5 cursor-pointer transition-all duration-200 ml-2"
-            style={{ background:'#00E5FF', color:'#0A2540', fontFamily:FD, fontWeight:700, fontSize:14 }}
-            onMouseEnter={e => { e.currentTarget.style.filter='brightness(1.1)'; e.currentTarget.style.transform='scale(1.02)' }}
-            onMouseLeave={e => { e.currentTarget.style.filter=''; e.currentTarget.style.transform='' }}>
+
+          <button onClick={() => scrollTo('contacto')}
+            className="hidden md:block mx-btn-primary px-5 py-2.5 cursor-pointer ml-1"
+            style={{ fontFamily:FD, fontSize:13, letterSpacing:'.01em' }}>
             {t.nav.cta}
           </button>
-          {/* Hamburger */}
-          <button type="button" onClick={() => setOpen(o => !o)} aria-label={open ? 'Cerrar menú' : 'Abrir menú'} className="md:hidden ml-2 cursor-pointer bg-transparent border-none" style={{ color:'#fff' }}>
-            {open ? <X size={24}/> : <Menu size={24}/>}
+
+          <button type="button" onClick={() => setOpen(o => !o)}
+            aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
+            className="md:hidden ml-1 cursor-pointer bg-transparent border-none" style={{ color:'#f1f5f9' }}>
+            {open ? <X size={22}/> : <Menu size={22}/>}
           </button>
         </div>
       </nav>
 
-      {/* Mobile drawer */}
       {open && (
-        <div className="fixed inset-0 z-[99] md:hidden flex flex-col items-center justify-center gap-8"
-          style={{ background:'rgba(5,17,31,.98)', backdropFilter:'blur(24px)' }}>
-          <button onClick={() => setOpen(false)} className="absolute top-5 right-5 cursor-pointer bg-transparent border-none" style={{ color:'#fff' }}>
-            <X size={28}/>
+        <div className="fixed inset-0 z-[99] md:hidden flex flex-col items-center justify-center gap-10"
+          style={{ background:'rgba(7,8,12,.97)', backdropFilter:'blur(32px)' }}>
+          <button onClick={() => setOpen(false)} className="absolute top-5 right-5 cursor-pointer bg-transparent border-none" style={{ color:'rgba(241,245,249,.7)' }}>
+            <X size={26}/>
           </button>
           {links.map(l => (
-            <button key={l.id} onClick={() => { scrollTo(l.id); setOpen(false) }} className="cursor-pointer bg-transparent border-none"
-              style={{ fontFamily:FD, fontWeight:700, fontSize:28, color:'#fff' }}>
+            <button key={l.id} onClick={() => { scrollTo(l.id); setOpen(false) }}
+              className="cursor-pointer bg-transparent border-none transition-colors duration-200"
+              style={{ fontFamily:FD, fontWeight:700, fontSize:32, color:'rgba(241,245,249,.85)', letterSpacing:'-.02em' }}
+              onMouseEnter={e => (e.currentTarget.style.color='#22d3ee')}
+              onMouseLeave={e => (e.currentTarget.style.color='rgba(241,245,249,.85)')}>
               {l.label}
             </button>
           ))}
-          <button onClick={() => { scrollTo('contacto'); setOpen(false) }} className="rounded-full px-8 py-4 cursor-pointer mt-4"
-            style={{ background:'#00E5FF', color:'#0A2540', fontFamily:FD, fontWeight:700, fontSize:16 }}>
+          <button onClick={() => { scrollTo('contacto'); setOpen(false) }}
+            className="mx-btn-primary px-10 py-4 cursor-pointer mt-2"
+            style={{ fontFamily:FD, fontWeight:700, fontSize:16 }}>
             {t.nav.cta}
           </button>
         </div>
@@ -369,86 +455,113 @@ function Navbar() {
 function HeroSection() {
   const t = useT()
 
-  const particles = Array.from({ length: 14 }, (_, i) => ({
-    x: (i * 37 + 11) % 97, y: (i * 53 + 7) % 90,
-    size: 2 + (i % 3),
-    color: i%3===0 ? '#00E5FF' : i%3===1 ? '#7B61FF' : '#00C48C',
-    delay: i * 0.35,
-    dur: 3 + (i % 4),
+  const orbs = [
+    { top:'-15%', left:'-10%', size:700, color:'radial-gradient(circle,rgba(34,211,238,.12) 0%,transparent 65%)' },
+    { top:'30%',  left:'60%',  size:600, color:'radial-gradient(circle,rgba(139,92,246,.1) 0%,transparent 65%)' },
+    { top:'70%',  left:'20%',  size:400, color:'radial-gradient(circle,rgba(34,211,238,.07) 0%,transparent 60%)' },
+  ]
+
+  const dots = Array.from({ length: 18 }, (_, i) => ({
+    x: (i * 41 + 13) % 96, y: (i * 57 + 9) % 88,
+    size: 1 + (i % 2) * 0.5,
+    color: i%2===0 ? '#22d3ee' : '#8b5cf6',
+    delay: i * 0.28,
+    dur: 4 + (i % 4),
   }))
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden" style={{ background:'#05111F' }}>
-      {/* BG */}
-      <div className="absolute inset-0 pointer-events-none" style={{ background:'radial-gradient(ellipse 80% 60% at 50% 40%,#0A2540 0%,#05111F 100%)' }}/>
-      {/* Glow orb */}
-      <div className="absolute pointer-events-none" style={{ width:600,height:600,top:'-10%',right:'-10%',background:'radial-gradient(circle,rgba(0,229,255,.15) 0%,rgba(123,97,255,.08) 50%,transparent 70%)',filter:'blur(60px)',borderRadius:'50%' }}/>
-      {/* Particles */}
-      {particles.map((p,i) => (
-        <div key={i} className="absolute rounded-full pointer-events-none mx-float"
-          style={{ left:`${p.x}%`,top:`${p.y}%`,width:p.size,height:p.size,background:p.color,opacity:.55,animationDelay:`${p.delay}s`,animationDuration:`${p.dur}s` }}/>
+    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden" style={{ background:C.bg }}>
+      {/* Grid */}
+      <div className="absolute inset-0 mx-grid-bg pointer-events-none"/>
+
+      {/* Orbs */}
+      {orbs.map((o, i) => (
+        <div key={i} className="absolute pointer-events-none" style={{
+          top:o.top, left:o.left, width:o.size, height:o.size,
+          background:o.color, filter:'blur(80px)', transform:'translateZ(0)',
+        }}/>
       ))}
 
-      <div className="relative z-10 max-w-3xl mx-auto px-6 pt-32 pb-20 text-center">
+      {/* Particles */}
+      {dots.map((d, i) => (
+        <div key={i} className="absolute rounded-full pointer-events-none mx-float"
+          style={{ left:`${d.x}%`, top:`${d.y}%`, width:d.size, height:d.size, background:d.color, opacity:.4,
+            animationDelay:`${d.delay}s`, animationDuration:`${d.dur}s` }}/>
+      ))}
+
+      <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-8 pt-32 pb-24 text-center">
         {/* Badge */}
-        <div className="inline-flex items-center mx-glass rounded-full px-4 py-2 mb-8 mx-anim-in"
-          style={{ animationDelay:'.1s',opacity:0,border:'1px solid rgba(0,229,255,.2)' }}>
-          <span style={{ fontFamily:FB, fontSize:12, color:'#00E5FF' }}>{t.hero.badge}</span>
+        <div className="inline-flex items-center gap-2 mx-glass rounded-full px-4 py-2 mb-10 mx-fade-up"
+          style={{ animationDelay:'.05s', opacity:0, borderColor:'rgba(34,211,238,.15)' }}>
+          <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background:'#22d3ee', boxShadow:'0 0 6px #22d3ee' }}/>
+          <span style={{ fontFamily:FB, fontSize:12, color:'rgba(241,245,249,.6)', letterSpacing:'.03em' }}>{t.hero.badge}</span>
         </div>
 
         {/* H1 */}
-        <h1 className="mx-anim-in" style={{ fontFamily:FD, fontWeight:800, fontSize:'clamp(46px,8vw,88px)', lineHeight:1.05, letterSpacing:'-.03em', color:'#fff', marginBottom:24, animationDelay:'.2s', opacity:0 }}>
-          {t.hero.h1a}<br/><span style={{ color:'#00E5FF' }}>{t.hero.h1b}</span>
+        <h1 className="mx-fade-up" style={{
+          fontFamily:FD, fontWeight:800, lineHeight:1.04, letterSpacing:'-.04em',
+          fontSize:'clamp(48px,9vw,96px)', color:C.text,
+          marginBottom:28, animationDelay:'.15s', opacity:0,
+        }}>
+          {t.hero.h1a}<br/>
+          <span className="mx-gradient-text">{t.hero.h1b}</span>
         </h1>
 
         {/* Sub */}
-        <p className="mx-anim-in" style={{ fontFamily:FB, fontSize:18, color:'rgba(255,255,255,.65)', maxWidth:540, margin:'0 auto 32px', lineHeight:1.7, animationDelay:'.3s', opacity:0 }}>
+        <p className="mx-fade-up" style={{
+          fontFamily:FB, fontSize:17, color:C.muted,
+          maxWidth:520, margin:'0 auto 40px', lineHeight:1.75,
+          animationDelay:'.25s', opacity:0,
+        }}>
           {t.hero.sub}
         </p>
 
         {/* CTAs */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mx-anim-in" style={{ animationDelay:'.4s', opacity:0 }}>
-          <button onClick={() => scrollTo('contacto')} className="rounded-full px-8 py-4 cursor-pointer transition-all duration-200 w-full sm:w-auto"
-            style={{ background:'#00E5FF', color:'#0A2540', fontFamily:FD, fontWeight:700, fontSize:16, boxShadow:'0 0 32px rgba(0,229,255,.35)' }}
-            onMouseEnter={e => { e.currentTarget.style.transform='scale(1.03)'; e.currentTarget.style.boxShadow='0 0 48px rgba(0,229,255,.5)' }}
-            onMouseLeave={e => { e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow='0 0 32px rgba(0,229,255,.35)' }}
-            onMouseDown={e => { e.currentTarget.style.transform='scale(.97)' }}>
-            {t.hero.cta1}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mx-fade-up" style={{ animationDelay:'.35s', opacity:0 }}>
+          <button onClick={() => scrollTo('contacto')}
+            className="mx-btn-primary px-8 py-4 cursor-pointer w-full sm:w-auto"
+            style={{ fontFamily:FD, fontWeight:700, fontSize:15, letterSpacing:'.01em' }}>
+            {t.hero.cta1} →
           </button>
-          <button onClick={() => scrollTo('proceso')} className="mx-glass rounded-full px-8 py-4 cursor-pointer transition-all duration-200 w-full sm:w-auto"
-            style={{ color:'#fff', fontFamily:FD, fontWeight:700, fontSize:16 }}
-            onMouseEnter={e => (e.currentTarget.style.borderColor='rgba(0,229,255,.5)')}
-            onMouseLeave={e => (e.currentTarget.style.borderColor='')}>
+          <button onClick={() => scrollTo('proceso')}
+            className="mx-btn-ghost px-8 py-4 cursor-pointer w-full sm:w-auto"
+            style={{ fontFamily:FD, fontWeight:600, fontSize:15 }}>
             {t.hero.cta2}
           </button>
         </div>
 
         {/* Proof strip */}
-        <div className="flex items-center justify-center gap-6 mt-12 mx-anim-in flex-wrap" style={{ animationDelay:'.5s', opacity:0 }}>
+        <div className="flex items-center justify-center gap-10 mt-16 mx-fade-up flex-wrap" style={{ animationDelay:'.45s', opacity:0 }}>
           {[{n:t.hero.s1n,l:t.hero.s1l},{n:t.hero.s2n,l:t.hero.s2l},{n:t.hero.s3n,l:t.hero.s3l}].map((s,i) => (
-            <div key={i} className="flex items-center gap-6">
-              {i > 0 && <div style={{ width:1, height:32, background:'rgba(255,255,255,.15)' }}/>}
+            <div key={i} className="flex items-center gap-10">
+              {i > 0 && <div style={{ width:1, height:28, background:'rgba(255,255,255,.1)' }}/>}
               <div className="text-center">
-                <div style={{ fontFamily:FD, fontWeight:700, fontSize:22, color:'#fff' }}>{s.n}</div>
-                <div style={{ fontFamily:FB, fontSize:12, color:'rgba(255,255,255,.5)' }}>{s.l}</div>
+                <div className="mx-gradient-text" style={{ fontFamily:FD, fontWeight:800, fontSize:26, lineHeight:1 }}>{s.n}</div>
+                <div style={{ fontFamily:FB, fontSize:12, color:C.subtle, marginTop:4, letterSpacing:'.02em' }}>{s.l}</div>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Floating card - desktop */}
-      <div className="absolute hidden lg:block mx-float" style={{ right:32, top:'50%', transform:'translateY(-50%)', width:224, zIndex:20, animationDelay:'1s' }}>
-        <div className="mx-glass rounded-2xl p-4">
+      {/* Floating review card */}
+      <div className="absolute hidden lg:block mx-float" style={{ right:40, top:'50%', transform:'translateY(-50%)', width:220, zIndex:20, animationDelay:'1.2s' }}>
+        <div className="mx-glass-strong mx-gradient-border rounded-2xl p-5">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center text-xl" style={{ background:'rgba(0,229,255,.15)' }}>✂️</div>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
+              style={{ background:'rgba(34,211,238,.1)', border:'1px solid rgba(34,211,238,.15)' }}>✂️</div>
             <div>
-              <div style={{ fontFamily:FB, fontWeight:600, fontSize:13, color:'#fff' }}>{t.hero.cardName}</div>
-              <div style={{ fontSize:12, color:'#F59E0B' }}>★★★★★</div>
+              <div style={{ fontFamily:FB, fontWeight:600, fontSize:12, color:C.text }}>{t.hero.cardName}</div>
+              <div style={{ fontSize:11, color:'#f59e0b', letterSpacing:'.05em' }}>★★★★★</div>
             </div>
           </div>
-          <p style={{ fontFamily:FB, fontSize:13, color:'rgba(255,255,255,.8)', lineHeight:1.5 }}>&ldquo;{t.hero.cardQuote}&rdquo;</p>
+          <p style={{ fontFamily:FB, fontSize:12, color:C.muted, lineHeight:1.55 }}>&ldquo;{t.hero.cardQuote}&rdquo;</p>
         </div>
+      </div>
+
+      {/* Scroll indicator */}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 mx-fade-in" style={{ animationDelay:'1.5s', opacity:0 }}>
+        <div style={{ width:1, height:40, background:'linear-gradient(to bottom, rgba(34,211,238,.4), transparent)' }}/>
       </div>
     </section>
   )
@@ -466,52 +579,52 @@ function BusinessSelector() {
     `${WA_BASE}?text=Hola%20Mastexo%2C%20tengo%20un%20negocio%20de%20tipo%20${encodeURIComponent(name)}%20y%20quiero%20un%20diagn%C3%B3stico%20gratuito.`
 
   return (
-    <section id="soluciones" ref={ref} className="py-24 px-4 md:px-6" style={{ background:'#F7FBFF' }}>
+    <section id="soluciones" ref={ref} className="py-32 px-5 md:px-8" style={{ background:C.bg, borderTop:`1px solid ${C.border}` }}>
       <div className="max-w-5xl mx-auto">
-        <div className={`text-center mb-12 transition-all duration-700 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-          <p style={{ fontFamily:FD, fontWeight:800, fontSize:11, letterSpacing:3, color:'#00E5FF', textTransform:'uppercase', marginBottom:12 }}>{t.sel.label}</p>
-          <h2 style={{ fontFamily:FD, fontWeight:700, fontSize:'clamp(28px,5vw,42px)', color:'#0A2540', marginBottom:16 }}>{t.sel.h2}</h2>
-          <p style={{ fontFamily:FB, fontSize:17, color:'#2D4A63', maxWidth:480, margin:'0 auto' }}>{t.sel.sub}</p>
+        <div className={`text-center mb-16 transition-all duration-700 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <p style={{ fontFamily:FB, fontWeight:600, fontSize:11, letterSpacing:'.18em', color:'#22d3ee', textTransform:'uppercase', marginBottom:14 }}>{t.sel.label}</p>
+          <h2 style={{ fontFamily:FD, fontWeight:700, fontSize:'clamp(28px,5vw,48px)', color:C.text, marginBottom:16, letterSpacing:'-.03em' }}>{t.sel.h2}</h2>
+          <p style={{ fontFamily:FB, fontSize:16, color:C.muted, maxWidth:460, margin:'0 auto', lineHeight:1.7 }}>{t.sel.sub}</p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
           {t.cats.map((cat, i) => (
             <button key={i} onClick={() => setActive(active===i ? null : i)}
-              className="rounded-2xl p-6 text-left cursor-pointer transition-all duration-200"
-              style={{ background: active===i ? '#E8FFF9' : '#fff', border: active===i ? '2px solid #00E5FF' : '2px solid #E8F0F8', boxShadow: active===i ? '0 0 0 4px rgba(0,229,255,.15)' : 'none', transform: active===i ? 'scale(1.02)' : '' }}
-              onMouseEnter={e => { if (active!==i) { e.currentTarget.style.borderColor='#00E5FF'; e.currentTarget.style.boxShadow='0 8px 24px rgba(0,229,255,.12)'; e.currentTarget.style.transform='translateY(-4px)' } }}
-              onMouseLeave={e => { if (active!==i) { e.currentTarget.style.borderColor='#E8F0F8'; e.currentTarget.style.boxShadow='none'; e.currentTarget.style.transform='' } }}>
-              <div style={{ fontSize:36, marginBottom:8 }}>{cat.icon}</div>
-              <div style={{ fontFamily:FB, fontWeight:600, fontSize:15, color:'#0A2540', marginBottom:4 }}>{cat.name}</div>
-              <div style={{ fontFamily:FB, fontSize:12, color:'#6B8BA4' }}>{cat.desc}</div>
+              className="rounded-2xl p-5 text-left cursor-pointer transition-all duration-250 mx-card-hover"
+              style={{
+                background: active===i ? 'rgba(34,211,238,.06)' : C.surface,
+                border: active===i ? '1px solid rgba(34,211,238,.3)' : `1px solid ${C.border}`,
+                boxShadow: active===i ? '0 0 0 4px rgba(34,211,238,.06)' : 'none',
+              }}>
+              <div style={{ fontSize:28, marginBottom:10 }}>{cat.icon}</div>
+              <div style={{ fontFamily:FB, fontWeight:600, fontSize:14, color:C.text, marginBottom:4 }}>{cat.name}</div>
+              <div style={{ fontFamily:FB, fontSize:12, color:C.subtle, lineHeight:1.5 }}>{cat.desc}</div>
             </button>
           ))}
         </div>
 
-        {/* Detail panel */}
         {active !== null && (
-          <div className="rounded-2xl p-8 mb-8 mx-slide-in" style={{ background:'#0A2540' }}>
+          <div className="rounded-2xl p-8 mb-8 mx-slide-in mx-gradient-border" style={{ background:'rgba(255,255,255,.02)' }}>
             <div className="flex flex-col md:flex-row gap-8 items-start md:items-center">
               <div className="flex-1">
-                <h3 style={{ fontFamily:FD, fontWeight:700, fontSize:22, color:'#fff', marginBottom:16 }}>
-                  {t.sel.detailTitle} {t.cats[active].name}
+                <h3 style={{ fontFamily:FD, fontWeight:700, fontSize:20, color:C.text, marginBottom:16, letterSpacing:'-.02em' }}>
+                  {t.sel.detailTitle} <span className="mx-gradient-text">{t.cats[active].name}</span>
                 </h3>
                 <ul className="space-y-3">
                   {t.cats[active].benefits.map((b,i) => (
                     <li key={i} className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ background:'rgba(0,229,255,.2)' }}>
-                        <Check size={12} color="#00E5FF"/>
+                      <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
+                        style={{ background:'rgba(34,211,238,.1)', border:'1px solid rgba(34,211,238,.2)' }}>
+                        <Check size={11} color="#22d3ee"/>
                       </div>
-                      <span style={{ fontFamily:FB, fontSize:15, color:'rgba(255,255,255,.85)' }}>{b}</span>
+                      <span style={{ fontFamily:FB, fontSize:14, color:'rgba(241,245,249,.8)' }}>{b}</span>
                     </li>
                   ))}
                 </ul>
               </div>
               <a href={waForCat(t.cats[active].name)} target="_blank" rel="noopener noreferrer"
-                className="inline-block rounded-full px-6 py-3 cursor-pointer transition-all duration-200 flex-shrink-0"
-                style={{ background:'#00E5FF', color:'#0A2540', fontFamily:FD, fontWeight:700, fontSize:15 }}
-                onMouseEnter={e => { e.currentTarget.style.transform='scale(1.03)' }}
-                onMouseLeave={e => { e.currentTarget.style.transform='' }}>
+                className="mx-btn-primary inline-block px-6 py-3 cursor-pointer flex-shrink-0"
+                style={{ fontFamily:FD, fontWeight:700, fontSize:14 }}>
                 {t.sel.detailCta}
               </a>
             </div>
@@ -519,13 +632,12 @@ function BusinessSelector() {
         )}
 
         <div className="text-center">
-          <button onClick={() => scrollTo('contacto')} className="rounded-full px-8 py-4 cursor-pointer transition-all duration-200 mb-3"
-            style={{ background:'#00E5FF', color:'#0A2540', fontFamily:FD, fontWeight:700, fontSize:16, boxShadow:'0 0 32px rgba(0,229,255,.25)' }}
-            onMouseEnter={e => { e.currentTarget.style.transform='scale(1.03)' }}
-            onMouseLeave={e => { e.currentTarget.style.transform='' }}>
+          <button onClick={() => scrollTo('contacto')}
+            className="mx-btn-primary px-10 py-4 cursor-pointer mb-4"
+            style={{ fontFamily:FD, fontWeight:700, fontSize:15 }}>
             {t.sel.cta}
           </button>
-          <p style={{ fontFamily:FB, fontSize:12, color:'#9BB0C4', marginTop:8 }}>{t.sel.ctaNote}</p>
+          <p style={{ fontFamily:FB, fontSize:12, color:C.subtle, marginTop:10 }}>{t.sel.ctaNote}</p>
         </div>
       </div>
     </section>
@@ -539,12 +651,15 @@ function StatCard({ prefix, target, suffix, label, inView, delay, last }:
   { prefix:string; target:number; suffix:string; label:string; inView:boolean; delay:number; last:boolean }) {
   const count = useCounter(target, inView)
   return (
-    <div className="text-center transition-all duration-700"
-      style={{ opacity:inView?1:0, transform:inView?'translateY(0)':'translateY(24px)', transitionDelay:`${delay}s`, borderRight:!last?'1px solid rgba(255,255,255,.1)':'none' }}>
-      <div style={{ fontFamily:FD, fontWeight:800, fontSize:'clamp(36px,5vw,56px)', color:'#00E5FF', lineHeight:1 }}>
+    <div className="text-center transition-all duration-700 px-4"
+      style={{
+        opacity:inView?1:0, transform:inView?'translateY(0)':'translateY(28px)', transitionDelay:`${delay}s`,
+        borderRight:!last?`1px solid ${C.border}`:'none'
+      }}>
+      <div className="mx-gradient-text" style={{ fontFamily:FD, fontWeight:800, fontSize:'clamp(40px,6vw,64px)', lineHeight:1 }}>
         {prefix}{count}{suffix}
       </div>
-      <div style={{ fontFamily:FB, fontSize:14, color:'rgba(255,255,255,.6)', marginTop:8 }}>{label}</div>
+      <div style={{ fontFamily:FB, fontSize:13, color:C.subtle, marginTop:8, letterSpacing:'.02em' }}>{label}</div>
     </div>
   )
 }
@@ -561,11 +676,11 @@ function StatsSection() {
   ]
 
   return (
-    <section id="resultados" ref={ref} className="py-20 px-4 md:px-6" style={{ background:'linear-gradient(135deg,#05111F 0%,#0A2540 100%)' }}>
+    <section id="resultados" ref={ref} className="py-24 px-5 md:px-8" style={{ background:'#0a0b10', borderTop:`1px solid ${C.border}` }}>
       <div className="max-w-4xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {stats.map((s, i) => (
-            <StatCard key={i} {...s} inView={inView} delay={i*0.15} last={i===stats.length-1}/>
+            <StatCard key={i} {...s} inView={inView} delay={i*0.12} last={i===stats.length-1}/>
           ))}
         </div>
       </div>
@@ -587,7 +702,7 @@ function TestimonialsSection() {
 
   const startTimer = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current)
-    timerRef.current = setInterval(next, 3500)
+    timerRef.current = setInterval(next, 4000)
   }, [next])
 
   useEffect(() => {
@@ -596,30 +711,31 @@ function TestimonialsSection() {
   }, [startTimer])
 
   return (
-    <section className="py-24 px-4 md:px-6" style={{ background:'#fff' }}>
-      <div className="max-w-5xl mx-auto">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-12">
-          <h2 style={{ fontFamily:FD, fontWeight:700, fontSize:'clamp(24px,4vw,38px)', color:'#0A2540' }}>{t.testi.title}</h2>
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <span style={{ color:'#F59E0B', fontSize:16 }}>★★★★★</span>
-            <span style={{ fontFamily:FB, fontSize:14, color:'#6B8BA4' }}>{t.testi.rating}</span>
+    <section className="py-32 px-5 md:px-8" style={{ background:C.bg, borderTop:`1px solid ${C.border}` }}>
+      <div className="max-w-4xl mx-auto">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-16">
+          <h2 style={{ fontFamily:FD, fontWeight:700, fontSize:'clamp(24px,4vw,40px)', color:C.text, letterSpacing:'-.03em' }}>{t.testi.title}</h2>
+          <div className="flex items-center gap-2 flex-shrink-0 px-4 py-2 rounded-full" style={{ border:`1px solid ${C.border}` }}>
+            <span style={{ color:'#f59e0b', fontSize:13 }}>★★★★★</span>
+            <span style={{ fontFamily:FB, fontSize:12, color:C.subtle }}>{t.testi.rating}</span>
           </div>
         </div>
 
         <div className="relative overflow-hidden"
           onMouseEnter={() => { if (timerRef.current) clearInterval(timerRef.current) }}
           onMouseLeave={startTimer}>
-          <div className="flex transition-transform duration-500 ease-in-out" style={{ transform:`translateX(-${cur*100}%)` }}>
+          <div className="flex transition-transform duration-600 ease-out" style={{ transform:`translateX(-${cur*100}%)`, transitionTimingFunction:'cubic-bezier(.16,1,.3,1)' }}>
             {items.map((item, i) => (
-              <div key={i} className="w-full flex-shrink-0">
-                <div className="rounded-2xl p-8 mx-1" style={{ background:'#fff', border:'1px solid #E8F0F8', boxShadow:'0 4px 24px rgba(10,37,64,.06)' }}>
-                  <div style={{ fontFamily:'Georgia,serif', fontSize:48, color:'#00E5FF', lineHeight:.8, marginBottom:16 }}>&ldquo;</div>
-                  <p style={{ fontFamily:FB, fontSize:16, color:'#0A2540', lineHeight:1.7, marginBottom:24 }}>{item.text}</p>
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full flex items-center justify-center text-2xl" style={{ background:'rgba(0,229,255,.08)' }}>{item.icon}</div>
+              <div key={i} className="w-full flex-shrink-0 px-1">
+                <div className="mx-glass mx-gradient-border rounded-2xl p-8 md:p-10">
+                  <div style={{ fontFamily:'Georgia,serif', fontSize:56, lineHeight:.75, marginBottom:20, background:'linear-gradient(135deg,#22d3ee,#8b5cf6)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>&ldquo;</div>
+                  <p style={{ fontFamily:FB, fontSize:17, color:'rgba(241,245,249,.85)', lineHeight:1.75, marginBottom:28 }}>{item.text}</p>
+                  <div className="flex items-center gap-4">
+                    <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
+                      style={{ background:'rgba(34,211,238,.07)', border:'1px solid rgba(34,211,238,.12)' }}>{item.icon}</div>
                     <div>
-                      <div style={{ fontFamily:FB, fontWeight:600, fontSize:15, color:'#0A2540' }}>{item.biz}</div>
-                      <div style={{ fontFamily:FB, fontSize:12, color:'#6B8BA4' }}>{item.city}</div>
+                      <div style={{ fontFamily:FB, fontWeight:600, fontSize:14, color:C.text }}>{item.biz}</div>
+                      <div style={{ fontFamily:FB, fontSize:12, color:C.subtle }}>{item.city}</div>
                     </div>
                   </div>
                 </div>
@@ -628,22 +744,22 @@ function TestimonialsSection() {
           </div>
         </div>
 
-        <div className="flex items-center justify-center gap-4 mt-8">
-          <button type="button" onClick={prev} aria-label="Testimonio anterior" className="w-12 h-12 mx-glass rounded-full flex items-center justify-center cursor-pointer transition-all duration-200" style={{ color:'#fff' }}
-            onMouseEnter={e => (e.currentTarget.style.borderColor='rgba(0,229,255,.5)')}
-            onMouseLeave={e => (e.currentTarget.style.borderColor='')}>
-            <ChevronLeft size={20}/>
+        <div className="flex items-center justify-center gap-5 mt-10">
+          <button type="button" onClick={prev} aria-label="Anterior"
+            className="w-11 h-11 mx-glass rounded-full flex items-center justify-center cursor-pointer mx-btn-ghost transition-all duration-200"
+            style={{ color:C.muted }}>
+            <ChevronLeft size={18}/>
           </button>
           <div className="flex gap-2">
             {items.map((_, i) => (
-              <button key={i} onClick={() => setCur(i)} className="rounded-full transition-all duration-200 cursor-pointer"
-                style={{ width:cur===i?24:8, height:8, background:cur===i?'#00E5FF':'#E8F0F8' }}/>
+              <button key={i} onClick={() => setCur(i)} className="rounded-full cursor-pointer transition-all duration-300"
+                style={{ width:cur===i?20:6, height:6, background:cur===i?'#22d3ee':'rgba(255,255,255,.15)' }}/>
             ))}
           </div>
-          <button type="button" onClick={next} aria-label="Siguiente testimonio" className="w-12 h-12 mx-glass rounded-full flex items-center justify-center cursor-pointer transition-all duration-200" style={{ color:'#fff' }}
-            onMouseEnter={e => (e.currentTarget.style.borderColor='rgba(0,229,255,.5)')}
-            onMouseLeave={e => (e.currentTarget.style.borderColor='')}>
-            <ChevronRight size={20}/>
+          <button type="button" onClick={next} aria-label="Siguiente"
+            className="w-11 h-11 mx-glass rounded-full flex items-center justify-center cursor-pointer mx-btn-ghost transition-all duration-200"
+            style={{ color:C.muted }}>
+            <ChevronRight size={18}/>
           </button>
         </div>
       </div>
@@ -658,37 +774,46 @@ function ProcessSection() {
   const t = useT()
   const { ref, inView } = useInView()
 
-  const steps = [
-    { num:'01', icon:'💬', title:t.proc.s1t, desc:t.proc.s1d, cta:t.proc.s1cta, ctaFn:() => scrollTo('contacto'), chip:null },
-    { num:'02', icon:'⚡', title:t.proc.s2t, desc:t.proc.s2d, cta:null, ctaFn:null, chip:{ text:t.proc.s2chip, color:'#00E5FF' } },
-    { num:'03', icon:'🚀', title:t.proc.s3t, desc:t.proc.s3d, cta:null, ctaFn:null, chip:{ text:t.proc.s3chip, color:'#00C48C' } },
+  const steps: { num:string; Icon: React.ElementType; title:string; desc:string; cta:string|null; ctaFn:(() => void)|null; chip:{text:string}|null; color:string }[] = [
+    { num:'01', Icon:MessageSquare, title:t.proc.s1t, desc:t.proc.s1d, cta:t.proc.s1cta, ctaFn:() => scrollTo('contacto'), chip:null, color:'#22d3ee' },
+    { num:'02', Icon:Zap,           title:t.proc.s2t, desc:t.proc.s2d, cta:null, ctaFn:null, chip:{ text:t.proc.s2chip }, color:'#8b5cf6' },
+    { num:'03', Icon:TrendingUp,    title:t.proc.s3t, desc:t.proc.s3d, cta:null, ctaFn:null, chip:{ text:t.proc.s3chip }, color:'#06b6d4' },
   ]
 
   return (
-    <section id="proceso" ref={ref} className="py-24 px-4 md:px-6" style={{ background:'#F7FBFF' }}>
-      <div className="max-w-3xl mx-auto">
-        <h2 className="text-center mb-16" style={{ fontFamily:FD, fontWeight:700, fontSize:'clamp(26px,5vw,42px)', color:'#0A2540' }}>
+    <section id="proceso" ref={ref} className="py-32 px-5 md:px-8" style={{ background:'#0a0b10', borderTop:`1px solid ${C.border}` }}>
+      <div className="max-w-2xl mx-auto">
+        <h2 className="text-center mb-16" style={{ fontFamily:FD, fontWeight:700, fontSize:'clamp(26px,5vw,44px)', color:C.text, letterSpacing:'-.03em' }}>
           {t.proc.title}
         </h2>
-        <div className="flex flex-col gap-6">
+
+        <div className="flex flex-col gap-4">
           {steps.map((s, i) => (
-            <div key={i} className="rounded-2xl p-6 transition-all duration-700 relative overflow-hidden"
-              style={{ background:'#fff', borderLeft:'3px solid #00E5FF', boxShadow:'0 4px 24px rgba(10,37,64,.06)', opacity:inView?1:0, transform:inView?'translateY(0)':'translateY(24px)', transitionDelay:`${i*.2}s` }}>
-              <div className="absolute right-6 top-2 select-none pointer-events-none" style={{ fontFamily:FD, fontWeight:800, fontSize:80, color:'rgba(10,37,64,.04)', lineHeight:1 }}>{s.num}</div>
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-full flex items-center justify-center text-2xl flex-shrink-0" style={{ background:'rgba(0,229,255,.1)' }}>{s.icon}</div>
+            <div key={i} className="rounded-2xl p-7 transition-all duration-700 relative overflow-hidden mx-card-hover"
+              style={{
+                background:C.surface, border:`1px solid ${C.border}`,
+                opacity:inView?1:0, transform:inView?'translateY(0)':'translateY(24px)', transitionDelay:`${i*.18}s`,
+              }}>
+              <div className="absolute right-5 top-0 select-none pointer-events-none"
+                style={{ fontFamily:FD, fontWeight:800, fontSize:88, color:'rgba(255,255,255,.025)', lineHeight:1, letterSpacing:'-.04em' }}>{s.num}</div>
+              <div className="flex items-start gap-4 relative z-10">
+                <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ background:`${s.color}12`, border:`1px solid ${s.color}25` }}>
+                  <s.Icon size={18} color={s.color}/>
+                </div>
                 <div className="flex-1">
-                  <h3 style={{ fontFamily:FD, fontWeight:700, fontSize:20, color:'#0A2540', marginBottom:8 }}>{s.title}</h3>
-                  <p style={{ fontFamily:FB, fontSize:15, color:'#2D4A63', lineHeight:1.6 }}>{s.desc}</p>
+                  <h3 style={{ fontFamily:FD, fontWeight:700, fontSize:19, color:C.text, marginBottom:8, letterSpacing:'-.02em' }}>{s.title}</h3>
+                  <p style={{ fontFamily:FB, fontSize:14, color:C.muted, lineHeight:1.65 }}>{s.desc}</p>
                   {s.chip && (
-                    <span className="inline-block mt-3 px-3 py-1 rounded-full text-xs"
-                      style={{ background:`${s.chip.color}1A`, color:s.chip.color, fontFamily:FB, fontWeight:500 }}>
+                    <span className="inline-block mt-4 px-3 py-1.5 rounded-full text-xs"
+                      style={{ background:`${s.color}12`, color:s.color, fontFamily:FB, fontWeight:600, border:`1px solid ${s.color}25`, letterSpacing:'.02em' }}>
                       {s.chip.text}
                     </span>
                   )}
                   {s.cta && s.ctaFn && (
-                    <button onClick={s.ctaFn} className="mt-3 px-4 py-2 rounded-full text-sm cursor-pointer transition-all duration-200"
-                      style={{ background:'#00E5FF', color:'#0A2540', fontFamily:FD, fontWeight:700 }}>
+                    <button onClick={s.ctaFn}
+                      className="mt-4 mx-btn-primary px-5 py-2.5 text-sm cursor-pointer"
+                      style={{ fontFamily:FD, fontWeight:700, fontSize:13 }}>
                       {s.cta}
                     </button>
                   )}
@@ -697,15 +822,14 @@ function ProcessSection() {
             </div>
           ))}
         </div>
-        <div className="text-center mt-12">
+
+        <div className="text-center mt-14">
           <a href={WA_DIAG} target="_blank" rel="noopener noreferrer"
-            className="inline-block rounded-full px-8 py-4 cursor-pointer transition-all duration-200 mb-3"
-            style={{ background:'#00E5FF', color:'#0A2540', fontFamily:FD, fontWeight:700, fontSize:16, boxShadow:'0 0 32px rgba(0,229,255,.25)' }}
-            onMouseEnter={e => { e.currentTarget.style.transform='scale(1.03)' }}
-            onMouseLeave={e => { e.currentTarget.style.transform='' }}>
+            className="mx-btn-primary inline-block px-10 py-4 cursor-pointer mb-4"
+            style={{ fontFamily:FD, fontWeight:700, fontSize:15 }}>
             {t.proc.cta}
           </a>
-          <p style={{ fontFamily:FB, fontSize:12, color:'#9BB0C4', marginTop:8 }}>{t.proc.ctaNote}</p>
+          <p style={{ fontFamily:FB, fontSize:12, color:C.subtle, marginTop:10 }}>{t.proc.ctaNote}</p>
         </div>
       </div>
     </section>
@@ -719,40 +843,52 @@ function WhySection() {
   const t = useT()
   const { ref, inView } = useInView()
 
-  const cards = [
-    { icon:'🎯', title:t.why.c1t, desc:t.why.c1d, chip:t.why.c1chip, cc:'#00C48C' },
-    { icon:'⏱️', title:t.why.c2t, desc:t.why.c2d, chip:t.why.c2chip, cc:'#00E5FF' },
-    { icon:'✨', title:t.why.c3t, desc:t.why.c3d, chip:t.why.c3chip, cc:'#7B61FF' },
+  const cards: { Icon: React.ElementType; title:string; desc:string; chip:string; color:string }[] = [
+    { Icon:Users,  title:t.why.c1t, desc:t.why.c1d, chip:t.why.c1chip, color:'#22d3ee' },
+    { Icon:Timer,  title:t.why.c2t, desc:t.why.c2d, chip:t.why.c2chip, color:'#8b5cf6' },
+    { Icon:Layers, title:t.why.c3t, desc:t.why.c3d, chip:t.why.c3chip, color:'#06b6d4' },
   ]
 
   return (
-    <section className="py-24 px-4 md:px-6" style={{ background:'linear-gradient(135deg,#05111F 0%,#0A2540 100%)' }}>
+    <section className="py-32 px-5 md:px-8" style={{ background:C.bg, borderTop:`1px solid ${C.border}` }}>
       <div className="max-w-5xl mx-auto" ref={ref}>
-        <h2 className="text-center mb-16" style={{ fontFamily:FD, fontWeight:700, fontSize:'clamp(26px,5vw,42px)', color:'#fff' }}>
-          {t.why.title}{' '}<span style={{ color:'#00E5FF' }}>{t.why.accent}</span>
+        <h2 className="text-center mb-16" style={{ fontFamily:FD, fontWeight:700, fontSize:'clamp(26px,5vw,48px)', color:C.text, letterSpacing:'-.03em' }}>
+          {t.why.title}{' '}<span className="mx-gradient-text">{t.why.accent}</span>
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           {cards.map((c, i) => (
-            <div key={i} className="mx-glass rounded-2xl p-8 transition-all duration-700 cursor-default"
-              style={{ opacity:inView?1:0, transform:inView?'translateY(0)':'translateY(24px)', transitionDelay:`${i*.15}s` }}
-              onMouseEnter={e => (e.currentTarget.style.transform='translateY(-6px)')}
-              onMouseLeave={e => (e.currentTarget.style.transform='translateY(0)')}>
-              <div className="w-12 h-12 rounded-full flex items-center justify-center text-2xl mb-4" style={{ background:`${c.cc}22` }}>{c.icon}</div>
-              <h3 style={{ fontFamily:FD, fontWeight:700, fontSize:20, color:'#fff', marginBottom:8 }}>{c.title}</h3>
-              <p style={{ fontFamily:FB, fontSize:14, color:'rgba(255,255,255,.65)', lineHeight:1.6, marginBottom:16 }}>{c.desc}</p>
-              <span className="inline-block px-3 py-1 rounded-full text-xs" style={{ background:`${c.cc}22`, color:c.cc, fontFamily:FB, fontWeight:500 }}>{c.chip}</span>
+            <div key={i} className="rounded-2xl p-8 transition-all duration-700 cursor-default mx-card-hover"
+              style={{
+                background:C.surface, border:`1px solid ${C.border}`,
+                opacity:inView?1:0, transform:inView?'translateY(0)':'translateY(28px)', transitionDelay:`${i*.12}s`
+              }}>
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
+                style={{ background:`${c.color}0F`, border:`1px solid ${c.color}20` }}>
+                <c.Icon size={20} color={c.color}/>
+              </div>
+              <h3 style={{ fontFamily:FD, fontWeight:700, fontSize:19, color:C.text, marginBottom:10, letterSpacing:'-.02em' }}>{c.title}</h3>
+              <p style={{ fontFamily:FB, fontSize:14, color:C.muted, lineHeight:1.68, marginBottom:16 }}>{c.desc}</p>
+              <span className="inline-block px-3 py-1.5 rounded-full text-xs"
+                style={{ background:`${c.color}10`, color:c.color, fontFamily:FB, fontWeight:600, border:`1px solid ${c.color}20`, letterSpacing:'.02em' }}>
+                {c.chip}
+              </span>
             </div>
           ))}
         </div>
-        <div className="mx-glass rounded-2xl p-10 text-center">
-          <h3 style={{ fontFamily:FD, fontWeight:700, fontSize:'clamp(18px,3vw,28px)', color:'#fff', marginBottom:24 }}>{t.why.megaTitle}</h3>
-          <button onClick={() => scrollTo('contacto')} className="rounded-full px-10 py-4 cursor-pointer transition-all duration-200 mb-4"
-            style={{ background:'#00E5FF', color:'#0A2540', fontFamily:FD, fontWeight:700, fontSize:16, boxShadow:'0 0 32px rgba(0,229,255,.3)' }}
-            onMouseEnter={e => { e.currentTarget.style.transform='scale(1.03)' }}
-            onMouseLeave={e => { e.currentTarget.style.transform='' }}>
+
+        <div className="rounded-2xl p-10 md:p-14 text-center relative overflow-hidden"
+          style={{ background:'rgba(255,255,255,.02)', border:`1px solid ${C.border}` }}>
+          <div className="absolute inset-0 pointer-events-none" style={{ background:'radial-gradient(ellipse 60% 80% at 50% 50%,rgba(139,92,246,.06) 0%,transparent 70%)' }}/>
+          <h3 className="relative z-10" style={{ fontFamily:FD, fontWeight:700, fontSize:'clamp(18px,3vw,28px)', color:C.text, marginBottom:28, letterSpacing:'-.02em' }}>
+            {t.why.megaTitle}
+          </h3>
+          <button onClick={() => scrollTo('contacto')}
+            className="mx-btn-primary px-12 py-4 cursor-pointer mb-5 relative z-10"
+            style={{ fontFamily:FD, fontWeight:700, fontSize:15 }}>
             {t.why.megaCta}
           </button>
-          <p style={{ fontFamily:FB, fontSize:12, color:'rgba(255,255,255,.4)' }}>{t.why.megaChip}</p>
+          <p className="relative z-10" style={{ fontFamily:FB, fontSize:12, color:C.subtle }}>{t.why.megaChip}</p>
         </div>
       </div>
     </section>
@@ -770,7 +906,6 @@ function CTASection() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     const msg = `Hola Mastexo, me llamo ${form.name}, tengo ${form.business} de tipo ${form.type} y quiero mejorar: ${form.message||'sin mensaje adicional'}. Mi contacto: ${form.contact}`
-    // Open WhatsApp synchronously to preserve the user-gesture chain (setTimeout breaks it)
     window.open(`${WA_BASE}?text=${encodeURIComponent(msg)}`, '_blank')
     setStatus('loading')
     setTimeout(() => {
@@ -779,60 +914,82 @@ function CTASection() {
     }, 400)
   }
 
-  const iStyle: React.CSSProperties = { width:'100%', border:'1.5px solid #E8F0F8', borderRadius:12, padding:'14px 16px', fontFamily:FB, fontSize:15, color:'#0A2540', background:'#fff', outline:'none', transition:'border-color .2s' }
-  const onF = (e: React.FocusEvent<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>) => (e.target.style.borderColor='#00E5FF')
-  const onB = (e: React.FocusEvent<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>) => (e.target.style.borderColor='#E8F0F8')
+  const iBase: React.CSSProperties = {
+    width:'100%', borderRadius:12, padding:'13px 16px',
+    fontFamily:FB, fontSize:14, color:C.text,
+    background:'rgba(255,255,255,.04)',
+    border:'1px solid rgba(255,255,255,.09)',
+    outline:'none', transition:'border-color .2s, background .2s',
+  }
+  const onF = (e: React.FocusEvent<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>) => {
+    e.target.style.borderColor='rgba(34,211,238,.4)'; e.target.style.background='rgba(34,211,238,.04)'
+  }
+  const onB = (e: React.FocusEvent<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>) => {
+    e.target.style.borderColor='rgba(255,255,255,.09)'; e.target.style.background='rgba(255,255,255,.04)'
+  }
 
   return (
-    <section id="contacto" className="py-24 px-4 md:px-6" style={{ background:'#F7FBFF' }}>
-      <div className="max-w-2xl mx-auto">
-        <div className="text-center mb-10">
-          <h2 style={{ fontFamily:FD, fontWeight:800, fontSize:'clamp(28px,6vw,48px)', color:'#0A2540', marginBottom:12 }}>{t.form.h2}</h2>
-          <p style={{ fontFamily:FB, fontSize:16, color:'#2D4A63' }}>{t.form.sub}</p>
+    <section id="contacto" className="py-32 px-5 md:px-8" style={{ background:'#0a0b10', borderTop:`1px solid ${C.border}` }}>
+      <div className="max-w-xl mx-auto">
+        <div className="text-center mb-12">
+          <h2 style={{ fontFamily:FD, fontWeight:800, fontSize:'clamp(28px,6vw,52px)', color:C.text, marginBottom:14, letterSpacing:'-.04em' }}>{t.form.h2}</h2>
+          <p style={{ fontFamily:FB, fontSize:16, color:C.muted, lineHeight:1.6 }}>{t.form.sub}</p>
         </div>
-        <form onSubmit={handleSubmit} className="mx-glass-light rounded-2xl p-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-            <input required style={iStyle} placeholder={t.form.ph_name} value={form.name}
+
+        <form onSubmit={handleSubmit} className="rounded-2xl p-8 mx-gradient-border" style={{ background:'rgba(255,255,255,.02)' }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+            <input required style={iBase} placeholder={t.form.ph_name} value={form.name}
               onChange={e => setForm(f => ({...f, name:e.target.value}))} onFocus={onF} onBlur={onB}/>
-            <input required style={iStyle} placeholder={t.form.ph_biz} value={form.business}
+            <input required style={iBase} placeholder={t.form.ph_biz} value={form.business}
               onChange={e => setForm(f => ({...f, business:e.target.value}))} onFocus={onF} onBlur={onB}/>
           </div>
-          <div className="mb-4">
-            <select required style={{ ...iStyle, color:form.type?'#0A2540':'#9BB0C4' }} value={form.type}
+          <div className="mb-3">
+            <select required style={{ ...iBase, color:form.type?C.text:'rgba(241,245,249,.3)' }} value={form.type}
               onChange={e => setForm(f => ({...f, type:e.target.value}))} onFocus={onF} onBlur={onB}>
-              <option value="">{t.form.ph_type}</option>
-              {t.cats.map(c => <option key={c.name} value={c.name}>{c.name}</option>)}
+              <option value="" style={{ background:'#0a0b10' }}>{t.form.ph_type}</option>
+              {t.cats.map(c => <option key={c.name} value={c.name} style={{ background:'#0a0b10' }}>{c.name}</option>)}
             </select>
           </div>
-          <div className="mb-4">
-            <input required style={iStyle} placeholder={t.form.ph_contact} value={form.contact}
+          <div className="mb-3">
+            <input required style={iBase} placeholder={t.form.ph_contact} value={form.contact}
               onChange={e => setForm(f => ({...f, contact:e.target.value}))} onFocus={onF} onBlur={onB}/>
           </div>
           <div className="mb-6">
-            <textarea style={{ ...iStyle, resize:'vertical', minHeight:100 } as React.CSSProperties}
+            <textarea style={{ ...iBase, resize:'vertical', minHeight:96 } as React.CSSProperties}
               placeholder={t.form.ph_msg} value={form.message}
               onChange={e => setForm(f => ({...f, message:e.target.value}))} onFocus={onF} onBlur={onB}/>
           </div>
-          <button type="submit" disabled={status!=='idle'} className="w-full rounded-xl py-4 cursor-pointer transition-all duration-200"
-            style={{ background:status==='success'?'#00C48C':'#00E5FF', color:'#0A2540', fontFamily:FD, fontWeight:700, fontSize:16, opacity:status==='loading'?.75:1 }}>
+          <button type="submit" disabled={status!=='idle'}
+            className="w-full py-4 cursor-pointer transition-all duration-200 rounded-xl"
+            style={{
+              background: status==='success' ? 'rgba(34,197,94,.15)' : 'linear-gradient(135deg,#06b6d4,#7c3aed)',
+              color: status==='success' ? '#86efac' : '#fff',
+              fontFamily:FD, fontWeight:700, fontSize:15,
+              border: status==='success' ? '1px solid rgba(34,197,94,.3)' : 'none',
+              opacity: status==='loading' ? .7 : 1,
+              boxShadow: status==='success' ? 'none' : '0 0 40px rgba(34,211,238,.15)',
+            }}>
             {status==='loading' ? t.form.sending : status==='success' ? t.form.success : t.form.submit}
           </button>
-          <p className="text-center mt-4" style={{ fontFamily:FB, fontSize:12, color:'#9BB0C4' }}>{t.form.note}</p>
+          <p className="text-center mt-5" style={{ fontFamily:FB, fontSize:12, color:C.subtle }}>{t.form.note}</p>
         </form>
-        <div className="text-center mt-10">
-          <p style={{ fontFamily:FB, fontSize:15, color:'#2D4A63', marginBottom:16 }}>{t.form.altTitle}</p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+
+        <div className="text-center mt-12">
+          <p style={{ fontFamily:FB, fontSize:14, color:C.muted, marginBottom:16 }}>{t.form.altTitle}</p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <a href={WA_GENERIC} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full px-6 py-3 cursor-pointer transition-all duration-200"
-              style={{ background:'#25D366', color:'#fff', fontFamily:FD, fontWeight:700, fontSize:15 }}
-              onMouseEnter={e => { e.currentTarget.style.transform='scale(1.03)' }}
-              onMouseLeave={e => { e.currentTarget.style.transform='' }}>
+              className="inline-flex items-center gap-2.5 rounded-full px-6 py-3 cursor-pointer transition-all duration-200"
+              style={{ background:'rgba(37,211,102,.12)', color:'#4ade80', fontFamily:FD, fontWeight:700, fontSize:14, border:'1px solid rgba(37,211,102,.2)' }}
+              onMouseEnter={e => { e.currentTarget.style.background='rgba(37,211,102,.18)'; e.currentTarget.style.transform='scale(1.02)' }}
+              onMouseLeave={e => { e.currentTarget.style.background='rgba(37,211,102,.12)'; e.currentTarget.style.transform='' }}>
+              <MessageCircle size={16} fill="currentColor"/>
               {t.form.waCta}
             </a>
-            <a href={`mailto:${EMAIL}`} style={{ fontFamily:FB, fontSize:15, color:'#0A2540', textDecoration:'none' }}
-              onMouseEnter={e => (e.currentTarget.style.color='#00E5FF')}
-              onMouseLeave={e => (e.currentTarget.style.color='#0A2540')}>
-              📧 {EMAIL}
+            <a href={`mailto:${EMAIL}`}
+              style={{ fontFamily:FB, fontSize:14, color:C.subtle, textDecoration:'none', transition:'color .2s' }}
+              onMouseEnter={e => (e.currentTarget.style.color=C.text)}
+              onMouseLeave={e => (e.currentTarget.style.color=C.subtle)}>
+              {EMAIL}
             </a>
           </div>
         </div>
@@ -847,38 +1004,39 @@ function CTASection() {
 function Footer() {
   const t = useT()
   const lh = (e: React.MouseEvent<HTMLElement>, out = false) => {
-    (e.currentTarget as HTMLElement).style.color = out ? 'rgba(255,255,255,.5)' : '#fff'
+    (e.currentTarget as HTMLElement).style.color = out ? 'rgba(241,245,249,.35)' : 'rgba(241,245,249,.8)'
   }
 
   return (
-    <footer style={{ background:'#05111F', paddingTop:64, paddingBottom:32 }}>
-      <div className="max-w-7xl mx-auto px-4 md:px-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 mb-12">
-          {/* Brand */}
+    <footer style={{ background:C.bg, borderTop:`1px solid ${C.border}`, paddingTop:72, paddingBottom:36 }}>
+      <div className="max-w-7xl mx-auto px-5 md:px-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 mb-14">
           <div>
-            <button onClick={() => window.scrollTo({ top:0, behavior:'smooth' })} className="flex items-center gap-2 mb-4 cursor-pointer bg-transparent border-none">
-              <Image src="/logo1.jpg" alt="Mastexo" width={40} height={40} className="rounded-full object-cover"/>
-              <span style={{ fontFamily:FD, fontWeight:700, fontSize:20, color:'#fff' }}>Mastexo</span>
+            <button onClick={() => window.scrollTo({ top:0, behavior:'smooth' })} className="flex items-center gap-2.5 mb-5 cursor-pointer bg-transparent border-none">
+              <Image src="/logo1.jpg" alt="Mastexo" width={36} height={36} className="rounded-full object-cover opacity-90"/>
+              <span style={{ fontFamily:FD, fontWeight:700, fontSize:18, color:C.text }}>Mastexo</span>
             </button>
-            <p style={{ fontFamily:FB, fontSize:14, color:'rgba(255,255,255,.5)', lineHeight:1.6, marginBottom:20 }}>{t.footer.tagline}</p>
-            <div className="flex gap-3">
-              <a href={IG} target="_blank" rel="noopener noreferrer" aria-label="Instagram de Mastexo"
-                className="w-10 h-10 mx-glass rounded-full flex items-center justify-center cursor-pointer transition-all duration-200"
-                onMouseEnter={e => (e.currentTarget.style.borderColor='rgba(0,229,255,.5)')}
-                onMouseLeave={e => (e.currentTarget.style.borderColor='')}>
-                <IgIcon size={18} color="#fff"/>
+            <p style={{ fontFamily:FB, fontSize:13, color:'rgba(241,245,249,.35)', lineHeight:1.7, marginBottom:20 }}>{t.footer.tagline}</p>
+            <div className="flex gap-2.5">
+              <a href={IG} target="_blank" rel="noopener noreferrer" aria-label="Instagram"
+                className="w-9 h-9 mx-glass rounded-full flex items-center justify-center cursor-pointer transition-all duration-200"
+                style={{ color:'rgba(241,245,249,.5)' }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(34,211,238,.3)'; e.currentTarget.style.color='#22d3ee' }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor=''; e.currentTarget.style.color='rgba(241,245,249,.5)' }}>
+                <IgIcon size={16} color="currentColor"/>
               </a>
-              <a href={WA_GENERIC} target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp"
-                className="w-10 h-10 mx-glass rounded-full flex items-center justify-center cursor-pointer transition-all duration-200"
-                onMouseEnter={e => (e.currentTarget.style.borderColor='rgba(0,229,255,.5)')}
-                onMouseLeave={e => (e.currentTarget.style.borderColor='')}>
-                <MessageCircle size={18} color="#fff"/>
+              <a href={WA_GENERIC} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"
+                className="w-9 h-9 mx-glass rounded-full flex items-center justify-center cursor-pointer transition-all duration-200"
+                style={{ color:'rgba(241,245,249,.5)' }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(34,211,238,.3)'; e.currentTarget.style.color='#22d3ee' }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor=''; e.currentTarget.style.color='rgba(241,245,249,.5)' }}>
+                <MessageCircle size={16}/>
               </a>
             </div>
           </div>
-          {/* Nav */}
+
           <div>
-            <h4 style={{ fontFamily:FD, fontWeight:700, fontSize:13, color:'#fff', marginBottom:16, letterSpacing:1, textTransform:'uppercase' }}>{t.footer.navTitle}</h4>
+            <h4 style={{ fontFamily:FB, fontWeight:600, fontSize:11, color:'rgba(241,245,249,.4)', marginBottom:16, letterSpacing:'.12em', textTransform:'uppercase' }}>{t.footer.navTitle}</h4>
             <ul className="space-y-3">
               {[
                 { label:t.footer.home,      action:() => window.scrollTo({ top:0, behavior:'smooth' }) },
@@ -887,7 +1045,7 @@ function Footer() {
               ].map((item, i) => (
                 <li key={i}>
                   <button onClick={item.action} className="cursor-pointer bg-transparent border-none p-0 transition-colors duration-200"
-                    style={{ fontFamily:FB, fontSize:14, color:'rgba(255,255,255,.5)' }}
+                    style={{ fontFamily:FB, fontSize:13, color:'rgba(241,245,249,.35)' }}
                     onMouseEnter={lh} onMouseLeave={e => lh(e, true)}>
                     {item.label}
                   </button>
@@ -895,31 +1053,31 @@ function Footer() {
               ))}
             </ul>
           </div>
-          {/* Contact */}
+
           <div>
-            <h4 style={{ fontFamily:FD, fontWeight:700, fontSize:13, color:'#fff', marginBottom:16, letterSpacing:1, textTransform:'uppercase' }}>{t.footer.contactTitle}</h4>
+            <h4 style={{ fontFamily:FB, fontWeight:600, fontSize:11, color:'rgba(241,245,249,.4)', marginBottom:16, letterSpacing:'.12em', textTransform:'uppercase' }}>{t.footer.contactTitle}</h4>
             <ul className="space-y-3">
               <li>
-                <a href={`mailto:${EMAIL}`} style={{ fontFamily:FB, fontSize:14, color:'rgba(255,255,255,.5)', textDecoration:'none', display:'block' }}
-                  onMouseEnter={lh} onMouseLeave={e => lh(e, true)}>📧 {EMAIL}</a>
+                <a href={`mailto:${EMAIL}`} style={{ fontFamily:FB, fontSize:13, color:'rgba(241,245,249,.35)', textDecoration:'none', display:'block', transition:'color .2s' }}
+                  onMouseEnter={lh} onMouseLeave={e => lh(e, true)}>{EMAIL}</a>
               </li>
               <li>
                 <a href={WA_GENERIC} target="_blank" rel="noopener noreferrer"
-                  style={{ fontFamily:FB, fontSize:14, color:'rgba(255,255,255,.5)', textDecoration:'none', display:'block' }}
-                  onMouseEnter={lh} onMouseLeave={e => lh(e, true)}>📱 +56 9 2970 9420</a>
+                  style={{ fontFamily:FB, fontSize:13, color:'rgba(241,245,249,.35)', textDecoration:'none', display:'block', transition:'color .2s' }}
+                  onMouseEnter={lh} onMouseLeave={e => lh(e, true)}>+56 9 2970 9420</a>
               </li>
             </ul>
           </div>
-          {/* Legal */}
+
           <div>
-            <h4 style={{ fontFamily:FD, fontWeight:700, fontSize:13, color:'#fff', marginBottom:16, letterSpacing:1, textTransform:'uppercase' }}>{t.footer.legalTitle}</h4>
+            <h4 style={{ fontFamily:FB, fontWeight:600, fontSize:11, color:'rgba(241,245,249,.4)', marginBottom:16, letterSpacing:'.12em', textTransform:'uppercase' }}>{t.footer.legalTitle}</h4>
             <ul className="space-y-3">
               {[
                 { label:t.footer.privacy, href:'/privacidad' },
                 { label:t.footer.terms,   href:'/terminos' },
               ].map((item, i) => (
                 <li key={i}>
-                  <a href={item.href} style={{ fontFamily:FB, fontSize:14, color:'rgba(255,255,255,.5)', textDecoration:'none', display:'block' }}
+                  <a href={item.href} style={{ fontFamily:FB, fontSize:13, color:'rgba(241,245,249,.35)', textDecoration:'none', display:'block', transition:'color .2s' }}
                     onMouseEnter={lh} onMouseLeave={e => lh(e, true)}>
                     {item.label}
                   </a>
@@ -928,10 +1086,11 @@ function Footer() {
             </ul>
           </div>
         </div>
-        <div style={{ borderTop:'1px solid rgba(255,255,255,.08)', paddingTop:24 }}
+
+        <div style={{ borderTop:`1px solid ${C.border}`, paddingTop:24 }}
           className="flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p style={{ fontFamily:FB, fontSize:13, color:'rgba(255,255,255,.35)' }}>{t.footer.copy}</p>
-          <p style={{ fontFamily:FB, fontSize:13, color:'rgba(255,255,255,.35)' }}>{t.footer.region}</p>
+          <p style={{ fontFamily:FB, fontSize:12, color:'rgba(241,245,249,.2)' }}>{t.footer.copy}</p>
+          <p style={{ fontFamily:FB, fontSize:12, color:'rgba(241,245,249,.2)' }}>{t.footer.region}</p>
         </div>
       </div>
     </footer>
@@ -944,34 +1103,33 @@ function Footer() {
 function BottomNav() {
   const t = useT()
   const scrollY = useScrollY()
-  const visible = scrollY > 200
+  const visible = scrollY > 240
 
   return (
-    <div className="fixed bottom-6 left-1/2 z-50 transition-all duration-300"
-      style={{ transform:'translateX(-50%)', opacity:visible?1:0, pointerEvents:visible?'auto':'none' }}>
-      <div className="flex items-center gap-3 px-5 py-3 rounded-full"
-        style={{ background:'rgba(5,17,31,.88)', backdropFilter:'blur(24px)', border:'1px solid rgba(255,255,255,.1)', boxShadow:'0 8px 32px rgba(0,0,0,.4)' }}>
-        <span style={{ fontFamily:FD, fontWeight:700, fontSize:20, color:'#00E5FF' }}>M</span>
-        <div style={{ width:1, height:20, background:'rgba(255,255,255,.15)' }}/>
-        <div className="hidden sm:flex items-center gap-4">
+    <div className="fixed bottom-6 left-1/2 z-50 transition-all duration-400"
+      style={{ transform:'translateX(-50%)', opacity:visible?1:0, pointerEvents:visible?'auto':'none', transitionTimingFunction:'cubic-bezier(.16,1,.3,1)' }}>
+      <div className="flex items-center gap-4 px-5 py-2.5 rounded-full"
+        style={{ background:'rgba(7,8,12,.92)', backdropFilter:'blur(28px)', border:'1px solid rgba(255,255,255,.08)', boxShadow:'0 8px 40px rgba(0,0,0,.5)' }}>
+        <span className="mx-gradient-text" style={{ fontFamily:FD, fontWeight:800, fontSize:18 }}>M</span>
+        <div style={{ width:1, height:16, background:'rgba(255,255,255,.1)' }}/>
+        <div className="hidden sm:flex items-center gap-5">
           {[
             { l:t.bnav.solutions, id:'soluciones' },
             { l:t.bnav.process,   id:'proceso' },
             { l:t.bnav.results,   id:'resultados' },
           ].map(link => (
-            <button key={link.id} onClick={() => scrollTo(link.id)} className="cursor-pointer bg-transparent border-none transition-colors duration-200"
-              style={{ fontFamily:FB, fontSize:13, color:'rgba(255,255,255,.6)' }}
-              onMouseEnter={e => (e.currentTarget.style.color='#fff')}
-              onMouseLeave={e => (e.currentTarget.style.color='rgba(255,255,255,.6)')}>
+            <button key={link.id} onClick={() => scrollTo(link.id)}
+              className="cursor-pointer bg-transparent border-none transition-colors duration-200"
+              style={{ fontFamily:FB, fontSize:12, color:'rgba(241,245,249,.45)', letterSpacing:'.02em' }}
+              onMouseEnter={e => (e.currentTarget.style.color=C.text)}
+              onMouseLeave={e => (e.currentTarget.style.color='rgba(241,245,249,.45)')}>
               {link.l}
             </button>
           ))}
         </div>
         <a href={WA_GENERIC} target="_blank" rel="noopener noreferrer"
-          className="rounded-full px-4 py-1.5 cursor-pointer transition-all duration-200"
-          style={{ background:'#00E5FF', color:'#0A2540', fontFamily:FD, fontWeight:700, fontSize:13 }}
-          onMouseEnter={e => { e.currentTarget.style.transform='scale(1.05)' }}
-          onMouseLeave={e => { e.currentTarget.style.transform='' }}>
+          className="mx-btn-primary rounded-full px-4 py-1.5 cursor-pointer"
+          style={{ fontFamily:FD, fontWeight:700, fontSize:12 }}>
           {t.bnav.cta}
         </a>
       </div>
@@ -984,15 +1142,15 @@ function BottomNav() {
 // ─────────────────────────────────────────
 function WhatsAppFAB() {
   return (
-    <a href={WA_GENERIC} target="_blank" rel="noopener noreferrer" aria-label="Abrir WhatsApp" className="fixed z-40" style={{ bottom:100, right:24 }}>
-      <div className="relative w-14 h-14">
-        <div className="absolute inset-0 rounded-full mx-pulse" style={{ background:'#25D366', opacity:.4 }}/>
-        <div className="absolute inset-0 rounded-full mx-pulse" style={{ background:'#25D366', opacity:.25, animationDelay:'.6s' }}/>
-        <div className="relative w-14 h-14 rounded-full flex items-center justify-center transition-transform duration-200"
-          style={{ background:'#25D366', boxShadow:'0 4px 20px rgba(37,211,102,.4)', zIndex:1 }}
+    <a href={WA_GENERIC} target="_blank" rel="noopener noreferrer" aria-label="Abrir WhatsApp" className="fixed z-40" style={{ bottom:96, right:24 }}>
+      <div className="relative w-13 h-13">
+        <div className="absolute inset-0 rounded-full mx-pulse" style={{ background:'#25D366', opacity:.3 }}/>
+        <div className="absolute inset-0 rounded-full mx-pulse" style={{ background:'#25D366', opacity:.18, animationDelay:'.7s' }}/>
+        <div className="relative w-13 h-13 rounded-full flex items-center justify-center transition-all duration-200"
+          style={{ width:52, height:52, background:'linear-gradient(135deg,#25D366,#128C7E)', boxShadow:'0 4px 24px rgba(37,211,102,.35)', zIndex:1 }}
           onMouseEnter={e => (e.currentTarget.style.transform='scale(1.1)')}
           onMouseLeave={e => (e.currentTarget.style.transform='')}>
-          <MessageCircle size={28} color="#fff" fill="#fff"/>
+          <MessageCircle size={26} color="#fff" fill="#fff"/>
         </div>
       </div>
     </a>
@@ -1005,24 +1163,24 @@ function WhatsAppFAB() {
 function SocialProofToast() {
   const t = useT()
   const [visible, setVisible] = useState(false)
-  const [idx, setIdx] = useState(t.toasts.length - 1)  // init to last so first show = index 0
+  const [idx, setIdx] = useState(t.toasts.length - 1)
 
   useEffect(() => {
     const show = () => {
       setIdx(i => (i + 1) % t.toasts.length)
       setVisible(true)
-      setTimeout(() => setVisible(false), 4000)
+      setTimeout(() => setVisible(false), 4200)
     }
     const init = setTimeout(show, 6000)
-    const interval = setInterval(show, 16000)
+    const interval = setInterval(show, 17000)
     return () => { clearTimeout(init); clearInterval(interval) }
   }, [t.toasts.length])
 
   return (
     <div className="fixed z-40 pointer-events-none transition-all duration-500"
-      style={{ bottom:112, left:16, maxWidth:280, opacity:visible?1:0, transform:visible?'translateX(0)':'translateX(-24px)' }}>
-      <div className="mx-glass rounded-2xl px-4 py-3" style={{ background:'rgba(5,17,31,.92)' }}>
-        <p style={{ fontFamily:FB, fontSize:13, color:'rgba(255,255,255,.85)', lineHeight:1.4 }}>{t.toasts[idx]}</p>
+      style={{ bottom:108, left:16, maxWidth:272, opacity:visible?1:0, transform:visible?'translateX(0)':'translateX(-20px)' }}>
+      <div className="mx-glass-strong rounded-xl px-4 py-3" style={{ background:'rgba(7,8,12,.92)' }}>
+        <p style={{ fontFamily:FB, fontSize:12, color:'rgba(241,245,249,.75)', lineHeight:1.45 }}>{t.toasts[idx]}</p>
       </div>
     </div>
   )
@@ -1046,17 +1204,17 @@ function ScrollProgress() {
 
   return (
     <div className="fixed top-0 left-0 right-0 z-[200] pointer-events-none" style={{ height:2 }}>
-      <div style={{ height:'100%', width:`${pct}%`, background:'#00E5FF', transition:'width .1s linear' }}/>
+      <div style={{ height:'100%', width:`${pct}%`, background:'linear-gradient(90deg,#22d3ee,#8b5cf6)', transition:'width .1s linear' }}/>
     </div>
   )
 }
 
 // ─────────────────────────────────────────
-// ROOT EXPORT
+// ROOT
 // ─────────────────────────────────────────
 export default function HomeClient() {
   const [lang, setLang] = useState<Lang>('es')
-  const scrollY = useScrollListener()   // single scroll listener for the whole page
+  const scrollY = useScrollListener()
 
   useEffect(() => {
     try {
