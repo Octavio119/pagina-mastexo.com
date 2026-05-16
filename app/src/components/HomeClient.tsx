@@ -347,6 +347,22 @@ const STYLES = `
     box-shadow: 0 24px 60px rgba(0,0,0,.4), 0 0 40px rgba(34,211,238,.06);
   }
 
+  /* Focus rings — visible for keyboard nav */
+  :focus-visible {
+    outline: 2px solid rgba(34,211,238,.7);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  button:focus-visible, a:focus-visible {
+    outline: 2px solid rgba(34,211,238,.7);
+    outline-offset: 3px;
+  }
+  /* Visually hidden labels for a11y */
+  .sr-only {
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+
   @media(prefers-reduced-motion:reduce){
     .mx-fade-up,.mx-fade-in,.mx-float,.mx-pulse,.mx-slide-in{animation:none!important;opacity:1!important;transform:none!important}
   }
@@ -398,7 +414,7 @@ function Navbar() {
             ))}
           </div>
 
-          <button onClick={toggle}
+          <button onClick={toggle} aria-label={`Cambiar idioma a ${lang === 'es' ? 'inglés' : 'español'}`}
             className="flex items-center gap-1 px-2.5 py-1 rounded-full cursor-pointer transition-colors duration-200 ml-1"
             style={{ fontFamily:FB, fontSize:11, fontWeight:600, letterSpacing:'.06em', border:'1px solid rgba(255,255,255,.1)', background:'transparent' }}>
             {(['es','en'] as Lang[]).map((l,i) => (
@@ -426,7 +442,7 @@ function Navbar() {
       {open && (
         <div className="fixed inset-0 z-[99] md:hidden flex flex-col items-center justify-center gap-10"
           style={{ background:'rgba(7,8,12,.97)', backdropFilter:'blur(32px)' }}>
-          <button onClick={() => setOpen(false)} className="absolute top-5 right-5 cursor-pointer bg-transparent border-none" style={{ color:'rgba(241,245,249,.7)' }}>
+          <button onClick={() => setOpen(false)} aria-label="Cerrar menú" className="absolute top-5 right-5 cursor-pointer bg-transparent border-none" style={{ color:'rgba(241,245,249,.7)' }}>
             <X size={26}/>
           </button>
           {links.map(l => (
@@ -750,9 +766,10 @@ function TestimonialsSection() {
             style={{ color:C.muted }}>
             <ChevronLeft size={18}/>
           </button>
-          <div className="flex gap-2">
-            {items.map((_, i) => (
-              <button key={i} onClick={() => setCur(i)} className="rounded-full cursor-pointer transition-all duration-300"
+          <div className="flex gap-2" role="tablist" aria-label="Testimonios">
+            {items.map((item, i) => (
+              <button key={i} role="tab" aria-selected={cur===i} aria-label={`Ver testimonio de ${item.biz}`}
+                onClick={() => setCur(i)} className="rounded-full cursor-pointer transition-all duration-300"
                 style={{ width:cur===i?20:6, height:6, background:cur===i?'#22d3ee':'rgba(255,255,255,.15)' }}/>
             ))}
           </div>
@@ -938,24 +955,36 @@ function CTASection() {
 
         <form onSubmit={handleSubmit} className="rounded-2xl p-8 mx-gradient-border" style={{ background:'rgba(255,255,255,.02)' }}>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
-            <input required style={iBase} placeholder={t.form.ph_name} value={form.name}
-              onChange={e => setForm(f => ({...f, name:e.target.value}))} onFocus={onF} onBlur={onB}/>
-            <input required style={iBase} placeholder={t.form.ph_biz} value={form.business}
-              onChange={e => setForm(f => ({...f, business:e.target.value}))} onFocus={onF} onBlur={onB}/>
+            <div>
+              <label htmlFor="mx-name" className="sr-only">{t.form.ph_name}</label>
+              <input id="mx-name" required autoComplete="name" style={iBase}
+                placeholder={t.form.ph_name} value={form.name}
+                onChange={e => setForm(f => ({...f, name:e.target.value}))} onFocus={onF} onBlur={onB}/>
+            </div>
+            <div>
+              <label htmlFor="mx-biz" className="sr-only">{t.form.ph_biz}</label>
+              <input id="mx-biz" required style={iBase}
+                placeholder={t.form.ph_biz} value={form.business}
+                onChange={e => setForm(f => ({...f, business:e.target.value}))} onFocus={onF} onBlur={onB}/>
+            </div>
           </div>
           <div className="mb-3">
-            <select required style={{ ...iBase, color:form.type?C.text:'rgba(241,245,249,.3)' }} value={form.type}
+            <label htmlFor="mx-type" className="sr-only">{t.form.ph_type}</label>
+            <select id="mx-type" required style={{ ...iBase, color:form.type?C.text:'rgba(241,245,249,.3)' }} value={form.type}
               onChange={e => setForm(f => ({...f, type:e.target.value}))} onFocus={onF} onBlur={onB}>
               <option value="" style={{ background:'#0a0b10' }}>{t.form.ph_type}</option>
               {t.cats.map(c => <option key={c.name} value={c.name} style={{ background:'#0a0b10' }}>{c.name}</option>)}
             </select>
           </div>
           <div className="mb-3">
-            <input required style={iBase} placeholder={t.form.ph_contact} value={form.contact}
+            <label htmlFor="mx-contact" className="sr-only">{t.form.ph_contact}</label>
+            <input id="mx-contact" required inputMode="tel" autoComplete="tel" style={iBase}
+              placeholder={t.form.ph_contact} value={form.contact}
               onChange={e => setForm(f => ({...f, contact:e.target.value}))} onFocus={onF} onBlur={onB}/>
           </div>
           <div className="mb-6">
-            <textarea style={{ ...iBase, resize:'vertical', minHeight:96 } as React.CSSProperties}
+            <label htmlFor="mx-msg" className="sr-only">{t.form.ph_msg}</label>
+            <textarea id="mx-msg" style={{ ...iBase, resize:'vertical', minHeight:96 } as React.CSSProperties}
               placeholder={t.form.ph_msg} value={form.message}
               onChange={e => setForm(f => ({...f, message:e.target.value}))} onFocus={onF} onBlur={onB}/>
           </div>
@@ -1235,15 +1264,24 @@ export default function HomeClient() {
   return (
     <AppCtx.Provider value={{ lang, toggle, scrollY }}>
       <style dangerouslySetInnerHTML={{ __html: STYLES }}/>
+      {/* Skip to main content — keyboard accessibility */}
+      <a href="#main-content" className="sr-only"
+        onFocus={e => { const el = e.currentTarget as HTMLElement; el.style.position='fixed'; el.style.top='12px'; el.style.left='12px'; el.style.zIndex='999'; el.style.clip='auto'; el.style.width='auto'; el.style.height='auto'; el.style.overflow='visible'; el.style.whiteSpace='normal' }}
+        onBlur={e => { const el = e.currentTarget as HTMLElement; el.style.position=''; el.style.top=''; el.style.left=''; el.style.zIndex=''; el.style.clip=''; el.style.width=''; el.style.height=''; el.style.overflow=''; el.style.whiteSpace='' }}
+        style={{ padding:'8px 16px', background:'#22d3ee', color:'#07080c', fontFamily:FB, fontWeight:700, fontSize:13, borderRadius:8, textDecoration:'none' }}>
+        Saltar al contenido principal
+      </a>
       <ScrollProgress/>
       <Navbar/>
-      <HeroSection/>
-      <BusinessSelector/>
-      <StatsSection/>
-      <TestimonialsSection/>
-      <ProcessSection/>
-      <WhySection/>
-      <CTASection/>
+      <main id="main-content">
+        <HeroSection/>
+        <BusinessSelector/>
+        <StatsSection/>
+        <TestimonialsSection/>
+        <ProcessSection/>
+        <WhySection/>
+        <CTASection/>
+      </main>
       <Footer/>
       <BottomNav/>
       <WhatsAppFAB/>
