@@ -63,9 +63,9 @@ const T = {
       cardName: 'Barbería Ali - Santiago', cardQuote: 'En dos semanas llegaban clientes por Instagram',
     },
     sel: {
-      label: 'SOLUCIONES', h2: '¿Cuál es tu tipo de negocio?',
-      sub: 'Selecciona tu categoría y te mostramos exactamente cómo podemos ayudarte.',
-      detailTitle: 'Así ayudamos a', detailCta: 'Solicitar diagnóstico gratis →',
+      label: 'SERVICIOS', h2: '¿Qué solución necesitas?',
+      sub: 'Selecciona el servicio y te mostramos exactamente cómo funciona para tu negocio.',
+      detailTitle: 'Cómo funciona', detailCta: 'Solicitar diagnóstico gratis →',
       cta: 'Solicitar diagnóstico gratuito →', ctaNote: 'Sin costo · Sin compromiso · Respuesta hoy',
     },
     stats: { n1:'+85',l1:'Negocios activos', n2:'14',l2:'Días al primer cliente', n3:'3×',l3:'Más reservas promedio', n4:'98%',l4:'Tasa de satisfacción' },
@@ -87,7 +87,7 @@ const T = {
     },
     form: {
       h2:'¿Listo para más clientes?', sub:'Completa el formulario y te contactamos hoy mismo.',
-      ph_name:'Tu nombre', ph_biz:'Tu negocio', ph_type:'Tipo de negocio', ph_contact:'WhatsApp o Email', ph_msg:'¿Qué quieres mejorar? (opcional)',
+      ph_name:'Tu nombre', ph_biz:'Tu negocio', ph_type:'Servicio de interés', ph_contact:'WhatsApp o Email', ph_msg:'¿Qué quieres mejorar? (opcional)',
       submit:'Solicitar diagnóstico gratuito →', sending:'Enviando...', success:'✓ ¡Listo! Te contactamos hoy',
       note:'Sin costo · Sin compromiso · Respuesta hoy mismo', altTitle:'¿Prefieres hablar ahora?', waCta:'Abrir WhatsApp',
     },
@@ -99,14 +99,12 @@ const T = {
     },
     bnav: { solutions:'Soluciones', process:'Proceso', results:'Resultados', cta:'WhatsApp →' },
     cats: [
-      { icon:'🍽️', name:'Restaurantes', desc:'Más reservas sin depender de apps', benefits:['Página con reservas online','Anuncios geolocalizados','Menú digital actualizable'] },
-      { icon:'✂️', name:'Barberías', desc:'Citas incluso fuera del horario', benefits:['Agenda online 24/7','Recordatorios automáticos','Perfil en Google Maps'] },
-      { icon:'💅', name:'Salones', desc:'Llena tu agenda automáticamente', benefits:['Booking integrado','Galería de trabajos','Captación en Instagram'] },
-      { icon:'🛍️', name:'Tiendas', desc:'Vende más mientras duermes', benefits:['Tienda online','Catálogo digital','Anuncios en Meta'] },
-      { icon:'☕', name:'Cafeterías', desc:'Pedidos anticipados sin esfuerzo', benefits:['Carta digital QR','Pre-pedidos WhatsApp','Fidelización de clientes'] },
-      { icon:'🚐', name:'Food Trucks', desc:'Clientes que te encuentran siempre', benefits:['Ubicación en tiempo real','Anuncios locales','Redes sociales activas'] },
-      { icon:'🛒', name:'Carritos', desc:'Presencia digital desde hoy', benefits:['Perfil profesional online','WhatsApp Business','Primeros clientes digitales'] },
-      { icon:'🏢', name:'Otro', desc:'Solución personalizada para ti', benefits:['Diagnóstico personalizado','Estrategia a medida','Soporte dedicado'] },
+      { icon:'🌐', name:'Página Web', desc:'Tu negocio visible en Google 24/7', benefits:['Diseño a medida en 7 días','Optimizada para SEO local','Sistema de reservas y contacto'] },
+      { icon:'📊', name:'CRM', desc:'Nunca pierdas un prospecto', benefits:['Captura automática de leads','Seguimiento de clientes','Pipeline de ventas visual'] },
+      { icon:'🤖', name:'Asistente Virtual', desc:'Atención 24/7 en WhatsApp', benefits:['Responde mensajes automáticamente','Califica prospectos sin esfuerzo','Sin costo de personal extra'] },
+      { icon:'⚡', name:'Automatización', desc:'Tu negocio en piloto automático', benefits:['Recordatorios de citas automáticos','Secuencias de seguimiento','Reportes semanales automáticos'] },
+      { icon:'📣', name:'Sistema de Anuncios', desc:'Más clientes desde Meta y Google', benefits:['Campañas geolocalizadas','Optimización continua de presupuesto','Reportes de resultados reales'] },
+      { icon:'💼', name:'Sistema Completo', desc:'Todo incluido en un solo plan', benefits:['Web + CRM + Asistente virtual','Automatizaciones ilimitadas','Soporte prioritario 7 días'] },
     ],
     testiData: [
       { icon:'✂️', text:'En dos semanas ya tenía clientes nuevos llegando por Instagram. No tuve que hacer nada técnico.', biz:'Barbería Ali', city:'Santiago Centro' },
@@ -134,9 +132,9 @@ const T = {
       cardName:'Ali Barbershop - Santiago', cardQuote:'Clients started coming via Instagram in two weeks',
     },
     sel: {
-      label:'SOLUTIONS', h2:'What type of business are you?',
-      sub:"Select your category and we'll show you exactly how we can help.",
-      detailTitle:'How we help', detailCta:'Request free diagnosis →',
+      label:'SERVICES', h2:'What solution do you need?',
+      sub:"Select the service and we'll show you exactly how it works for your business.",
+      detailTitle:'How it works', detailCta:'Request free diagnosis →',
       cta:'Request free diagnosis →', ctaNote:'No cost · No commitment · Reply today',
     },
     stats: { n1:'+85',l1:'Active businesses', n2:'14',l2:'Days to first client', n3:'3×',l3:'Average booking increase', n4:'98%',l4:'Satisfaction rate' },
@@ -158,7 +156,7 @@ const T = {
     },
     form: {
       h2:'Ready for more clients?', sub:"Fill out the form and we'll reach out today.",
-      ph_name:'Your name', ph_biz:'Your business', ph_type:'Business type', ph_contact:'WhatsApp or Email', ph_msg:'What do you want to improve? (optional)',
+      ph_name:'Your name', ph_biz:'Your business', ph_type:'Service of interest', ph_contact:'WhatsApp or Email', ph_msg:'What do you want to improve? (optional)',
       submit:'Request free diagnosis →', sending:'Sending...', success:"✓ Done! We'll contact you today",
       note:'No cost · No commitment · Reply today', altTitle:'Prefer to talk now?', waCta:'Open WhatsApp',
     },
@@ -170,14 +168,12 @@ const T = {
     },
     bnav: { solutions:'Solutions', process:'Process', results:'Results', cta:'WhatsApp →' },
     cats: [
-      { icon:'🍽️', name:'Restaurants', desc:'More bookings without app dependency', benefits:['Online reservation page','Geo-targeted ads','Updatable digital menu'] },
-      { icon:'✂️', name:'Barbershops', desc:'Appointments even after hours', benefits:['24/7 online scheduling','Automatic reminders','Google Maps profile'] },
-      { icon:'💅', name:'Salons', desc:'Fill your schedule automatically', benefits:['Integrated booking','Work gallery','Instagram lead capture'] },
-      { icon:'🛍️', name:'Stores', desc:'Sell more while you sleep', benefits:['Online store','Digital catalog','Meta ads'] },
-      { icon:'☕', name:'Cafés', desc:'Pre-orders without effort', benefits:['QR digital menu','WhatsApp pre-orders','Customer loyalty'] },
-      { icon:'🚐', name:'Food Trucks', desc:'Clients always find you', benefits:['Real-time location','Local ads','Active social media'] },
-      { icon:'🛒', name:'Carts', desc:'Digital presence from today', benefits:['Professional online profile','WhatsApp Business','First digital clients'] },
-      { icon:'🏢', name:'Other', desc:'Personalized solution for you', benefits:['Personalized diagnosis','Custom strategy','Dedicated support'] },
+      { icon:'🌐', name:'Website', desc:'Your business visible on Google 24/7', benefits:['Custom design in 7 days','SEO-optimized for local search','Booking and contact system'] },
+      { icon:'📊', name:'CRM', desc:'Never lose a prospect again', benefits:['Automatic lead capture','Client follow-up tracking','Visual sales pipeline'] },
+      { icon:'🤖', name:'Virtual Assistant', desc:'24/7 service on WhatsApp', benefits:['Auto-replies to messages','Qualifies leads effortlessly','No extra staffing costs'] },
+      { icon:'⚡', name:'Automation', desc:'Your business on autopilot', benefits:['Automatic appointment reminders','Follow-up sequences','Weekly automatic reports'] },
+      { icon:'📣', name:'Ad System', desc:'More clients from Meta and Google', benefits:['Geo-targeted campaigns','Continuous budget optimization','Real results reports'] },
+      { icon:'💼', name:'Full System', desc:'Everything included in one plan', benefits:['Web + CRM + Virtual assistant','Unlimited automations','Priority support 7 days'] },
     ],
     testiData: [
       { icon:'✂️', text:"In two weeks new clients were already coming through Instagram. I didn't have to do anything technical.", biz:'Ali Barbershop', city:'Santiago Centro' },
@@ -735,7 +731,7 @@ function BusinessSelector() {
           <p style={{ fontFamily:FB, fontSize:16, color:C.muted, maxWidth:460, margin:'0 auto', lineHeight:1.7 }}>{t.sel.sub}</p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
           {t.cats.map((cat, i) => (
             <button key={i}
               onClick={e => {
