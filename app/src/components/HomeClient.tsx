@@ -261,7 +261,9 @@ const STYLES = `
   @keyframes pulseRing { 0%{transform:scale(1);opacity:.5} 100%{transform:scale(1.75);opacity:0} }
   @keyframes slideIn   { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:translateX(0)} }
   @keyframes shimmer   { 0%{background-position:200% center} 100%{background-position:-200% center} }
-  @keyframes gridPulse { 0%,100%{opacity:.04} 50%{opacity:.07} }
+  @keyframes gridPulse     { 0%,100%{opacity:.04} 50%{opacity:.07} }
+  @keyframes gridMove      { from{background-position:0 0} to{background-position:60px 60px} }
+  @keyframes heroCardFloat { 0%,100%{transform:translateY(0px)} 50%{transform:translateY(-8px)} }
 
   .mx-fade-up  { animation: fadeUp .8s cubic-bezier(.16,1,.3,1) forwards; }
   .mx-fade-in  { animation: fadeIn .6s ease forwards; }
@@ -348,6 +350,13 @@ const STYLES = `
     animation: gridPulse 6s ease-in-out infinite;
   }
 
+  .mx-hero-grid {
+    background-image: linear-gradient(rgba(108,99,255,.04) 1px,transparent 1px), linear-gradient(90deg,rgba(108,99,255,.04) 1px,transparent 1px);
+    background-size: 60px 60px;
+    animation: gridMove 30s linear infinite;
+  }
+  .mx-hero-card-float { animation: heroCardFloat 3s ease-in-out infinite; }
+
   .mx-card-hover {
     transition: transform .3s cubic-bezier(.16,1,.3,1), border-color .3s, box-shadow .3s;
   }
@@ -373,6 +382,9 @@ const STYLES = `
     overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
   }
 
+  /* Scroll offset for fixed navbar */
+  section[id] { scroll-margin-top: 72px; }
+
   /* Prevent iOS auto-zoom on input focus */
   @media(max-width:768px){
     input, select, textarea { font-size: 16px !important; }
@@ -390,7 +402,7 @@ function Navbar() {
   const t = useT(); const { lang, toggle } = useLang()
   const scrollY = useScrollY()
   const [open, setOpen] = useState(false)
-  const scrolled = scrollY > 40
+  const scrolled = scrollY > 20
 
   const links = [
     { label: t.nav.solutions, id: 'soluciones' },
@@ -401,87 +413,92 @@ function Navbar() {
 
   return (
     <>
-      {/* Floating pill navbar — premium SaaS style */}
-      <div className="fixed top-4 left-0 right-0 z-[100] flex justify-center px-4 pointer-events-none">
-        <nav
-          className="pointer-events-auto w-full max-w-5xl transition-all duration-500"
-          style={{
-            height: 52,
-            background: scrolled ? 'rgba(7,8,12,.88)' : 'rgba(7,8,12,.55)',
-            backdropFilter: 'blur(24px) saturate(1.6)',
-            WebkitBackdropFilter: 'blur(24px) saturate(1.6)',
-            border: scrolled ? '1px solid rgba(255,255,255,.1)' : '1px solid rgba(255,255,255,.07)',
-            borderRadius: 9999,
-            boxShadow: scrolled ? '0 8px 40px rgba(0,0,0,.5)' : '0 4px 20px rgba(0,0,0,.3)',
-          }}>
-          <div className="h-full flex items-center px-4 gap-3">
-            <button onClick={() => window.scrollTo({ top:0, behavior:'smooth' })} className="flex items-center gap-2 cursor-pointer bg-transparent border-none min-w-0 flex-shrink-0">
-              <Image src="/logo1.jpg" alt="Mastexo" width={26} height={26} className="rounded-full object-cover opacity-90"/>
-              <span style={{ fontFamily:FD, fontWeight:700, fontSize:16, color:'#f1f5f9', letterSpacing:'-.01em', whiteSpace:'nowrap' }}>Mastexo</span>
-            </button>
+      <nav className="fixed top-0 left-0 right-0 z-[100] transition-all duration-300"
+        style={{
+          height: 60,
+          background: 'rgba(6,8,15,0.8)',
+          backdropFilter: 'blur(20px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+          borderBottom: '1px solid rgba(255,255,255,0.06)',
+          boxShadow: scrolled ? '0 4px 32px rgba(0,0,0,.4)' : 'none',
+        }}>
+        <div className="max-w-7xl mx-auto px-5 md:px-8 h-full flex items-center gap-5">
+          {/* Logo */}
+          <button onClick={() => window.scrollTo({ top:0, behavior:'smooth' })}
+            className="flex items-center gap-2.5 cursor-pointer bg-transparent border-none flex-shrink-0">
+            <Image src="/logo1.jpg" alt="Mastexo" width={28} height={28} className="rounded-full object-cover"/>
+            <span style={{ fontFamily:FD, fontWeight:700, fontSize:18, color:'#fff', letterSpacing:'-.01em' }}>Mastexo</span>
+          </button>
 
-            <div className="flex-1"/>
+          <div className="flex-1"/>
 
-            <div className="hidden md:flex items-center gap-5">
-              {links.map(l => (
-                <button key={l.id} onClick={() => scrollTo(l.id)}
-                  className="cursor-pointer bg-transparent border-none transition-colors duration-200 whitespace-nowrap"
-                  style={{ fontFamily:FB, fontSize:13, fontWeight:500, color:'rgba(241,245,249,.55)', letterSpacing:'.01em' }}
-                  onMouseEnter={e => (e.currentTarget.style.color='rgba(241,245,249,.95)')}
-                  onMouseLeave={e => (e.currentTarget.style.color='rgba(241,245,249,.55)')}>
-                  {l.label}
-                </button>
-              ))}
-            </div>
-
-            <div style={{ width:1, height:16, background:'rgba(255,255,255,.1)', flexShrink:0 }} className="hidden md:block"/>
-
-            <button onClick={toggle} aria-label={`Cambiar idioma a ${lang === 'es' ? 'inglés' : 'español'}`}
-              className="flex items-center gap-1 px-2.5 py-1.5 rounded-full cursor-pointer transition-all duration-200 flex-shrink-0"
-              style={{ fontFamily:FB, fontSize:11, fontWeight:600, letterSpacing:'.06em', border:'1px solid rgba(255,255,255,.1)', background:'transparent' }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(108,99,255,.3)' }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(255,255,255,.1)' }}>
-              {(['es','en'] as Lang[]).map((l,i) => (
-                <React.Fragment key={l}>
-                  {i > 0 && <span style={{ color:'rgba(255,255,255,.18)', margin:'0 1px' }}>|</span>}
-                  <span style={{ color: lang===l ? '#6C63FF' : 'rgba(255,255,255,.35)', fontWeight: lang===l ? 700 : 400 }}>{l.toUpperCase()}</span>
-                </React.Fragment>
-              ))}
-            </button>
-
-            <button onClick={() => scrollTo('contacto')}
-              className="hidden md:block mx-btn-primary px-4 py-2 cursor-pointer flex-shrink-0"
-              style={{ fontFamily:FD, fontSize:12, fontWeight:700, letterSpacing:'.01em' }}>
-              {t.nav.cta}
-            </button>
-
-            <button type="button" onClick={() => setOpen(o => !o)}
-              aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
-              className="md:hidden cursor-pointer bg-transparent border-none flex-shrink-0 min-w-[44px] min-h-[44px] flex items-center justify-center"
-              style={{ color:'#f1f5f9' }}>
-              {open ? <X size={20}/> : <Menu size={20}/>}
-            </button>
+          {/* Desktop links */}
+          <div className="hidden md:flex items-center gap-7">
+            {links.map(l => (
+              <button key={l.id} onClick={() => scrollTo(l.id)}
+                className="cursor-pointer bg-transparent border-none transition-colors duration-200 whitespace-nowrap"
+                style={{ fontFamily:FB, fontSize:14, fontWeight:500, color:'rgba(255,255,255,.6)' }}
+                onMouseEnter={e => (e.currentTarget.style.color='#fff')}
+                onMouseLeave={e => (e.currentTarget.style.color='rgba(255,255,255,.6)')}>
+                {l.label}
+              </button>
+            ))}
           </div>
-        </nav>
-      </div>
+
+          {/* Language toggle pill */}
+          <div className="flex items-center rounded-full px-1.5 py-1 gap-0.5 flex-shrink-0"
+            style={{ background:'rgba(255,255,255,.06)', border:'1px solid rgba(255,255,255,.08)' }}>
+            {(['es','en'] as Lang[]).map(l => (
+              <button key={l} onClick={toggle}
+                aria-label={`Cambiar idioma a ${l === 'es' ? 'español' : 'inglés'}`}
+                className="rounded-full px-2.5 py-1 cursor-pointer transition-all duration-200"
+                style={{
+                  background: lang===l ? 'rgba(108,99,255,.85)' : 'transparent',
+                  color: lang===l ? '#fff' : 'rgba(255,255,255,.4)',
+                  fontFamily:FB, fontSize:11, fontWeight: lang===l ? 700 : 400,
+                  letterSpacing:'.05em', border:'none',
+                }}>
+                {l.toUpperCase()}
+              </button>
+            ))}
+          </div>
+
+          {/* CTA */}
+          <button onClick={() => scrollTo('contacto')}
+            className="hidden md:block btn-primary cursor-pointer flex-shrink-0"
+            style={{ fontFamily:FD, fontSize:13, fontWeight:700, letterSpacing:'.01em', padding:'9px 20px' }}>
+            {t.nav.cta}
+          </button>
+
+          {/* Mobile menu toggle */}
+          <button type="button" onClick={() => setOpen(o => !o)}
+            aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
+            className="md:hidden cursor-pointer bg-transparent border-none flex-shrink-0 min-w-[44px] min-h-[44px] flex items-center justify-center"
+            style={{ color:'#fff' }}>
+            {open ? <X size={20}/> : <Menu size={20}/>}
+          </button>
+        </div>
+      </nav>
 
       {open && (
         <div className="fixed inset-0 z-[99] md:hidden flex flex-col items-center justify-center gap-10"
-          style={{ background:'rgba(7,8,12,.97)', backdropFilter:'blur(32px)' }}>
-          <button onClick={() => setOpen(false)} aria-label="Cerrar menú" className="absolute top-5 right-5 cursor-pointer bg-transparent border-none" style={{ color:'rgba(241,245,249,.7)' }}>
+          style={{ background:'rgba(6,8,15,.97)', backdropFilter:'blur(32px)' }}>
+          <button onClick={() => setOpen(false)} aria-label="Cerrar menú"
+            className="absolute top-5 right-5 cursor-pointer bg-transparent border-none"
+            style={{ color:'rgba(255,255,255,.7)' }}>
             <X size={26}/>
           </button>
           {links.map(l => (
             <button key={l.id} onClick={() => { scrollTo(l.id); setOpen(false) }}
               className="cursor-pointer bg-transparent border-none transition-colors duration-200"
-              style={{ fontFamily:FD, fontWeight:700, fontSize:32, color:'rgba(241,245,249,.85)', letterSpacing:'-.02em' }}
+              style={{ fontFamily:FD, fontWeight:700, fontSize:32, color:'rgba(255,255,255,.85)', letterSpacing:'-.02em' }}
               onMouseEnter={e => (e.currentTarget.style.color='#6C63FF')}
-              onMouseLeave={e => (e.currentTarget.style.color='rgba(241,245,249,.85)')}>
+              onMouseLeave={e => (e.currentTarget.style.color='rgba(255,255,255,.85)')}>
               {l.label}
             </button>
           ))}
           <button onClick={() => { scrollTo('contacto'); setOpen(false) }}
-            className="mx-btn-primary px-10 py-4 cursor-pointer mt-2"
+            className="btn-primary px-10 py-4 cursor-pointer mt-2"
             style={{ fontFamily:FD, fontWeight:700, fontSize:16 }}>
             {t.nav.cta}
           </button>
@@ -496,42 +513,24 @@ function Navbar() {
 // ─────────────────────────────────────────
 function HeroSection() {
   const t = useT()
-
-  const orbs = [
-    { top:'-15%', left:'-10%', size:700, color:'radial-gradient(circle,rgba(108,99,255,.14) 0%,transparent 65%)' },
-    { top:'30%',  left:'60%',  size:600, color:'radial-gradient(circle,rgba(108,99,255,.09) 0%,transparent 65%)' },
-    { top:'70%',  left:'20%',  size:400, color:'radial-gradient(circle,rgba(0,212,255,.06) 0%,transparent 60%)' },
-  ]
-
-  const dots = Array.from({ length: 18 }, (_, i) => ({
-    x: (i * 41 + 13) % 96, y: (i * 57 + 9) % 88,
-    size: 1 + (i % 2) * 0.5,
-    color: i%3===0 ? '#6C63FF' : i%3===1 ? '#a78bfa' : '#00D4FF',
-    delay: i * 0.28,
-    dur: 4 + (i % 4),
-  }))
+  const h1Parts = t.hero.h1b.split(' ')
+  const h1Word = h1Parts[0]
+  const h1Rest = h1Parts.slice(1).join(' ')
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden" style={{ background:'#06080F' }}>
-      {/* Grid */}
-      <div className="absolute inset-0 mx-grid-bg pointer-events-none"/>
+    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
+      style={{ background:'radial-gradient(ellipse 80% 60% at 20% 50%, rgba(108,99,255,.12) 0%, transparent 60%), #06080F' }}>
 
-      {/* Orbs */}
-      {orbs.map((o, i) => (
-        <div key={i} className="absolute pointer-events-none" style={{
-          top:o.top, left:o.left, width:o.size, height:o.size,
-          background:o.color, filter:'blur(80px)', transform:'translateZ(0)',
-        }}/>
-      ))}
+      {/* Animated purple grid */}
+      <div className="absolute inset-0 mx-hero-grid pointer-events-none"/>
 
-      {/* Particles */}
-      {dots.map((d, i) => (
-        <div key={i} className="absolute rounded-full pointer-events-none mx-float"
-          style={{ left:`${d.x}%`, top:`${d.y}%`, width:d.size, height:d.size, background:d.color, opacity:.4,
-            animationDelay:`${d.delay}s`, animationDuration:`${d.dur}s` }}/>
-      ))}
+      {/* Orb 1 — purple top-left */}
+      <div className="absolute pointer-events-none" style={{ top:'-5%', left:'-5%', width:300, height:300, background:'radial-gradient(circle,rgba(108,99,255,.15) 0%,transparent 70%)', filter:'blur(60px)', transform:'translateZ(0)' }}/>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-8 pt-28 pb-24 text-center">
+      {/* Orb 2 — cyan bottom-right */}
+      <div className="absolute pointer-events-none" style={{ bottom:'10%', right:'5%', width:200, height:200, background:'radial-gradient(circle,rgba(0,212,255,.08) 0%,transparent 70%)', filter:'blur(50px)', transform:'translateZ(0)' }}/>
+
+      <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-8 pt-[76px] pb-24 text-center">
         {/* Badge */}
         <div className="inline-flex items-center gap-2 mx-glass rounded-full px-4 py-2 mb-10 mx-fade-up"
           style={{ animationDelay:'.05s', opacity:0, borderColor:'rgba(108,99,255,.2)' }}>
@@ -541,33 +540,35 @@ function HeroSection() {
 
         {/* H1 */}
         <h1 className="mx-fade-up" style={{
-          fontFamily:FD, fontWeight:800, lineHeight:1.04, letterSpacing:'-.04em',
-          fontSize:'clamp(48px,9vw,96px)', color:C.text,
-          marginBottom:28, animationDelay:'.15s', opacity:0,
+          fontFamily:FD, fontWeight:800, lineHeight:.95, letterSpacing:'-.04em',
+          fontSize:'clamp(52px,7vw,96px)', color:C.text,
+          maxWidth:700, margin:'0 auto 28px', animationDelay:'.15s', opacity:0,
         }}>
           {t.hero.h1a}<br/>
-          <span className="mx-gradient-text">{t.hero.h1b}</span>
+          <span style={{ color:'#6C63FF', textShadow:'0 0 60px rgba(108,99,255,.5)' }}>{h1Word}</span>
+          {' '}
+          <span style={{ background:'linear-gradient(135deg,#fff 0%,rgba(255,255,255,.6) 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>{h1Rest}</span>
         </h1>
 
         {/* Sub */}
         <p className="mx-fade-up" style={{
-          fontFamily:FB, fontSize:17, color:C.muted,
-          maxWidth:520, margin:'0 auto 40px', lineHeight:1.75,
+          fontFamily:FB, fontSize:18, color:'rgba(255,255,255,.5)',
+          maxWidth:480, margin:'1.5rem auto 40px', lineHeight:1.7,
           animationDelay:'.25s', opacity:0,
         }}>
           {t.hero.sub}
         </p>
 
         {/* CTAs */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mx-fade-up" style={{ animationDelay:'.35s', opacity:0 }}>
+        <div className="flex flex-wrap items-center justify-center gap-3 mx-fade-up" style={{ animationDelay:'.35s', opacity:0 }}>
           <button onClick={() => scrollTo('contacto')}
-            className="mx-btn-primary px-8 py-4 cursor-pointer w-full sm:w-auto"
-            style={{ fontFamily:FD, fontWeight:700, fontSize:15, letterSpacing:'.01em' }}>
+            className="btn-primary cursor-pointer"
+            style={{ fontFamily:FD, fontWeight:700, fontSize:15, letterSpacing:'.01em', padding:'14px 32px' }}>
             {t.hero.cta1} →
           </button>
           <button onClick={() => scrollTo('proceso')}
-            className="mx-btn-ghost px-8 py-4 cursor-pointer w-full sm:w-auto"
-            style={{ fontFamily:FD, fontWeight:600, fontSize:15 }}>
+            className="btn-secondary cursor-pointer"
+            style={{ fontFamily:FD, fontWeight:600, fontSize:15, padding:'14px 32px' }}>
             {t.hero.cta2}
           </button>
         </div>
@@ -586,18 +587,29 @@ function HeroSection() {
         </div>
       </div>
 
-      {/* Floating review card */}
-      <div className="absolute hidden lg:block mx-float" style={{ right:40, top:'50%', transform:'translateY(-50%)', width:220, zIndex:20, animationDelay:'1.2s' }}>
-        <div className="mx-glass-strong mx-gradient-border rounded-2xl p-5">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
-              style={{ background:'rgba(108,99,255,.1)', border:'1px solid rgba(108,99,255,.15)' }}>✂️</div>
-            <div>
-              <div style={{ fontFamily:FB, fontWeight:600, fontSize:12, color:C.text }}>{t.hero.cardName}</div>
-              <div style={{ fontSize:11, color:'#f59e0b', letterSpacing:'.05em' }}>★★★★★</div>
+      {/* Floating review card — entry fadeIn, then continuous float */}
+      <div className="absolute hidden lg:block"
+        style={{ right:40, top:'50%', transform:'translateY(-50%)', width:220, zIndex:20, animation:'fadeIn .6s ease .8s both' }}>
+        <div className="mx-hero-card-float">
+          <div className="rounded-2xl p-5"
+            style={{
+              background:'rgba(13,17,23,.9)',
+              backdropFilter:'blur(20px)',
+              WebkitBackdropFilter:'blur(20px)',
+              border:'1px solid rgba(108,99,255,.3)',
+              borderRadius:16,
+              boxShadow:'0 8px 32px rgba(0,0,0,.4), 0 0 0 1px rgba(108,99,255,.1)',
+            }}>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
+                style={{ background:'rgba(108,99,255,.1)', border:'1px solid rgba(108,99,255,.15)' }}>✂️</div>
+              <div>
+                <div style={{ fontFamily:FB, fontWeight:600, fontSize:12, color:C.text }}>{t.hero.cardName}</div>
+                <div style={{ fontSize:11, color:'#FFB800', letterSpacing:'.05em' }}>★★★★★</div>
+              </div>
             </div>
+            <p style={{ fontFamily:FB, fontSize:12, color:C.muted, lineHeight:1.55 }}>&ldquo;{t.hero.cardQuote}&rdquo;</p>
           </div>
-          <p style={{ fontFamily:FB, fontSize:12, color:C.muted, lineHeight:1.55 }}>&ldquo;{t.hero.cardQuote}&rdquo;</p>
         </div>
       </div>
 
@@ -1263,7 +1275,13 @@ function ScrollProgress() {
 
   return (
     <div className="fixed top-0 left-0 right-0 z-[200] pointer-events-none" style={{ height:2 }}>
-      <div style={{ height:'100%', width:`${pct}%`, background:'linear-gradient(90deg,#6C63FF,#a78bfa)', transition:'width .1s linear' }}/>
+      <div style={{
+        height:'100%', width:`${pct}%`,
+        background:'linear-gradient(90deg,#6C63FF 0%,#00D4FF 50%,#6C63FF 100%)',
+        backgroundSize:'200% 100%',
+        animation:'shimmer 3s linear infinite',
+        transition:'width .1s linear',
+      }}/>
     </div>
   )
 }
