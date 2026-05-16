@@ -249,6 +249,26 @@ function useCounter(target: number, inView: boolean, duration = 1600) {
   return count
 }
 
+function useRevealChildren(staggerMs = 100) {
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const el = ref.current; if (!el) return
+    const children = Array.from(el.children) as HTMLElement[]
+    children.forEach(child => child.classList.add('reveal'))
+    const obs = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return
+      children.forEach((child, i) => {
+        child.style.transitionDelay = `${i * staggerMs}ms`
+        child.classList.add('revealed')
+      })
+      obs.disconnect()
+    }, { threshold: 0.15 })
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [staggerMs])
+  return ref
+}
+
 const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 
 // ─────────────────────────────────────────
@@ -406,8 +426,44 @@ const STYLES = `
     input, select, textarea { font-size: 16px !important; }
   }
 
+  /* Global scroll-reveal system */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .7s ease, transform .7s cubic-bezier(.16,1,.3,1);
+    will-change: transform, opacity;
+  }
+  .revealed {
+    opacity: 1;
+    transform: translateY(0);
+    will-change: auto;
+  }
+
+  /* Hero accent word — shimmer every 4s */
+  @keyframes textShimmer {
+    0%   { background-position: 0% center }
+    100% { background-position: 200% center }
+  }
+  .mx-text-shimmer {
+    background: linear-gradient(90deg, #6C63FF 0%, #9B93FF 30%, #c4b5fd 50%, #9B93FF 70%, #6C63FF 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: textShimmer 4s linear infinite;
+  }
+
+  /* Navbar entry */
+  @keyframes fadeDown { from{opacity:0;transform:translateY(-12px)} to{opacity:1;transform:translateY(0)} }
+
   @media(prefers-reduced-motion:reduce){
-    .mx-fade-up,.mx-fade-in,.mx-float,.mx-pulse,.mx-slide-in{animation:none!important;opacity:1!important;transform:none!important}
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    .reveal { opacity: 1 !important; transform: none !important; }
   }
 `
 
@@ -456,6 +512,7 @@ function Navbar() {
           WebkitBackdropFilter: 'blur(20px) saturate(180%)',
           borderBottom: '1px solid rgba(255,255,255,0.06)',
           boxShadow: scrolled ? '0 4px 32px rgba(0,0,0,.4)' : 'none',
+          animation: 'fadeDown .5s ease both',
         }}>
         <div className="max-w-7xl mx-auto px-5 md:px-8 h-full flex items-center gap-5">
           {/* Logo */}
@@ -573,29 +630,31 @@ function HeroSection() {
           <span style={{ fontFamily:FB, fontSize:12, color:'rgba(241,245,249,.6)', letterSpacing:'.03em' }}>{t.hero.badge}</span>
         </div>
 
-        {/* H1 */}
-        <h1 className="mx-fade-up" style={{
+        {/* H1 — 3 lines each with individual fade-up */}
+        <h1 style={{
           fontFamily:FD, fontWeight:800, lineHeight:.95, letterSpacing:'-.04em',
           fontSize:'clamp(52px,7vw,96px)', color:C.text,
-          maxWidth:700, margin:'0 auto 28px', animationDelay:'.15s', opacity:0,
+          maxWidth:700, margin:'0 auto 28px',
         }}>
-          {t.hero.h1a}<br/>
-          <span style={{ color:'#6C63FF', textShadow:'0 0 60px rgba(108,99,255,.5)' }}>{h1Word}</span>
+          <span className="mx-fade-up" style={{ display:'block', animationDelay:'.1s', opacity:0 }}>{t.hero.h1a}</span>
+          <span className="mx-fade-up" style={{ display:'inline-block', animationDelay:'.2s', opacity:0 }}>
+            <span className="mx-text-shimmer">{h1Word}</span>
+          </span>
           {' '}
-          <span style={{ background:'linear-gradient(135deg,#fff 0%,rgba(255,255,255,.6) 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>{h1Rest}</span>
+          <span className="mx-fade-up" style={{ display:'inline-block', animationDelay:'.3s', opacity:0, background:'linear-gradient(135deg,#fff 0%,rgba(255,255,255,.6) 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>{h1Rest}</span>
         </h1>
 
         {/* Sub */}
         <p className="mx-fade-up" style={{
           fontFamily:FB, fontSize:18, color:'rgba(255,255,255,.5)',
           maxWidth:480, margin:'1.5rem auto 40px', lineHeight:1.7,
-          animationDelay:'.25s', opacity:0,
+          animationDelay:'.4s', opacity:0,
         }}>
           {t.hero.sub}
         </p>
 
         {/* CTAs */}
-        <div className="flex flex-wrap items-center justify-center gap-3 mx-fade-up" style={{ animationDelay:'.35s', opacity:0 }}>
+        <div className="flex flex-wrap items-center justify-center gap-3 mx-fade-up" style={{ animationDelay:'.5s', opacity:0 }}>
           <button onClick={() => scrollTo('contacto')}
             className="btn-primary cursor-pointer"
             style={{ fontFamily:FD, fontWeight:700, fontSize:15, letterSpacing:'.01em', padding:'14px 32px' }}>
@@ -609,7 +668,7 @@ function HeroSection() {
         </div>
 
         {/* Proof strip */}
-        <div className="flex items-center justify-center gap-10 mt-16 mx-fade-up flex-wrap" style={{ animationDelay:'.45s', opacity:0 }}>
+        <div className="flex items-center justify-center gap-10 mt-16 mx-fade-up flex-wrap" style={{ animationDelay:'.6s', opacity:0 }}>
           {[{n:t.hero.s1n,l:t.hero.s1l},{n:t.hero.s2n,l:t.hero.s2l},{n:t.hero.s3n,l:t.hero.s3l}].map((s,i) => (
             <div key={i} className="flex items-center gap-10">
               {i > 0 && <div style={{ width:1, height:28, background:'rgba(255,255,255,.1)' }}/>}
@@ -678,7 +737,13 @@ function BusinessSelector() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
           {t.cats.map((cat, i) => (
-            <button key={i} onClick={() => setActive(active===i ? null : i)}
+            <button key={i}
+              onClick={e => {
+                setActive(active===i ? null : i)
+                const el = e.currentTarget as HTMLElement
+                el.style.transform = ''
+                el.style.transition = 'all .25s ease'
+              }}
               className="text-left cursor-pointer"
               style={{
                 background: active===i ? 'rgba(108,99,255,.06)' : 'rgba(13,17,23,.8)',
@@ -686,21 +751,26 @@ function BusinessSelector() {
                 borderRadius: 16, padding: '28px 24px',
                 transition: 'all .25s ease',
               }}
-              onMouseEnter={e => {
+              onMouseMove={e => {
                 if (active === i) return
                 const el = e.currentTarget as HTMLElement
+                const rect = el.getBoundingClientRect()
+                const x = (e.clientX - rect.left) / rect.width - 0.5
+                const y = (e.clientY - rect.top) / rect.height - 0.5
+                el.style.transition = 'transform .1s linear, border-color .25s, background .25s, box-shadow .25s'
                 el.style.borderColor = 'rgba(108,99,255,.4)'
                 el.style.background = '#141B24'
                 el.style.boxShadow = '0 8px 32px rgba(108,99,255,.12)'
-                el.style.transform = 'translateY(-4px)'
+                el.style.transform = `perspective(800px) rotateX(${-y * 4}deg) rotateY(${x * 4}deg) translateY(-4px)`
               }}
               onMouseLeave={e => {
                 if (active === i) return
                 const el = e.currentTarget as HTMLElement
+                el.style.transition = 'transform .4s ease, border-color .25s, background .25s, box-shadow .25s'
                 el.style.borderColor = 'rgba(255,255,255,.06)'
                 el.style.background = 'rgba(13,17,23,.8)'
                 el.style.boxShadow = 'none'
-                el.style.transform = 'translateY(0)'
+                el.style.transform = ''
               }}>
               <div className="flex items-center justify-center mb-4"
                 style={{ width:48, height:48, borderRadius:12, background:'rgba(108,99,255,.12)', fontSize:22, flexShrink:0 }}>
@@ -952,8 +1022,8 @@ function ProcessSection() {
               <div className="rounded-2xl p-7 relative overflow-hidden mx-process-card"
                 style={{
                   background:C.surface,
-                  opacity:inView?1:0, transform:inView?'translateY(0)':'translateY(24px)',
-                  transition:`opacity .7s ${i*.18}s, transform .7s cubic-bezier(.16,1,.3,1) ${i*.18}s, border-color .3s 0s, box-shadow .3s 0s`,
+                  opacity:inView?1:0, transform:inView?'translateX(0)':'translateX(-40px)',
+                  transition:`opacity .7s ${i*.15}s, transform .7s cubic-bezier(.16,1,.3,1) ${i*.15}s, border-color .3s 0s, box-shadow .3s 0s`,
                 }}>
                 <div className="absolute right-5 top-0 select-none pointer-events-none"
                   style={{ fontFamily:FD, fontWeight:800, fontSize:96, color:'rgba(108,99,255,.06)', lineHeight:1, letterSpacing:'-.04em' }}>{s.num}</div>
