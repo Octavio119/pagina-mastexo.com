@@ -33,16 +33,19 @@ const EMAIL = 'contactos@mastexo.com'
 const FD = "var(--font-syne), 'Syne', sans-serif"
 const FB = "var(--font-dm-sans), 'DM Sans', sans-serif"
 
-// Premium palette
+// Design tokens — mirrors globals.css :root vars
 const C = {
-  bg:      '#07080C',
-  surface: 'rgba(255,255,255,.03)',
-  border:  'rgba(255,255,255,.07)',
-  cyan:    '#22d3ee',
-  violet:  '#8b5cf6',
-  text:    '#f1f5f9',
-  muted:   'rgba(241,245,249,.62)',  // ~5.2:1 contrast on #07080C
-  subtle:  'rgba(241,245,249,.35)',  // ~3:1 — use only for decorative text
+  bg:      '#06080F',
+  surface: '#0D1117',
+  elevated:'#141B24',
+  border:  'rgba(255,255,255,.08)',
+  bHover:  'rgba(108,99,255,.4)',
+  accent:  '#6C63FF',          // primary purple — all CTAs
+  aGlow:   'rgba(108,99,255,.25)',
+  cyan:    '#00D4FF',           // highlights only (hero italic)
+  text:    '#FFFFFF',
+  muted:   'rgba(255,255,255,.55)',   // ~5:1 on dark bg
+  subtle:  'rgba(255,255,255,.30)',
 }
 
 // ─────────────────────────────────────────
@@ -279,8 +282,16 @@ const STYLES = `
     border: 1px solid rgba(255,255,255,.1);
   }
 
+  /* Gradient text — accent hero highlight */
   .mx-gradient-text {
-    background: linear-gradient(135deg, #22d3ee 0%, #8b5cf6 100%);
+    background: linear-gradient(135deg, #6C63FF 0%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  /* Hero italic — cyan only */
+  .mx-cyan-text {
+    background: linear-gradient(135deg, #00D4FF 0%, #6C63FF 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -294,41 +305,40 @@ const STYLES = `
     inset:0;
     border-radius:inherit;
     padding:1px;
-    background:linear-gradient(135deg,rgba(34,211,238,.3),rgba(139,92,246,.3));
+    background:linear-gradient(135deg,rgba(108,99,255,.4),rgba(167,139,250,.2));
     -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
     mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
     -webkit-mask-composite:xor;mask-composite:exclude;
     pointer-events:none;
   }
 
+  /* mx-btn-primary — alias to globals .btn-primary for inline use */
   .mx-btn-primary {
-    position:relative; overflow:hidden;
-    background: linear-gradient(135deg, #06b6d4 0%, #7c3aed 100%);
-    color:#fff; font-weight:700; border-radius:9999px;
-    transition: transform .2s, box-shadow .2s;
-    box-shadow: 0 0 40px rgba(34,211,238,.2), 0 0 80px rgba(139,92,246,.1);
+    display:inline-flex; align-items:center; justify-content:center;
+    background: #6C63FF;
+    color:#fff; font-weight:700; border-radius:9999px; border:none;
+    box-shadow: 0 4px 24px rgba(108,99,255,.35);
+    transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
+    cursor:pointer; text-decoration:none;
   }
   .mx-btn-primary:hover {
-    transform: scale(1.03) translateY(-1px);
-    box-shadow: 0 0 60px rgba(34,211,238,.35), 0 0 100px rgba(139,92,246,.2);
+    background: #5B52E5;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(108,99,255,.5);
   }
-  .mx-btn-primary:active { transform:scale(.97); }
-  .mx-btn-primary::after {
-    content:'';position:absolute;inset:0;
-    background:linear-gradient(135deg,rgba(255,255,255,.15) 0%,transparent 60%);
-    border-radius:inherit;
-  }
+  .mx-btn-primary:active { transform:translateY(0) scale(.97); }
 
   .mx-btn-ghost {
     background: transparent;
-    border: 1px solid rgba(255,255,255,.12);
-    color: rgba(255,255,255,.8);
+    border: 1px solid rgba(255,255,255,.14);
+    color: rgba(255,255,255,.75);
     border-radius: 9999px;
     transition: border-color .2s, background .2s, color .2s;
+    cursor:pointer;
   }
   .mx-btn-ghost:hover {
-    border-color: rgba(34,211,238,.4);
-    background: rgba(34,211,238,.05);
+    border-color: rgba(108,99,255,.5);
+    background: rgba(108,99,255,.07);
     color: #fff;
   }
 
@@ -343,18 +353,18 @@ const STYLES = `
   }
   .mx-card-hover:hover {
     transform: translateY(-6px);
-    border-color: rgba(34,211,238,.25) !important;
-    box-shadow: 0 24px 60px rgba(0,0,0,.4), 0 0 40px rgba(34,211,238,.06);
+    border-color: rgba(108,99,255,.3) !important;
+    box-shadow: 0 24px 60px rgba(0,0,0,.5), 0 0 40px rgba(108,99,255,.08);
   }
 
   /* Focus rings — visible for keyboard nav */
   :focus-visible {
-    outline: 2px solid rgba(34,211,238,.7);
+    outline: 2px solid rgba(108,99,255,.8);
     outline-offset: 3px;
     border-radius: 6px;
   }
   button:focus-visible, a:focus-visible {
-    outline: 2px solid rgba(34,211,238,.7);
+    outline: 2px solid rgba(108,99,255,.8);
     outline-offset: 3px;
   }
   /* Visually hidden labels for a11y */
@@ -429,12 +439,12 @@ function Navbar() {
             <button onClick={toggle} aria-label={`Cambiar idioma a ${lang === 'es' ? 'inglés' : 'español'}`}
               className="flex items-center gap-1 px-2.5 py-1.5 rounded-full cursor-pointer transition-all duration-200 flex-shrink-0"
               style={{ fontFamily:FB, fontSize:11, fontWeight:600, letterSpacing:'.06em', border:'1px solid rgba(255,255,255,.1)', background:'transparent' }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(34,211,238,.3)' }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(108,99,255,.3)' }}
               onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(255,255,255,.1)' }}>
               {(['es','en'] as Lang[]).map((l,i) => (
                 <React.Fragment key={l}>
                   {i > 0 && <span style={{ color:'rgba(255,255,255,.18)', margin:'0 1px' }}>|</span>}
-                  <span style={{ color: lang===l ? '#22d3ee' : 'rgba(255,255,255,.35)', fontWeight: lang===l ? 700 : 400 }}>{l.toUpperCase()}</span>
+                  <span style={{ color: lang===l ? '#6C63FF' : 'rgba(255,255,255,.35)', fontWeight: lang===l ? 700 : 400 }}>{l.toUpperCase()}</span>
                 </React.Fragment>
               ))}
             </button>
@@ -465,7 +475,7 @@ function Navbar() {
             <button key={l.id} onClick={() => { scrollTo(l.id); setOpen(false) }}
               className="cursor-pointer bg-transparent border-none transition-colors duration-200"
               style={{ fontFamily:FD, fontWeight:700, fontSize:32, color:'rgba(241,245,249,.85)', letterSpacing:'-.02em' }}
-              onMouseEnter={e => (e.currentTarget.style.color='#22d3ee')}
+              onMouseEnter={e => (e.currentTarget.style.color='#6C63FF')}
               onMouseLeave={e => (e.currentTarget.style.color='rgba(241,245,249,.85)')}>
               {l.label}
             </button>
@@ -488,21 +498,21 @@ function HeroSection() {
   const t = useT()
 
   const orbs = [
-    { top:'-15%', left:'-10%', size:700, color:'radial-gradient(circle,rgba(34,211,238,.12) 0%,transparent 65%)' },
-    { top:'30%',  left:'60%',  size:600, color:'radial-gradient(circle,rgba(139,92,246,.1) 0%,transparent 65%)' },
-    { top:'70%',  left:'20%',  size:400, color:'radial-gradient(circle,rgba(34,211,238,.07) 0%,transparent 60%)' },
+    { top:'-15%', left:'-10%', size:700, color:'radial-gradient(circle,rgba(108,99,255,.14) 0%,transparent 65%)' },
+    { top:'30%',  left:'60%',  size:600, color:'radial-gradient(circle,rgba(108,99,255,.09) 0%,transparent 65%)' },
+    { top:'70%',  left:'20%',  size:400, color:'radial-gradient(circle,rgba(0,212,255,.06) 0%,transparent 60%)' },
   ]
 
   const dots = Array.from({ length: 18 }, (_, i) => ({
     x: (i * 41 + 13) % 96, y: (i * 57 + 9) % 88,
     size: 1 + (i % 2) * 0.5,
-    color: i%2===0 ? '#22d3ee' : '#8b5cf6',
+    color: i%3===0 ? '#6C63FF' : i%3===1 ? '#a78bfa' : '#00D4FF',
     delay: i * 0.28,
     dur: 4 + (i % 4),
   }))
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden" style={{ background:C.bg }}>
+    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden" style={{ background:'#06080F' }}>
       {/* Grid */}
       <div className="absolute inset-0 mx-grid-bg pointer-events-none"/>
 
@@ -524,8 +534,8 @@ function HeroSection() {
       <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-8 pt-28 pb-24 text-center">
         {/* Badge */}
         <div className="inline-flex items-center gap-2 mx-glass rounded-full px-4 py-2 mb-10 mx-fade-up"
-          style={{ animationDelay:'.05s', opacity:0, borderColor:'rgba(34,211,238,.15)' }}>
-          <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background:'#22d3ee', boxShadow:'0 0 6px #22d3ee' }}/>
+          style={{ animationDelay:'.05s', opacity:0, borderColor:'rgba(108,99,255,.2)' }}>
+          <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background:'#6C63FF', boxShadow:'0 0 6px rgba(108,99,255,.7)' }}/>
           <span style={{ fontFamily:FB, fontSize:12, color:'rgba(241,245,249,.6)', letterSpacing:'.03em' }}>{t.hero.badge}</span>
         </div>
 
@@ -581,7 +591,7 @@ function HeroSection() {
         <div className="mx-glass-strong mx-gradient-border rounded-2xl p-5">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
-              style={{ background:'rgba(34,211,238,.1)', border:'1px solid rgba(34,211,238,.15)' }}>✂️</div>
+              style={{ background:'rgba(108,99,255,.1)', border:'1px solid rgba(108,99,255,.15)' }}>✂️</div>
             <div>
               <div style={{ fontFamily:FB, fontWeight:600, fontSize:12, color:C.text }}>{t.hero.cardName}</div>
               <div style={{ fontSize:11, color:'#f59e0b', letterSpacing:'.05em' }}>★★★★★</div>
@@ -593,7 +603,7 @@ function HeroSection() {
 
       {/* Scroll indicator */}
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 mx-fade-in" style={{ animationDelay:'1.5s', opacity:0 }}>
-        <div style={{ width:1, height:40, background:'linear-gradient(to bottom, rgba(34,211,238,.4), transparent)' }}/>
+        <div style={{ width:1, height:40, background:'linear-gradient(to bottom, rgba(108,99,255,.5), transparent)' }}/>
       </div>
     </section>
   )
@@ -614,7 +624,7 @@ function BusinessSelector() {
     <section id="soluciones" ref={ref} className="py-32 px-5 md:px-8" style={{ background:C.bg, borderTop:`1px solid ${C.border}` }}>
       <div className="max-w-5xl mx-auto">
         <div className={`text-center mb-16 transition-all duration-700 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <p style={{ fontFamily:FB, fontWeight:600, fontSize:11, letterSpacing:'.18em', color:'#22d3ee', textTransform:'uppercase', marginBottom:14 }}>{t.sel.label}</p>
+          <p style={{ fontFamily:FB, fontWeight:600, fontSize:11, letterSpacing:'.18em', color:'#6C63FF', textTransform:'uppercase', marginBottom:14 }}>{t.sel.label}</p>
           <h2 style={{ fontFamily:FD, fontWeight:700, fontSize:'clamp(28px,5vw,48px)', color:C.text, marginBottom:16, letterSpacing:'-.03em' }}>{t.sel.h2}</h2>
           <p style={{ fontFamily:FB, fontSize:16, color:C.muted, maxWidth:460, margin:'0 auto', lineHeight:1.7 }}>{t.sel.sub}</p>
         </div>
@@ -624,9 +634,9 @@ function BusinessSelector() {
             <button key={i} onClick={() => setActive(active===i ? null : i)}
               className="rounded-2xl p-5 text-left cursor-pointer transition-all duration-250 mx-card-hover"
               style={{
-                background: active===i ? 'rgba(34,211,238,.06)' : C.surface,
-                border: active===i ? '1px solid rgba(34,211,238,.3)' : `1px solid ${C.border}`,
-                boxShadow: active===i ? '0 0 0 4px rgba(34,211,238,.06)' : 'none',
+                background: active===i ? 'rgba(108,99,255,.08)' : C.surface,
+                border: active===i ? '1px solid rgba(108,99,255,.3)' : `1px solid ${C.border}`,
+                boxShadow: active===i ? '0 0 0 4px rgba(108,99,255,.06)' : 'none',
               }}>
               <div style={{ fontSize:28, marginBottom:10 }}>{cat.icon}</div>
               <div style={{ fontFamily:FB, fontWeight:600, fontSize:14, color:C.text, marginBottom:4 }}>{cat.name}</div>
@@ -646,8 +656,8 @@ function BusinessSelector() {
                   {t.cats[active].benefits.map((b,i) => (
                     <li key={i} className="flex items-center gap-3">
                       <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
-                        style={{ background:'rgba(34,211,238,.1)', border:'1px solid rgba(34,211,238,.2)' }}>
-                        <Check size={11} color="#22d3ee"/>
+                        style={{ background:'rgba(108,99,255,.1)', border:'1px solid rgba(108,99,255,.2)' }}>
+                        <Check size={11} color="#6C63FF"/>
                       </div>
                       <span style={{ fontFamily:FB, fontSize:14, color:'rgba(241,245,249,.8)' }}>{b}</span>
                     </li>
@@ -760,11 +770,11 @@ function TestimonialsSection() {
             {items.map((item, i) => (
               <div key={i} className="w-full flex-shrink-0 px-1">
                 <div className="mx-glass mx-gradient-border rounded-2xl p-8 md:p-10">
-                  <div style={{ fontFamily:'Georgia,serif', fontSize:56, lineHeight:.75, marginBottom:20, background:'linear-gradient(135deg,#22d3ee,#8b5cf6)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>&ldquo;</div>
+                  <div style={{ fontFamily:'Georgia,serif', fontSize:56, lineHeight:.75, marginBottom:20, background:'linear-gradient(135deg,#6C63FF,#a78bfa)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>&ldquo;</div>
                   <p style={{ fontFamily:FB, fontSize:17, color:'rgba(241,245,249,.85)', lineHeight:1.75, marginBottom:28 }}>{item.text}</p>
                   <div className="flex items-center gap-4">
                     <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
-                      style={{ background:'rgba(34,211,238,.07)', border:'1px solid rgba(34,211,238,.12)' }}>{item.icon}</div>
+                      style={{ background:'rgba(108,99,255,.07)', border:'1px solid rgba(108,99,255,.12)' }}>{item.icon}</div>
                     <div>
                       <div style={{ fontFamily:FB, fontWeight:600, fontSize:14, color:C.text }}>{item.biz}</div>
                       <div style={{ fontFamily:FB, fontSize:12, color:C.subtle }}>{item.city}</div>
@@ -789,7 +799,7 @@ function TestimonialsSection() {
                 className="cursor-pointer flex items-center justify-center transition-all duration-300"
                 style={{ minWidth:44, minHeight:44, background:'transparent', border:'none', padding:'0 4px' }}>
                 <span className="rounded-full block transition-all duration-300"
-                  style={{ width:cur===i?20:6, height:6, background:cur===i?'#22d3ee':'rgba(255,255,255,.2)' }}/>
+                  style={{ width:cur===i?20:6, height:6, background:cur===i?'#6C63FF':'rgba(255,255,255,.2)' }}/>
               </button>
             ))}
           </div>
@@ -812,9 +822,9 @@ function ProcessSection() {
   const { ref, inView } = useInView()
 
   const steps: { num:string; Icon: React.ElementType; title:string; desc:string; cta:string|null; ctaFn:(() => void)|null; chip:{text:string}|null; color:string }[] = [
-    { num:'01', Icon:MessageSquare, title:t.proc.s1t, desc:t.proc.s1d, cta:t.proc.s1cta, ctaFn:() => scrollTo('contacto'), chip:null, color:'#22d3ee' },
-    { num:'02', Icon:Zap,           title:t.proc.s2t, desc:t.proc.s2d, cta:null, ctaFn:null, chip:{ text:t.proc.s2chip }, color:'#8b5cf6' },
-    { num:'03', Icon:TrendingUp,    title:t.proc.s3t, desc:t.proc.s3d, cta:null, ctaFn:null, chip:{ text:t.proc.s3chip }, color:'#06b6d4' },
+    { num:'01', Icon:MessageSquare, title:t.proc.s1t, desc:t.proc.s1d, cta:t.proc.s1cta, ctaFn:() => scrollTo('contacto'), chip:null, color:'#6C63FF' },
+    { num:'02', Icon:Zap,           title:t.proc.s2t, desc:t.proc.s2d, cta:null, ctaFn:null, chip:{ text:t.proc.s2chip }, color:'#a78bfa' },
+    { num:'03', Icon:TrendingUp,    title:t.proc.s3t, desc:t.proc.s3d, cta:null, ctaFn:null, chip:{ text:t.proc.s3chip }, color:'#818cf8' },
   ]
 
   return (
@@ -881,9 +891,9 @@ function WhySection() {
   const { ref, inView } = useInView()
 
   const cards: { Icon: React.ElementType; title:string; desc:string; chip:string; color:string }[] = [
-    { Icon:Users,  title:t.why.c1t, desc:t.why.c1d, chip:t.why.c1chip, color:'#22d3ee' },
-    { Icon:Timer,  title:t.why.c2t, desc:t.why.c2d, chip:t.why.c2chip, color:'#8b5cf6' },
-    { Icon:Layers, title:t.why.c3t, desc:t.why.c3d, chip:t.why.c3chip, color:'#06b6d4' },
+    { Icon:Users,  title:t.why.c1t, desc:t.why.c1d, chip:t.why.c1chip, color:'#6C63FF' },
+    { Icon:Timer,  title:t.why.c2t, desc:t.why.c2d, chip:t.why.c2chip, color:'#a78bfa' },
+    { Icon:Layers, title:t.why.c3t, desc:t.why.c3d, chip:t.why.c3chip, color:'#818cf8' },
   ]
 
   return (
@@ -959,7 +969,7 @@ function CTASection() {
     outline:'none', transition:'border-color .2s, background .2s',
   }
   const onF = (e: React.FocusEvent<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>) => {
-    e.target.style.borderColor='rgba(34,211,238,.4)'; e.target.style.background='rgba(34,211,238,.04)'
+    e.target.style.borderColor='rgba(108,99,255,.4)'; e.target.style.background='rgba(108,99,255,.04)'
   }
   const onB = (e: React.FocusEvent<HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement>) => {
     e.target.style.borderColor='rgba(255,255,255,.09)'; e.target.style.background='rgba(255,255,255,.04)'
@@ -1011,12 +1021,12 @@ function CTASection() {
           <button type="submit" disabled={status!=='idle'}
             className="w-full py-4 cursor-pointer transition-all duration-200 rounded-xl"
             style={{
-              background: status==='success' ? 'rgba(34,197,94,.15)' : 'linear-gradient(135deg,#06b6d4,#7c3aed)',
+              background: status==='success' ? 'rgba(34,197,94,.15)' : 'linear-gradient(135deg,#6C63FF,#a78bfa)',
               color: status==='success' ? '#86efac' : '#fff',
               fontFamily:FD, fontWeight:700, fontSize:15,
               border: status==='success' ? '1px solid rgba(34,197,94,.3)' : 'none',
               opacity: status==='loading' ? .7 : 1,
-              boxShadow: status==='success' ? 'none' : '0 0 40px rgba(34,211,238,.15)',
+              boxShadow: status==='success' ? 'none' : '0 0 40px rgba(108,99,255,.2)',
             }}>
             {status==='loading' ? t.form.sending : status==='success' ? t.form.success : t.form.submit}
           </button>
@@ -1070,14 +1080,14 @@ function Footer() {
               <a href={IG} target="_blank" rel="noopener noreferrer" aria-label="Instagram"
                 className="w-9 h-9 mx-glass rounded-full flex items-center justify-center cursor-pointer transition-all duration-200"
                 style={{ color:'rgba(241,245,249,.5)' }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(34,211,238,.3)'; e.currentTarget.style.color='#22d3ee' }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(108,99,255,.4)'; e.currentTarget.style.color='#a78bfa' }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor=''; e.currentTarget.style.color='rgba(241,245,249,.5)' }}>
                 <IgIcon size={16} color="currentColor"/>
               </a>
               <a href={WA_GENERIC} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"
                 className="w-9 h-9 mx-glass rounded-full flex items-center justify-center cursor-pointer transition-all duration-200"
                 style={{ color:'rgba(241,245,249,.5)' }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(34,211,238,.3)'; e.currentTarget.style.color='#22d3ee' }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(108,99,255,.4)'; e.currentTarget.style.color='#a78bfa' }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor=''; e.currentTarget.style.color='rgba(241,245,249,.5)' }}>
                 <MessageCircle size={16}/>
               </a>
@@ -1253,7 +1263,7 @@ function ScrollProgress() {
 
   return (
     <div className="fixed top-0 left-0 right-0 z-[200] pointer-events-none" style={{ height:2 }}>
-      <div style={{ height:'100%', width:`${pct}%`, background:'linear-gradient(90deg,#22d3ee,#8b5cf6)', transition:'width .1s linear' }}/>
+      <div style={{ height:'100%', width:`${pct}%`, background:'linear-gradient(90deg,#6C63FF,#a78bfa)', transition:'width .1s linear' }}/>
     </div>
   )
 }
@@ -1288,7 +1298,7 @@ export default function HomeClient() {
       <a href="#main-content" className="sr-only"
         onFocus={e => { const el = e.currentTarget as HTMLElement; el.style.position='fixed'; el.style.top='12px'; el.style.left='12px'; el.style.zIndex='999'; el.style.clip='auto'; el.style.width='auto'; el.style.height='auto'; el.style.overflow='visible'; el.style.whiteSpace='normal' }}
         onBlur={e => { const el = e.currentTarget as HTMLElement; el.style.position=''; el.style.top=''; el.style.left=''; el.style.zIndex=''; el.style.clip=''; el.style.width=''; el.style.height=''; el.style.overflow=''; el.style.whiteSpace='' }}
-        style={{ padding:'8px 16px', background:'#22d3ee', color:'#07080c', fontFamily:FB, fontWeight:700, fontSize:13, borderRadius:8, textDecoration:'none' }}>
+        style={{ padding:'8px 16px', background:'#6C63FF', color:'#fff', fontFamily:FB, fontWeight:700, fontSize:13, borderRadius:8, textDecoration:'none' }}>
         Saltar al contenido principal
       </a>
       <ScrollProgress/>
