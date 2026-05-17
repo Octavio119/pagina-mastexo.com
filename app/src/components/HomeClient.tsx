@@ -9,7 +9,7 @@ import React, {
   useContext,
 } from 'react'
 import Image from 'next/image'
-import { Menu, X, ChevronLeft, ChevronRight, MessageCircle, Check, MessageSquare, Zap, TrendingUp, Users, Timer, Layers } from 'lucide-react'
+import { Menu, X, ChevronLeft, ChevronRight, MessageCircle, Check, MessageSquare, Zap, TrendingUp, Users, Timer, Layers, Globe, CreditCard, BarChart2, Bot } from 'lucide-react'
 
 function IgIcon({ size = 18, color = '#fff' }: { size?: number; color?: string }) {
   return (
@@ -108,7 +108,7 @@ const T = {
     ],
     testiData: [
       { icon:'✂️', text:'En dos semanas ya tenía clientes nuevos llegando por Instagram. No tuve que hacer nada técnico.', biz:'Barbería Ali', city:'Santiago Centro' },
-      { icon:'🍷', text:'Triplicamos las reservas en el primer mes. El equipo manejó todo.', biz:'Casona Monetta', city:'Mostazal' },
+      { icon:'🍷', text:'Triplicamos las reservas en el primer mes. El equipo manejó todo.', biz:'Casa de Campo', city:'Mostazal' },
       { icon:'🚐', text:'Ahora recibo pedidos mientras duermo. Con Mastexo fue fácil.', biz:'Food Truck La Ruta', city:'Viña del Mar' },
       { icon:'☕', text:'El café lleno los viernes gracias a los anuncios que ellos manejan.', biz:'Café Central', city:'Las Condes' },
       { icon:'🍽️', text:'Mis mesas se llenan los fines de semana sin depender de plataformas.', biz:'Restaurante Don Pedro', city:'Ñuñoa' },
@@ -177,7 +177,7 @@ const T = {
     ],
     testiData: [
       { icon:'✂️', text:"In two weeks new clients were already coming through Instagram. I didn't have to do anything technical.", biz:'Ali Barbershop', city:'Santiago Centro' },
-      { icon:'🍷', text:'We tripled bookings in the first month. The team handled everything.', biz:'Casona Monetta', city:'Mostazal' },
+      { icon:'🍷', text:'We tripled bookings in the first month. The team handled everything.', biz:'Casa de Campo', city:'Mostazal' },
       { icon:'🚐', text:'Now I receive orders while I sleep. With Mastexo it was easy.', biz:'Food Truck La Ruta', city:'Viña del Mar' },
       { icon:'☕', text:'The café is full on Fridays thanks to the ads they manage.', biz:'Café Central', city:'Las Condes' },
       { icon:'🍽️', text:'My tables fill up on weekends without depending on platforms.', biz:'Don Pedro Restaurant', city:'Ñuñoa' },
@@ -712,107 +712,391 @@ function HeroSection() {
 }
 
 // ─────────────────────────────────────────
-// BUSINESS SELECTOR
+// BENTO SERVICES — mini UI previews
+// ─────────────────────────────────────────
+function PreviewCRM() {
+  const cols = [{ l:'Nuevos', v:4, c:'#6C63FF' }, { l:'Activos', v:7, c:'#00D4FF' }, { l:'Cerrados', v:3, c:'#10b981' }]
+  return (
+    <div style={{ padding:'10px 0 4px' }}>
+      <div style={{ display:'flex', gap:5, marginBottom:8 }}>
+        {cols.map(c => (
+          <div key={c.l} style={{ flex:1, background:'rgba(255,255,255,.04)', borderRadius:7, padding:'6px 4px', textAlign:'center' }}>
+            <div style={{ fontSize:8, color:'rgba(255,255,255,.3)', marginBottom:3, textTransform:'uppercase', letterSpacing:'.06em' }}>{c.l}</div>
+            <div style={{ fontSize:16, fontWeight:700, color:c.c }}>{c.v}</div>
+          </div>
+        ))}
+      </div>
+      {['María G.','Carlos R.','Ana M.'].map((n,i) => (
+        <div key={n} style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'4px 0', borderBottom:'1px solid rgba(255,255,255,.04)', fontSize:10 }}>
+          <span style={{ color:'rgba(255,255,255,.5)' }}>{n}</span>
+          <span style={{ color:['#6C63FF','#00D4FF','#10b981'][i], fontSize:9, background:'rgba(108,99,255,.08)', padding:'2px 6px', borderRadius:4 }}>{['Lead','Activo','Ganado'][i]}</span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function PreviewPOS() {
+  return (
+    <div style={{ padding:'10px 0 4px' }}>
+      <div style={{ display:'flex', justifyContent:'space-between', marginBottom:6, fontSize:9, color:'rgba(255,255,255,.3)', textTransform:'uppercase', letterSpacing:'.06em' }}>
+        <span>Mesa 4 · Orden #142</span><span style={{ color:'#10b981' }}>● Activa</span>
+      </div>
+      {[['Pasta x2','$18.000'],['Pizza x1','$12.000'],['Bebidas x3','$6.000']].map(([n,p]) => (
+        <div key={n} style={{ display:'flex', justifyContent:'space-between', padding:'3px 0', borderBottom:'1px solid rgba(255,255,255,.04)', fontSize:10 }}>
+          <span style={{ color:'rgba(255,255,255,.5)' }}>{n}</span>
+          <span style={{ color:'rgba(255,255,255,.7)' }}>{p}</span>
+        </div>
+      ))}
+      <div style={{ display:'flex', justifyContent:'space-between', marginTop:6, fontSize:11, fontWeight:700 }}>
+        <span style={{ color:'rgba(255,255,255,.4)' }}>Total</span>
+        <span style={{ color:'#00D4FF' }}>$36.000</span>
+      </div>
+    </div>
+  )
+}
+
+function PreviewWebsite() {
+  return (
+    <div style={{ padding:'8px 0 4px' }}>
+      <div style={{ background:'rgba(255,255,255,.04)', borderRadius:8, overflow:'hidden' }}>
+        <div style={{ background:'rgba(255,255,255,.06)', padding:'5px 8px', display:'flex', alignItems:'center', gap:4 }}>
+          <div style={{ width:5, height:5, borderRadius:'50%', background:'#ef4444' }}/>
+          <div style={{ width:5, height:5, borderRadius:'50%', background:'#f59e0b' }}/>
+          <div style={{ width:5, height:5, borderRadius:'50%', background:'#10b981' }}/>
+          <div style={{ flex:1, background:'rgba(255,255,255,.08)', borderRadius:3, height:8, marginLeft:6 }}/>
+        </div>
+        <div style={{ padding:'10px 10px 8px' }}>
+          <div style={{ height:8, background:'linear-gradient(90deg,#6C63FF,#00D4FF)', borderRadius:4, width:'60%', marginBottom:6 }}/>
+          <div style={{ height:5, background:'rgba(255,255,255,.1)', borderRadius:3, width:'80%', marginBottom:4 }}/>
+          <div style={{ height:5, background:'rgba(255,255,255,.07)', borderRadius:3, width:'55%', marginBottom:8 }}/>
+          <div style={{ height:20, background:'rgba(108,99,255,.25)', borderRadius:5, width:60, display:'flex', alignItems:'center', justifyContent:'center' }}>
+            <div style={{ fontSize:7, color:'#6C63FF', fontWeight:700 }}>CTA →</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function PreviewChatbot() {
+  const msgs = [
+    { from:'bot', text:'Hola! ¿En qué te ayudo?' },
+    { from:'user', text:'Quiero reservar mesa' },
+    { from:'bot', text:'✓ Reserva para las 8pm' },
+  ]
+  return (
+    <div style={{ padding:'8px 0 4px', display:'flex', flexDirection:'column', gap:5 }}>
+      {msgs.map((m,i) => (
+        <div key={i} style={{
+          alignSelf: m.from==='user' ? 'flex-end' : 'flex-start',
+          background: m.from==='user' ? 'rgba(108,99,255,.25)' : 'rgba(255,255,255,.07)',
+          borderRadius: m.from==='user' ? '8px 8px 2px 8px' : '8px 8px 8px 2px',
+          padding:'5px 9px', fontSize:10, color:'rgba(255,255,255,.75)', maxWidth:'82%',
+        }}>{m.text}</div>
+      ))}
+    </div>
+  )
+}
+
+function PreviewWhatsApp() {
+  return (
+    <div style={{ padding:'8px 0 4px' }}>
+      <div style={{ display:'flex', justifyContent:'space-between', marginBottom:8, fontSize:9, color:'rgba(255,255,255,.3)', textTransform:'uppercase', letterSpacing:'.06em' }}>
+        <span>Broadcast activo</span><span style={{ color:'#25D366' }}>● Live</span>
+      </div>
+      {[['Enviados','247','rgba(255,255,255,.5)'],['Abiertos','189','#00D4FF'],['Respuestas','43','#10b981']].map(([l,v,c]) => (
+        <div key={l} style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'3px 0', borderBottom:'1px solid rgba(255,255,255,.04)', fontSize:10 }}>
+          <span style={{ color:'rgba(255,255,255,.4)' }}>{l}</span>
+          <span style={{ color:c, fontWeight:700 }}>{v}</span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function PreviewDashboard() {
+  const bars = [40, 65, 45, 80, 55, 90, 70]
+  return (
+    <div style={{ padding:'10px 0 4px' }}>
+      <div style={{ display:'flex', gap:4, marginBottom:8 }}>
+        <div style={{ flex:1, background:'rgba(108,99,255,.1)', borderRadius:7, padding:'6px 8px' }}>
+          <div style={{ fontSize:8, color:'rgba(255,255,255,.3)', marginBottom:2 }}>Ventas hoy</div>
+          <div style={{ fontSize:14, fontWeight:700, color:'#6C63FF' }}>$148k</div>
+        </div>
+        <div style={{ flex:1, background:'rgba(0,212,255,.08)', borderRadius:7, padding:'6px 8px' }}>
+          <div style={{ fontSize:8, color:'rgba(255,255,255,.3)', marginBottom:2 }}>Visitas</div>
+          <div style={{ fontSize:14, fontWeight:700, color:'#00D4FF' }}>2.4k</div>
+        </div>
+      </div>
+      <div style={{ display:'flex', alignItems:'flex-end', gap:3, height:28 }}>
+        {bars.map((h,i) => (
+          <div key={i} style={{ flex:1, height:`${h}%`, background:`linear-gradient(to top, #6C63FF, #00D4FF)`, borderRadius:'3px 3px 0 0', opacity:0.6+(i/bars.length)*0.4 }}/>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function PreviewMarketing() {
+  const steps = ['Trigger','Email','SMS','Cerrar']
+  return (
+    <div style={{ padding:'10px 0 4px' }}>
+      <div style={{ display:'flex', alignItems:'center', gap:0 }}>
+        {steps.map((s,i) => (
+          <React.Fragment key={s}>
+            <div style={{ flex:1, background:'rgba(108,99,255,.12)', borderRadius:6, padding:'5px 3px', textAlign:'center' }}>
+              <div style={{ fontSize:8, color:'rgba(255,255,255,.4)', textAlign:'center' }}>{s}</div>
+            </div>
+            {i < steps.length-1 && (
+              <div style={{ width:10, textAlign:'center', fontSize:9, color:'rgba(108,99,255,.6)', flexShrink:0 }}>→</div>
+            )}
+          </React.Fragment>
+        ))}
+      </div>
+      <div style={{ marginTop:8, display:'flex', flexDirection:'column', gap:3 }}>
+        {[['Tasa apertura','68%','#00D4FF'],['Conversión','24%','#10b981']].map(([l,v,c]) => (
+          <div key={l} style={{ display:'flex', justifyContent:'space-between', fontSize:10 }}>
+            <span style={{ color:'rgba(255,255,255,.4)' }}>{l}</span>
+            <span style={{ color:c, fontWeight:700 }}>{v}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function PreviewAnalytics() {
+  const points = [20,35,28,50,42,65,58,80,72,88]
+  const w = 120, h = 40
+  const max = 100, min = 0
+  const pts = points.map((v,i) => `${(i/(points.length-1))*w},${h - ((v-min)/(max-min))*h}`).join(' ')
+  return (
+    <div style={{ padding:'8px 0 4px' }}>
+      <div style={{ display:'flex', justifyContent:'space-between', marginBottom:6, fontSize:9 }}>
+        <span style={{ color:'rgba(255,255,255,.35)', textTransform:'uppercase', letterSpacing:'.06em' }}>Crecimiento</span>
+        <span style={{ color:'#10b981', fontWeight:700 }}>↑ +34%</span>
+      </div>
+      <svg viewBox={`0 0 ${w} ${h}`} style={{ width:'100%', height:36 }}>
+        <defs>
+          <linearGradient id="ag" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#00D4FF" stopOpacity="0.3"/>
+            <stop offset="100%" stopColor="#00D4FF" stopOpacity="0"/>
+          </linearGradient>
+        </defs>
+        <polygon points={`0,${h} ${pts} ${w},${h}`} fill="url(#ag)"/>
+        <polyline points={pts} fill="none" stroke="#00D4FF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    </div>
+  )
+}
+
+// ─────────────────────────────────────────
+// BENTO SERVICE CARD
+// ─────────────────────────────────────────
+type BentoService = {
+  id: string
+  name: string
+  tagline: string
+  Icon: React.ElementType
+  iconColor: string
+  preview: React.ReactNode
+  gridStyle?: React.CSSProperties
+}
+
+function BentoCard({ svc, inView, delay }: { svc: BentoService; inView: boolean; delay: number }) {
+  const [hov, setHov] = useState(false)
+  return (
+    <div
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        ...svc.gridStyle,
+        position: 'relative',
+        borderRadius: 16,
+        padding: 1,
+        background: hov
+          ? `linear-gradient(135deg, ${svc.iconColor}55, rgba(0,212,255,.3))`
+          : 'linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02))',
+        transition: 'all .3s ease',
+        cursor: 'pointer',
+        opacity: inView ? 1 : 0,
+        transform: inView ? 'translateY(0)' : 'translateY(20px)',
+        transitionDelay: `${delay}s`,
+        boxShadow: hov ? `0 8px 40px ${svc.iconColor}22, 0 0 0 1px ${svc.iconColor}22` : 'none',
+      }}
+    >
+      <div style={{
+        background: hov ? C.elevated : C.surface,
+        borderRadius: 15,
+        padding: '20px 20px 16px',
+        height: '100%',
+        transition: 'background .3s ease',
+        display: 'flex',
+        flexDirection: 'column',
+      }}>
+        <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:4 }}>
+          <div style={{
+            width: 32, height: 32, borderRadius: 8, flexShrink: 0,
+            background: `${svc.iconColor}18`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            transition: 'all .3s ease',
+            boxShadow: hov ? `0 0 12px ${svc.iconColor}44` : 'none',
+          }}>
+            <svc.Icon size={15} color={svc.iconColor}/>
+          </div>
+          <div>
+            <div style={{ fontFamily:FB, fontWeight:600, fontSize:13, color:C.text, lineHeight:1.2 }}>{svc.name}</div>
+            <div style={{ fontFamily:FB, fontSize:11, color:C.subtle }}>{svc.tagline}</div>
+          </div>
+        </div>
+        <div style={{ flex:1, overflow:'hidden' }}>{svc.preview}</div>
+        {hov && (
+          <div style={{
+            position:'absolute', inset:0, borderRadius:15, pointerEvents:'none',
+            background:`radial-gradient(circle at 50% 0%, ${svc.iconColor}08, transparent 70%)`,
+          }}/>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function CenterBentoCard({ inView }: { inView: boolean }) {
+  const features = ['Flujos automáticos sin código','IA que aprende de tus datos','Integración en 48 horas','Soporte continuo incluido']
+  return (
+    <div style={{
+      gridColumn:'2 / 4', gridRow:'1 / 3',
+      position:'relative', borderRadius:20, padding:1,
+      background:'linear-gradient(135deg,rgba(108,99,255,.5),rgba(0,212,255,.3),rgba(108,99,255,.2))',
+      opacity: inView ? 1 : 0,
+      transform: inView ? 'translateY(0)' : 'translateY(20px)',
+      transition:'all .7s cubic-bezier(.16,1,.3,1)',
+      transitionDelay:'.1s',
+      boxShadow:'0 0 60px rgba(108,99,255,.15), 0 0 120px rgba(0,212,255,.06)',
+    }}>
+      <div style={{
+        background:'linear-gradient(145deg,#0d1520,#09111a)',
+        borderRadius:19, height:'100%', padding:'36px 32px',
+        display:'flex', flexDirection:'column', justifyContent:'space-between',
+        overflow:'hidden', position:'relative',
+      }}>
+        {/* floating orbs */}
+        <div style={{ position:'absolute', top:-40, right:-40, width:160, height:160, borderRadius:'50%', background:'radial-gradient(circle,rgba(108,99,255,.15),transparent 70%)', pointerEvents:'none' }}/>
+        <div style={{ position:'absolute', bottom:-30, left:-30, width:120, height:120, borderRadius:'50%', background:'radial-gradient(circle,rgba(0,212,255,.1),transparent 70%)', pointerEvents:'none' }}/>
+
+        {/* badge */}
+        <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:20 }}>
+          <div style={{ display:'flex', alignItems:'center', gap:6, background:'rgba(108,99,255,.15)', border:'1px solid rgba(108,99,255,.3)', borderRadius:20, padding:'5px 12px' }}>
+            <div style={{ width:6, height:6, borderRadius:'50%', background:'#6C63FF', boxShadow:'0 0 8px #6C63FF' }}/>
+            <span style={{ fontFamily:FB, fontSize:11, fontWeight:600, color:'rgba(108,99,255,.9)', letterSpacing:'.06em', textTransform:'uppercase' }}>AI Powered</span>
+          </div>
+        </div>
+
+        {/* headline */}
+        <div style={{ flex:1, display:'flex', flexDirection:'column', justifyContent:'center' }}>
+          <h3 style={{ fontFamily:FD, fontWeight:800, fontSize:'clamp(24px,2.5vw,36px)', color:'#fff', lineHeight:1.15, letterSpacing:'-.03em', marginBottom:12 }}>
+            Automatización<br/>
+            <span style={{ background:'linear-gradient(90deg,#6C63FF,#00D4FF)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
+              Inteligente
+            </span>
+          </h3>
+          <p style={{ fontFamily:FB, fontSize:14, color:'rgba(255,255,255,.5)', lineHeight:1.65, maxWidth:280, marginBottom:24 }}>
+            Un ecosistema conectado donde cada herramienta potencia las demás. Tu negocio funcionando solo.
+          </p>
+          <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+            {features.map((f,i) => (
+              <div key={i} style={{ display:'flex', alignItems:'center', gap:10 }}>
+                <div style={{ width:18, height:18, borderRadius:5, background:'rgba(108,99,255,.15)', border:'1px solid rgba(108,99,255,.25)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                  <Check size={10} color="#6C63FF"/>
+                </div>
+                <span style={{ fontFamily:FB, fontSize:13, color:'rgba(255,255,255,.65)' }}>{f}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* mini ecosystem dots */}
+        <div style={{ marginTop:24, display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+          {['CRM','Web','POS','Chat','WA'].map((t,i) => (
+            <div key={t} style={{ textAlign:'center' }}>
+              <div style={{ width:28, height:28, borderRadius:8, background:`rgba(${[108,0,16,99,37][i]},${[99,212,185,255,211][i]},${[255,255,83,100,102][i]},.12)`, margin:'0 auto 4px', display:'flex', alignItems:'center', justifyContent:'center' }}>
+                <div style={{ width:6, height:6, borderRadius:'50%', background:`rgba(${[108,0,16,99,37][i]},${[99,212,185,255,211][i]},${[255,255,83,100,102][i]},.8)` }}/>
+              </div>
+              <div style={{ fontSize:8, color:'rgba(255,255,255,.3)', fontFamily:FB }}>{t}</div>
+            </div>
+          ))}
+          <div style={{ flex:1, height:1, background:'linear-gradient(90deg,rgba(108,99,255,.3),rgba(0,212,255,.3))', margin:'0 8px', marginBottom:14 }}/>
+          <div style={{ textAlign:'center' }}>
+            <div style={{ width:36, height:36, borderRadius:10, background:'linear-gradient(135deg,rgba(108,99,255,.3),rgba(0,212,255,.2))', border:'1px solid rgba(108,99,255,.4)', display:'flex', alignItems:'center', justifyContent:'center', margin:'0 auto 4px', boxShadow:'0 0 16px rgba(108,99,255,.3)' }}>
+              <Zap size={16} color="#6C63FF"/>
+            </div>
+            <div style={{ fontSize:8, color:'rgba(108,99,255,.8)', fontFamily:FB, fontWeight:600 }}>Core</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─────────────────────────────────────────
+// BUSINESS SELECTOR → BENTO SERVICES
 // ─────────────────────────────────────────
 function BusinessSelector() {
-  const t = useT()
   const { ref, inView } = useInView()
-  const [active, setActive] = useState<number | null>(null)
 
-  const waForCat = (name: string) =>
-    `${WA_BASE}?text=Hola%20Mastexo%2C%20tengo%20un%20negocio%20de%20tipo%20${encodeURIComponent(name)}%20y%20quiero%20un%20diagn%C3%B3stico%20gratuito.`
+  const services: BentoService[] = [
+    { id:'crm',       name:'CRM',                tagline:'Pipeline de clientes',   Icon:Users,       iconColor:'#6C63FF', preview:<PreviewCRM/>,       gridStyle:{ gridColumn:'1', gridRow:'1' } },
+    { id:'pos',       name:'POS Restaurant',     tagline:'Punto de venta digital', Icon:CreditCard,  iconColor:'#f59e0b', preview:<PreviewPOS/>,       gridStyle:{ gridColumn:'1', gridRow:'2' } },
+    { id:'websites',  name:'Websites',           tagline:'Presencia profesional',  Icon:Globe,       iconColor:'#00D4FF', preview:<PreviewWebsite/>,   gridStyle:{ gridColumn:'4', gridRow:'1' } },
+    { id:'chatbots',  name:'AI Chatbots',        tagline:'Atención autónoma 24/7', Icon:Bot,         iconColor:'#a78bfa', preview:<PreviewChatbot/>,   gridStyle:{ gridColumn:'4', gridRow:'2' } },
+    { id:'whatsapp',  name:'WhatsApp Auto',      tagline:'Mensajería inteligente', Icon:MessageCircle,iconColor:'#25D366',preview:<PreviewWhatsApp/>,  gridStyle:{ gridColumn:'1', gridRow:'3' } },
+    { id:'dash',      name:'Dashboards',         tagline:'Métricas en tiempo real',Icon:BarChart2,   iconColor:'#00D4FF', preview:<PreviewDashboard/>, gridStyle:{ gridColumn:'2', gridRow:'3' } },
+    { id:'marketing', name:'Marketing Auto',     tagline:'Campañas automáticas',   Icon:Zap,         iconColor:'#f472b6', preview:<PreviewMarketing/>, gridStyle:{ gridColumn:'3', gridRow:'3' } },
+    { id:'analytics', name:'Analytics',          tagline:'Inteligencia de datos',  Icon:TrendingUp,  iconColor:'#10b981', preview:<PreviewAnalytics/>, gridStyle:{ gridColumn:'4', gridRow:'3' } },
+  ]
+
+  const delays = [0, 0.15, 0.05, 0.2, 0.25, 0.3, 0.35, 0.4]
 
   return (
     <section id="soluciones" ref={ref} className="py-32 px-5 md:px-8" style={{ background:C.bg }}>
-      <div className="max-w-5xl mx-auto">
-        <div className={`text-center mb-16 transition-all duration-700 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="flex justify-center"><SectionLabel text={t.sel.label}/></div>
-          <h2 style={{ fontFamily:FD, fontWeight:800, fontSize:'clamp(32px,4vw,52px)', color:C.text, marginBottom:16, letterSpacing:'-.03em' }}>{t.sel.h2}</h2>
-          <p style={{ fontFamily:FB, fontSize:16, color:C.muted, maxWidth:460, margin:'0 auto', lineHeight:1.7 }}>{t.sel.sub}</p>
+      <div style={{ maxWidth:1080, margin:'0 auto' }}>
+
+        {/* Header */}
+        <div className={`text-center mb-14 transition-all duration-700 ${inView?'opacity-100 translate-y-0':'opacity-0 translate-y-8'}`}>
+          <div className="flex justify-center"><SectionLabel text="Ecosistema de Servicios"/></div>
+          <h2 style={{ fontFamily:FD, fontWeight:800, fontSize:'clamp(32px,4vw,52px)', color:C.text, marginBottom:16, letterSpacing:'-.03em' }}>
+            Todo lo que necesita<br/>
+            <span style={{ background:'linear-gradient(90deg,#6C63FF,#00D4FF)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
+              tu negocio digital
+            </span>
+          </h2>
+          <p style={{ fontFamily:FB, fontSize:16, color:C.muted, maxWidth:460, margin:'0 auto', lineHeight:1.7 }}>
+            Soluciones integradas que trabajan juntas. Un ecosistema completo para escalar.
+          </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
-          {t.cats.map((cat, i) => (
-            <button key={i}
-              onClick={e => {
-                setActive(active===i ? null : i)
-                const el = e.currentTarget as HTMLElement
-                el.style.transform = ''
-                el.style.transition = 'all .25s ease'
-              }}
-              className="text-left cursor-pointer"
-              style={{
-                background: active===i ? 'rgba(108,99,255,.06)' : 'rgba(13,17,23,.8)',
-                border: active===i ? '1px solid #6C63FF' : '1px solid rgba(255,255,255,.06)',
-                borderRadius: 16, padding: '28px 24px',
-                transition: 'all .25s ease',
-              }}
-              onMouseMove={e => {
-                if (active === i) return
-                const el = e.currentTarget as HTMLElement
-                const rect = el.getBoundingClientRect()
-                const x = (e.clientX - rect.left) / rect.width - 0.5
-                const y = (e.clientY - rect.top) / rect.height - 0.5
-                el.style.transition = 'transform .1s linear, border-color .25s, background .25s, box-shadow .25s'
-                el.style.borderColor = 'rgba(108,99,255,.4)'
-                el.style.background = '#141B24'
-                el.style.boxShadow = '0 8px 32px rgba(108,99,255,.12)'
-                el.style.transform = `perspective(800px) rotateX(${-y * 4}deg) rotateY(${x * 4}deg) translateY(-4px)`
-              }}
-              onMouseLeave={e => {
-                if (active === i) return
-                const el = e.currentTarget as HTMLElement
-                el.style.transition = 'transform .4s ease, border-color .25s, background .25s, box-shadow .25s'
-                el.style.borderColor = 'rgba(255,255,255,.06)'
-                el.style.background = 'rgba(13,17,23,.8)'
-                el.style.boxShadow = 'none'
-                el.style.transform = ''
-              }}>
-              <div className="flex items-center justify-center mb-4"
-                style={{ width:48, height:48, borderRadius:12, background:'rgba(108,99,255,.12)', fontSize:22, flexShrink:0 }}>
-                {cat.icon}
-              </div>
-              <div style={{ fontFamily:FB, fontWeight:600, fontSize:14, color:C.text, marginBottom:4 }}>{cat.name}</div>
-              <div style={{ fontFamily:FB, fontSize:12, color:C.subtle, lineHeight:1.5 }}>{cat.desc}</div>
-            </button>
+        {/* Bento Grid — desktop */}
+        <div className="hidden md:grid" style={{ gridTemplateColumns:'repeat(4,1fr)', gridTemplateRows:'repeat(3,auto)', gap:12 }}>
+          {services.map((svc,i) => <BentoCard key={svc.id} svc={svc} inView={inView} delay={delays[i]}/>)}
+          <CenterBentoCard inView={inView}/>
+        </div>
+
+        {/* Mobile grid — 2 cols, no bento */}
+        <div className="grid md:hidden grid-cols-2 gap-3">
+          {services.map((svc,i) => (
+            <BentoCard key={svc.id} svc={{ ...svc, gridStyle:undefined }} inView={inView} delay={delays[i]}/>
           ))}
         </div>
 
-        {active !== null && (
-          <div className="rounded-2xl p-8 mb-8 mx-slide-in mx-gradient-border" style={{ background:'rgba(255,255,255,.02)' }}>
-            <div className="flex flex-col md:flex-row gap-8 items-start md:items-center">
-              <div className="flex-1">
-                <h3 style={{ fontFamily:FD, fontWeight:700, fontSize:20, color:C.text, marginBottom:16, letterSpacing:'-.02em' }}>
-                  {t.sel.detailTitle} <span className="mx-gradient-text">{t.cats[active].name}</span>
-                </h3>
-                <ul className="space-y-3">
-                  {t.cats[active].benefits.map((b,i) => (
-                    <li key={i} className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
-                        style={{ background:'rgba(108,99,255,.1)', border:'1px solid rgba(108,99,255,.2)' }}>
-                        <Check size={11} color="#6C63FF"/>
-                      </div>
-                      <span style={{ fontFamily:FB, fontSize:14, color:'rgba(241,245,249,.8)' }}>{b}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <a href={waForCat(t.cats[active].name)} target="_blank" rel="noopener noreferrer"
-                className="mx-btn-primary inline-block px-6 py-3 cursor-pointer flex-shrink-0"
-                style={{ fontFamily:FD, fontWeight:700, fontSize:14 }}>
-                {t.sel.detailCta}
-              </a>
-            </div>
-          </div>
-        )}
-
-        <div className="text-center">
+        {/* CTA */}
+        <div className="text-center mt-12">
           <button onClick={() => scrollTo('contacto')}
             className="mx-btn-primary px-10 py-4 cursor-pointer mb-4"
             style={{ fontFamily:FD, fontWeight:700, fontSize:15 }}>
-            {t.sel.cta}
+            Solicitar diagnóstico gratuito
           </button>
-          <p style={{ fontFamily:FB, fontSize:12, color:C.subtle, marginTop:10 }}>{t.sel.ctaNote}</p>
+          <p style={{ fontFamily:FB, fontSize:12, color:C.subtle, marginTop:10 }}>Sin costo · Sin compromiso · Respuesta hoy</p>
         </div>
       </div>
     </section>
@@ -869,118 +1153,354 @@ function StatsSection() {
 }
 
 // ─────────────────────────────────────────
-// TESTIMONIALS
+// CASE STUDIES — visual data components
 // ─────────────────────────────────────────
-function TestimonialsSection() {
-  const t = useT()
-  const [cur, setCur] = useState(0)
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
-  const items = t.testiData
 
-  const next = useCallback(() => setCur(c => (c+1) % items.length), [items.length])
-  const prev = useCallback(() => setCur(c => (c-1+items.length) % items.length), [items.length])
-
-  const startTimer = useCallback(() => {
-    if (timerRef.current) clearInterval(timerRef.current)
-    timerRef.current = setInterval(next, 4000)
-  }, [next])
-
-  useEffect(() => {
-    startTimer()
-    return () => { if (timerRef.current) clearInterval(timerRef.current) }
-  }, [startTimer])
-
-  const cardStyle: React.CSSProperties = {
-    background: 'rgba(13,17,23,.9)',
-    border: '1px solid rgba(255,255,255,.06)',
-    borderRadius: 20,
-    transition: 'border-color .25s, transform .25s',
-  }
-
+function CaseChartBookings() {
+  const before = [12,14,11,13,10,15,12]
+  const after  = [14,22,31,42,38,52,61]
+  const W=220, H=72, max=70
+  const line = (pts: number[]) => pts.map((v,i)=>`${(i/(pts.length-1))*W},${H-((v/max)*H)}`).join(' ')
   return (
-    <section className="py-32 px-5 md:px-8 relative overflow-hidden" style={{ background:C.bg }}>
-      {/* Radial background */}
-      <div className="absolute inset-0 pointer-events-none" style={{ background:'radial-gradient(ellipse 60% 50% at 50% 50%,rgba(108,99,255,.04) 0%,transparent 70%)' }}/>
+    <div style={{ position:'relative' }}>
+      <div style={{ display:'flex', justifyContent:'space-between', marginBottom:6, fontSize:9, color:'rgba(255,255,255,.3)', textTransform:'uppercase', letterSpacing:'.08em' }}>
+        <span>Reservas mensuales</span>
+        <span style={{ color:'#10b981', fontWeight:700 }}>↑ +214%</span>
+      </div>
+      <svg viewBox={`0 0 ${W} ${H}`} style={{ width:'100%', height:60, overflow:'visible' }}>
+        <defs>
+          <linearGradient id="cg1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#6C63FF" stopOpacity=".4"/>
+            <stop offset="100%" stopColor="#6C63FF" stopOpacity="0"/>
+          </linearGradient>
+          <linearGradient id="cg2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#10b981" stopOpacity=".35"/>
+            <stop offset="100%" stopColor="#10b981" stopOpacity="0"/>
+          </linearGradient>
+        </defs>
+        <polygon points={`0,${H} ${line(before)} ${W},${H}`} fill="url(#cg1)"/>
+        <polyline points={line(before)} fill="none" stroke="#6C63FF" strokeWidth="1.5" strokeDasharray="3 2" opacity=".6"/>
+        <polygon points={`0,${H} ${line(after)} ${W},${H}`} fill="url(#cg2)"/>
+        <polyline points={line(after)} fill="none" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <circle cx={W} cy={H-((after[after.length-1]/max)*H)} r="3.5" fill="#10b981" opacity=".9"/>
+      </svg>
+      <div style={{ display:'flex', gap:12, marginTop:4 }}>
+        <div style={{ display:'flex', alignItems:'center', gap:4, fontSize:9, color:'rgba(255,255,255,.4)' }}>
+          <div style={{ width:12, height:1.5, background:'#6C63FF', opacity:.6, borderRadius:1 }}/>Antes
+        </div>
+        <div style={{ display:'flex', alignItems:'center', gap:4, fontSize:9, color:'rgba(255,255,255,.6)' }}>
+          <div style={{ width:12, height:1.5, background:'#10b981', borderRadius:1 }}/>Con Mastexo
+        </div>
+      </div>
+    </div>
+  )
+}
 
-      <div className="max-w-5xl mx-auto relative z-10">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-16">
-          <h2 style={{ fontFamily:FD, fontWeight:700, fontSize:'clamp(24px,4vw,40px)', color:C.text, letterSpacing:'-.03em' }}>{t.testi.title}</h2>
-          <div className="flex items-center gap-2 flex-shrink-0 px-4 py-2 rounded-full"
-            style={{ background:'rgba(255,184,0,.1)', border:'1px solid rgba(255,184,0,.2)' }}>
-            <span style={{ color:'#FFB800', fontSize:13 }}>★★★★★</span>
-            <span style={{ fontFamily:FB, fontSize:12, color:'rgba(255,184,0,.85)', fontWeight:600 }}>{t.testi.rating}</span>
+function CaseBookingFeed() {
+  const entries = [
+    { time:'09:14', name:'Diego M.',  service:'Corte + Barba', src:'Instagram' },
+    { time:'11:02', name:'Carlos R.', service:'Fade clásico',  src:'WhatsApp'  },
+    { time:'14:37', name:'Lucas P.',  service:'Corte completo',src:'Google'    },
+    { time:'18:55', name:'Andrés V.', service:'Barba diseño',  src:'Instagram' },
+  ]
+  const srcColor: Record<string,string> = { Instagram:'#e879f9', WhatsApp:'#25D366', Google:'#4285F4' }
+  return (
+    <div>
+      <div style={{ fontSize:9, color:'rgba(255,255,255,.3)', textTransform:'uppercase', letterSpacing:'.08em', marginBottom:8 }}>Reservas hoy</div>
+      {entries.map((e,i) => (
+        <div key={i} style={{ display:'flex', alignItems:'center', gap:8, padding:'5px 0', borderBottom:'1px solid rgba(255,255,255,.04)' }}>
+          <span style={{ fontSize:9, color:'rgba(255,255,255,.25)', width:28, flexShrink:0 }}>{e.time}</span>
+          <div style={{ flex:1 }}>
+            <div style={{ fontSize:10, color:'rgba(255,255,255,.7)', fontWeight:500 }}>{e.name}</div>
+            <div style={{ fontSize:9, color:'rgba(255,255,255,.3)' }}>{e.service}</div>
+          </div>
+          <span style={{ fontSize:8, padding:'2px 6px', borderRadius:4, background:`${srcColor[e.src]}18`, color:srcColor[e.src], fontWeight:600 }}>{e.src}</span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function CaseReservationChart() {
+  const days = ['L','M','X','J','V','S','D']
+  const vals = [4,6,5,8,12,15,10]
+  const max = 16
+  return (
+    <div>
+      <div style={{ display:'flex', justifyContent:'space-between', marginBottom:8, fontSize:9, color:'rgba(255,255,255,.3)', textTransform:'uppercase', letterSpacing:'.08em' }}>
+        <span>Reservas por día</span>
+        <span style={{ color:'#00D4FF', fontWeight:700 }}>3× promedio</span>
+      </div>
+      <div style={{ display:'flex', alignItems:'flex-end', gap:5, height:48 }}>
+        {vals.map((v,i) => (
+          <div key={i} style={{ flex:1, display:'flex', flexDirection:'column', alignItems:'center', gap:3 }}>
+            <div style={{ width:'100%', height:`${(v/max)*44}px`, background:`linear-gradient(to top,${i>=4?'#00D4FF':'rgba(0,212,255,.3)'},${i>=4?'rgba(0,212,255,.4)':'rgba(0,212,255,.1)'})`, borderRadius:'3px 3px 0 0', transition:'height .3s ease' }}/>
+            <span style={{ fontSize:8, color:'rgba(255,255,255,.25)' }}>{days[i]}</span>
+          </div>
+        ))}
+      </div>
+      <div style={{ marginTop:8, display:'flex', gap:12 }}>
+        {[['Cubiertos','48 semana','#00D4FF'],['Ocupación','87%','#10b981']].map(([l,v,c]) => (
+          <div key={l} style={{ flex:1, background:'rgba(255,255,255,.03)', borderRadius:7, padding:'6px 8px' }}>
+            <div style={{ fontSize:8, color:'rgba(255,255,255,.3)', marginBottom:2 }}>{l}</div>
+            <div style={{ fontSize:13, fontWeight:700, color:c }}>{v}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function CaseOrderFlow() {
+  const orders = [
+    { time:'02:14', item:'2× Tacos + Agua',    total:'$4.800', status:'paid'    },
+    { time:'08:33', item:'Combo completo x3',  total:'$14.400',status:'paid'    },
+    { time:'13:01', item:'Tortas + bebidas',   total:'$8.200', status:'paid'    },
+    { time:'21:48', item:'Menú especial x2',   total:'$11.000',status:'pending' },
+  ]
+  return (
+    <div>
+      <div style={{ display:'flex', justifyContent:'space-between', marginBottom:8, fontSize:9, color:'rgba(255,255,255,.3)', textTransform:'uppercase', letterSpacing:'.08em' }}>
+        <span>Pedidos automáticos</span>
+        <span style={{ color:'#f59e0b', fontWeight:700 }}>24/7 activo</span>
+      </div>
+      {orders.map((o,i) => (
+        <div key={i} style={{ display:'flex', alignItems:'center', gap:8, padding:'5px 0', borderBottom:'1px solid rgba(255,255,255,.04)' }}>
+          <div style={{ width:7, height:7, borderRadius:'50%', background:i===0?'rgba(255,255,255,.15)':i===3?'#f59e0b':'#10b981', flexShrink:0 }}/>
+          <span style={{ fontSize:9, color:'rgba(255,255,255,.25)', width:28, flexShrink:0 }}>{o.time}</span>
+          <div style={{ flex:1 }}>
+            <div style={{ fontSize:10, color:'rgba(255,255,255,.65)' }}>{o.item}</div>
+          </div>
+          <span style={{ fontSize:10, color: o.status==='paid'?'#10b981':'#f59e0b', fontWeight:600 }}>{o.total}</span>
+        </div>
+      ))}
+      <div style={{ marginTop:8, padding:'6px 10px', background:'rgba(245,158,11,.08)', borderRadius:8, border:'1px solid rgba(245,158,11,.2)', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+        <span style={{ fontSize:10, color:'rgba(255,255,255,.5)' }}>Ingresos esta semana</span>
+        <span style={{ fontSize:13, fontWeight:700, color:'#f59e0b' }}>$284.600</span>
+      </div>
+    </div>
+  )
+}
+
+function CaseCafeMetrics() {
+  const W=200, H=56
+  const pts = [8,14,12,20,18,28,24,35,30,42].map((v,i)=>`${(i/9)*W},${H-((v/44)*H)}`).join(' ')
+  return (
+    <div>
+      <div style={{ display:'flex', justifyContent:'space-between', marginBottom:8, fontSize:9, color:'rgba(255,255,255,.3)', textTransform:'uppercase', letterSpacing:'.08em' }}>
+        <span>Alcance de anuncios</span>
+        <span style={{ color:'#a78bfa', fontWeight:700 }}>↑ 4.2×</span>
+      </div>
+      <svg viewBox={`0 0 ${W} ${H}`} style={{ width:'100%', height:50, overflow:'visible' }}>
+        <defs>
+          <linearGradient id="cg3" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#a78bfa" stopOpacity=".35"/>
+            <stop offset="100%" stopColor="#a78bfa" stopOpacity="0"/>
+          </linearGradient>
+        </defs>
+        <polygon points={`0,${H} ${pts} ${W},${H}`} fill="url(#cg3)"/>
+        <polyline points={pts} fill="none" stroke="#a78bfa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+      <div style={{ display:'flex', gap:8, marginTop:4 }}>
+        {[['Viernes lleno','semana 3','#a78bfa'],['ROAS','3.8×','#10b981'],['Costo/cliente','$480','#00D4FF']].map(([l,v,c]) => (
+          <div key={l} style={{ flex:1, background:'rgba(255,255,255,.03)', borderRadius:6, padding:'5px 6px' }}>
+            <div style={{ fontSize:8, color:'rgba(255,255,255,.3)', marginBottom:1 }}>{l}</div>
+            <div style={{ fontSize:11, fontWeight:700, color:c }}>{v}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// ─────────────────────────────────────────
+// CASE STUDY CARD
+// ─────────────────────────────────────────
+type CaseStudy = {
+  biz: string
+  city: string
+  category: string
+  quote: string
+  stat: string
+  statLabel: string
+  accentColor: string
+  tags: string[]
+  visual: React.ReactNode
+  extra: React.ReactNode
+}
+
+function CaseCard({ cs, inView, delay, featured=false }: { cs:CaseStudy; inView:boolean; delay:number; featured?:boolean }) {
+  const [hov, setHov] = useState(false)
+  return (
+    <div
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      style={{
+        position:'relative', borderRadius:20, padding:1,
+        background: hov
+          ? `linear-gradient(135deg,${cs.accentColor}55,rgba(0,212,255,.2),rgba(255,255,255,.06))`
+          : `linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.02))`,
+        opacity: inView?1:0,
+        transform: inView ? (hov?'translateY(-4px)':'translateY(0)') : 'translateY(24px)',
+        transition:'all .5s cubic-bezier(.16,1,.3,1)',
+        transitionDelay:`${delay}s`,
+        boxShadow: hov ? `0 16px 48px ${cs.accentColor}18, 0 0 0 1px ${cs.accentColor}15` : 'none',
+        cursor:'default',
+      }}
+    >
+      <div style={{
+        background: hov ? C.elevated : C.surface,
+        borderRadius:19, overflow:'hidden', transition:'background .3s',
+        display:'flex', flexDirection: featured ? 'row' : 'column',
+      }}>
+        {/* Left / top: info */}
+        <div style={{ flex:1, padding: featured?'36px 32px':'28px 28px 24px', display:'flex', flexDirection:'column', justifyContent:'space-between' }}>
+          <div>
+            {/* header */}
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:20 }}>
+              <div>
+                <div style={{ fontFamily:FB, fontWeight:700, fontSize: featured?16:14, color:C.text, marginBottom:2 }}>{cs.biz}</div>
+                <div style={{ fontFamily:FB, fontSize:11, color:C.subtle }}>{cs.city} · {cs.category}</div>
+              </div>
+              <div style={{ padding:'4px 10px', borderRadius:20, background:`${cs.accentColor}15`, border:`1px solid ${cs.accentColor}30` }}>
+                <span style={{ fontFamily:FB, fontSize:10, fontWeight:600, color:cs.accentColor, letterSpacing:'.04em' }}>Case Study</span>
+              </div>
+            </div>
+
+            {/* big stat */}
+            <div style={{ marginBottom:16 }}>
+              <div style={{ fontFamily:FD, fontWeight:800, fontSize: featured?'clamp(40px,5vw,64px)':'clamp(32px,4vw,48px)', lineHeight:1, letterSpacing:'-.04em',
+                background:`linear-gradient(90deg,${cs.accentColor},#fff)`,
+                WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text',
+              }}>{cs.stat}</div>
+              <div style={{ fontFamily:FB, fontSize:12, color:C.muted, marginTop:4 }}>{cs.statLabel}</div>
+            </div>
+
+            {/* quote */}
+            <p style={{ fontFamily:FB, fontSize: featured?14:13, color:'rgba(241,245,249,.65)', lineHeight:1.7, marginBottom:20, fontStyle:'italic' }}>
+              &ldquo;{cs.quote}&rdquo;
+            </p>
+          </div>
+
+          {/* tags */}
+          <div style={{ display:'flex', flexWrap:'wrap', gap:6 }}>
+            {cs.tags.map(tag => (
+              <span key={tag} style={{ fontFamily:FB, fontSize:10, fontWeight:500, padding:'3px 8px', borderRadius:6,
+                background:'rgba(255,255,255,.04)', color:'rgba(255,255,255,.45)', border:'1px solid rgba(255,255,255,.07)' }}>
+                {tag}
+              </span>
+            ))}
           </div>
         </div>
 
-        {/* Desktop: 3-column grid */}
-        <div className="hidden md:grid grid-cols-3 gap-5">
-          {items.slice(0, 3).map((item, i) => (
-            <div key={i} className="p-8 cursor-default"
-              style={cardStyle}
-              onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor='rgba(108,99,255,.3)'; el.style.transform='translateY(-4px)' }}
-              onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor='rgba(255,255,255,.06)'; el.style.transform='' }}>
-              <div style={{ fontFamily:'Georgia,serif', fontSize:48, lineHeight:1, marginBottom:16, color:'#6C63FF' }}>&ldquo;</div>
-              <p style={{ fontFamily:FB, fontSize:14, color:'rgba(241,245,249,.8)', lineHeight:1.75, marginBottom:24 }}>{item.text}</p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
-                  style={{ background:'rgba(108,99,255,.08)', border:'1px solid rgba(108,99,255,.12)' }}>{item.icon}</div>
-                <div>
-                  <div style={{ fontFamily:FB, fontWeight:600, fontSize:13, color:C.text }}>{item.biz}</div>
-                  <div style={{ fontFamily:FB, fontSize:12, color:C.subtle }}>{item.city}</div>
-                </div>
-              </div>
-            </div>
+        {/* Right / bottom: visual */}
+        <div style={{
+          width: featured?'45%':undefined,
+          flexShrink: featured?0:undefined,
+          borderLeft: featured?'1px solid rgba(255,255,255,.05)':undefined,
+          borderTop: !featured?'1px solid rgba(255,255,255,.05)':undefined,
+          background: 'rgba(0,0,0,.25)',
+          padding: featured?'32px 28px':'20px 24px',
+          display:'flex', flexDirection:'column', gap:16,
+          position:'relative', overflow:'hidden',
+        }}>
+          <div style={{ position:'absolute', top:-40, right:-40, width:140, height:140, borderRadius:'50%',
+            background:`radial-gradient(circle,${cs.accentColor}10,transparent 70%)`, pointerEvents:'none' }}/>
+          {cs.visual}
+          {cs.extra}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─────────────────────────────────────────
+// TESTIMONIALS → CASE STUDIES
+// ─────────────────────────────────────────
+function TestimonialsSection() {
+  const { ref, inView } = useInView()
+
+  const cases: CaseStudy[] = [
+    {
+      biz:'Barbería Ali',    city:'Santiago Centro', category:'Barbería',
+      quote:'En dos semanas llegaban clientes nuevos por Instagram sin que yo tuviera que hacer nada. El sistema trabaja solo.',
+      stat:'+214%',         statLabel:'aumento en reservas (60 días)',
+      accentColor:'#6C63FF',
+      tags:['CRM','Instagram Ads','Reservas Automáticas','WhatsApp'],
+      visual:<CaseChartBookings/>,
+      extra:<CaseBookingFeed/>,
+    },
+    {
+      biz:'Casa de Campo',  city:'Mostazal', category:'Restaurante',
+      quote:'Triplicamos las reservas el primer mes. El equipo manejó todo y nosotros solo cocinamos.',
+      stat:'3×',            statLabel:'reservas en el primer mes',
+      accentColor:'#00D4FF',
+      tags:['Reservas','Web Premium','WhatsApp Bot','Google Maps'],
+      visual:<CaseReservationChart/>,
+      extra:null,
+    },
+    {
+      biz:'Food Truck La Ruta', city:'Viña del Mar', category:'Food Truck',
+      quote:'Ahora recibo pedidos a las 2am mientras duermo. Con Mastexo fue fácil y barato.',
+      stat:'24/7',          statLabel:'pedidos automáticos sin intervención',
+      accentColor:'#f59e0b',
+      tags:['POS Digital','Chatbot IA','WhatsApp','Pedidos Auto'],
+      visual:<CaseOrderFlow/>,
+      extra:null,
+    },
+    {
+      biz:'Café Central',   city:'Las Condes', category:'Cafetería',
+      quote:'Los viernes el café está lleno gracias a los anuncios que ellos manejan. El ROI es increíble.',
+      stat:'4.2×',          statLabel:'retorno sobre inversión en anuncios',
+      accentColor:'#a78bfa',
+      tags:['Meta Ads','Google Ads','Reportes IA','Segmentación'],
+      visual:<CaseCafeMetrics/>,
+      extra:null,
+    },
+  ]
+
+  return (
+    <section className="py-32 px-5 md:px-8 relative overflow-hidden" style={{ background:C.bg }} ref={ref}>
+      <div className="absolute inset-0 pointer-events-none" style={{ background:'radial-gradient(ellipse 70% 40% at 50% 60%,rgba(108,99,255,.03),transparent 70%)' }}/>
+
+      <div style={{ maxWidth:1080, margin:'0 auto', position:'relative', zIndex:1 }}>
+
+        {/* Header */}
+        <div className={`text-center mb-16 transition-all duration-700 ${inView?'opacity-100 translate-y-0':'opacity-0 translate-y-8'}`}>
+          <div className="flex justify-center"><SectionLabel text="Resultados reales"/></div>
+          <h2 style={{ fontFamily:FD, fontWeight:800, fontSize:'clamp(32px,4vw,52px)', color:C.text, marginBottom:16, letterSpacing:'-.03em' }}>
+            Software real,{' '}
+            <span style={{ background:'linear-gradient(90deg,#6C63FF,#00D4FF)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
+              resultados reales
+            </span>
+          </h2>
+          <p style={{ fontFamily:FB, fontSize:16, color:C.muted, maxWidth:420, margin:'0 auto', lineHeight:1.7 }}>
+            Cada número es un negocio real que creció con Mastexo.
+          </p>
+        </div>
+
+        {/* Featured card — full width */}
+        <div className="mb-4">
+          <CaseCard cs={cases[0]} inView={inView} delay={0} featured/>
+        </div>
+
+        {/* 3 cards grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {cases.slice(1).map((cs,i) => (
+            <CaseCard key={cs.biz} cs={cs} inView={inView} delay={0.1 + i*0.08}/>
           ))}
         </div>
 
-        {/* Mobile: slider */}
-        <div className="md:hidden">
-          <div className="relative overflow-hidden"
-            onMouseEnter={() => { if (timerRef.current) clearInterval(timerRef.current) }}
-            onMouseLeave={startTimer}>
-            <div className="flex" style={{ transform:`translateX(-${cur*100}%)`, transition:'transform .6s cubic-bezier(.16,1,.3,1)' }}>
-              {items.map((item, i) => (
-                <div key={i} className="w-full flex-shrink-0 px-0.5">
-                  <div className="p-8" style={cardStyle}>
-                    <div style={{ fontFamily:'Georgia,serif', fontSize:48, lineHeight:1, marginBottom:16, color:'#6C63FF' }}>&ldquo;</div>
-                    <p style={{ fontFamily:FB, fontSize:15, color:'rgba(241,245,249,.85)', lineHeight:1.75, marginBottom:24 }}>{item.text}</p>
-                    <div className="flex items-center gap-4">
-                      <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
-                        style={{ background:'rgba(108,99,255,.08)', border:'1px solid rgba(108,99,255,.12)' }}>{item.icon}</div>
-                      <div>
-                        <div style={{ fontFamily:FB, fontWeight:600, fontSize:14, color:C.text }}>{item.biz}</div>
-                        <div style={{ fontFamily:FB, fontSize:12, color:C.subtle }}>{item.city}</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
+        {/* Bottom proof bar */}
+        <div className={`mt-14 flex flex-wrap justify-center gap-10 md:gap-16 transition-all duration-700 ${inView?'opacity-100':'opacity-0'}`}
+          style={{ transitionDelay:'.45s' }}>
+          {[['85+','Negocios activos'],['14 días','Primer cliente'],['98%','Satisfacción'],['3×','Promedio de crecimiento']].map(([n,l]) => (
+            <div key={l} style={{ textAlign:'center' }}>
+              <div style={{ fontFamily:FD, fontWeight:800, fontSize:'clamp(26px,3vw,38px)', letterSpacing:'-.03em',
+                background:'linear-gradient(135deg,#fff 30%,#6C63FF)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>{n}</div>
+              <div style={{ fontFamily:FB, fontSize:11, color:C.subtle, marginTop:4, textTransform:'uppercase', letterSpacing:'.08em' }}>{l}</div>
             </div>
-          </div>
-
-          <div className="flex items-center justify-center gap-5 mt-8">
-            <button type="button" onClick={prev} aria-label="Anterior"
-              className="w-11 h-11 mx-glass rounded-full flex items-center justify-center cursor-pointer mx-btn-ghost transition-all duration-200"
-              style={{ color:C.muted }}>
-              <ChevronLeft size={18}/>
-            </button>
-            <div className="flex gap-1 items-center" role="tablist" aria-label="Testimonios">
-              {items.map((item, i) => (
-                <button key={i} role="tab" aria-selected={cur===i} aria-label={`Ver testimonio de ${item.biz}`}
-                  onClick={() => setCur(i)}
-                  className="cursor-pointer flex items-center justify-center transition-all duration-300"
-                  style={{ minWidth:44, minHeight:44, background:'transparent', border:'none', padding:'0 4px' }}>
-                  <span className="rounded-full block transition-all duration-300"
-                    style={{ width:cur===i?20:6, height:6, background:cur===i?'#6C63FF':'rgba(255,255,255,.2)' }}/>
-                </button>
-              ))}
-            </div>
-            <button type="button" onClick={next} aria-label="Siguiente"
-              className="w-11 h-11 mx-glass rounded-full flex items-center justify-center cursor-pointer mx-btn-ghost transition-all duration-200"
-              style={{ color:C.muted }}>
-              <ChevronRight size={18}/>
-            </button>
-          </div>
+          ))}
         </div>
       </div>
     </section>
@@ -1121,6 +1641,181 @@ function WhySection() {
             {t.why.megaCta}
           </button>
           <p className="relative z-10" style={{ fontFamily:FB, fontSize:12, color:C.subtle }}>{t.why.megaChip}</p>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─────────────────────────────────────────
+// FINAL CTA — cinematic SaaS enterprise
+// ─────────────────────────────────────────
+function FinalCTASection() {
+  const { ref, inView } = useInView()
+  const [btnHov, setBtnHov] = useState(false)
+
+  const particles = Array.from({ length: 28 }, (_, i) => ({
+    x: `${(i * 37 + 11) % 97}%`,
+    y: `${(i * 53 + 7) % 91}%`,
+    size: i % 3 === 0 ? 3 : i % 3 === 1 ? 2 : 1.5,
+    delay: `${(i * 0.37) % 4}s`,
+    dur: `${3 + (i % 4)}s`,
+  }))
+
+  const floats = [
+    { label:'Reservas hoy',     val:'+18',   sub:'↑ 214% vs. antes',         color:'#6C63FF', x:'left-[2%]',  y:'top-[22%]',  delay:'0s',   dur:'5s'  },
+    { label:'Clientes activos', val:'142',   sub:'atendidos por IA',          color:'#10b981', x:'right-[3%]', y:'top-[18%]',  delay:'1.5s', dur:'6s'  },
+    { label:'WhatsApp Auto',    val:'247',   sub:'mensajes enviados hoy',     color:'#25D366', x:'left-[1%]',  y:'bottom-[22%]',delay:'2.4s',dur:'4.5s'},
+    { label:'Ingresos semana',  val:'$284k', sub:'en plataforma Mastexo',     color:'#f59e0b', x:'right-[2%]', y:'bottom-[20%]',delay:'0.9s',dur:'5.5s'},
+  ]
+
+  return (
+    <section ref={ref} style={{ background:'#04060C', position:'relative', overflow:'hidden', padding:'140px 20px 160px' }}>
+      <style>{`
+        @keyframes mx-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+        @keyframes mx-orb{0%,100%{transform:scale(1) translate(0,0);opacity:.35}50%{transform:scale(1.12) translate(8px,-8px);opacity:.55}}
+        @keyframes mx-particle{0%,100%{transform:translateY(0);opacity:.25}50%{transform:translateY(-8px);opacity:.6}}
+        @keyframes mx-grad-shift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+        @keyframes mx-border-spin{from{--angle:0deg}to{--angle:360deg}}
+        @keyframes mx-ping-dot{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.6);opacity:0}}
+      `}</style>
+
+      {/* subtle dot grid */}
+      <div style={{ position:'absolute', inset:0, pointerEvents:'none', zIndex:0,
+        backgroundImage:'radial-gradient(rgba(108,99,255,.12) 1px, transparent 1px)',
+        backgroundSize:'36px 36px', opacity:.6,
+      }}/>
+
+      {/* glow orbs */}
+      <div style={{ position:'absolute', top:'10%', left:'20%', width:480, height:480, borderRadius:'50%', filter:'blur(100px)',
+        background:'radial-gradient(circle,rgba(108,99,255,.22),transparent 70%)',
+        animation:'mx-orb 9s ease-in-out infinite', pointerEvents:'none', zIndex:0 }}/>
+      <div style={{ position:'absolute', bottom:'5%', right:'18%', width:400, height:400, borderRadius:'50%', filter:'blur(90px)',
+        background:'radial-gradient(circle,rgba(0,212,255,.15),transparent 70%)',
+        animation:'mx-orb 11s ease-in-out infinite', animationDelay:'3s', pointerEvents:'none', zIndex:0 }}/>
+      <div style={{ position:'absolute', top:'45%', left:'50%', transform:'translate(-50%,-50%)', width:600, height:300, borderRadius:'50%', filter:'blur(120px)',
+        background:'radial-gradient(circle,rgba(167,139,250,.08),transparent 70%)',
+        pointerEvents:'none', zIndex:0 }}/>
+
+      {/* particles */}
+      {particles.map((p,i) => (
+        <div key={i} style={{ position:'absolute', left:p.x, top:p.y, width:p.size, height:p.size, borderRadius:'50%',
+          background:`rgba(${i%3===0?'108,99,255':i%3===1?'0,212,255':'167,139,250'},.5)`,
+          animation:`mx-particle ${p.dur} ease-in-out infinite`, animationDelay:p.delay,
+          pointerEvents:'none', zIndex:1 }}/>
+      ))}
+
+      {/* floating cards */}
+      {floats.map((f,i) => (
+        <div key={i} className={`absolute hidden lg:block ${f.x} ${f.y}`}
+          style={{ zIndex:2, animation:`mx-float ${f.dur} ease-in-out infinite`, animationDelay:f.delay,
+            opacity: inView?1:0, transition:'opacity .8s ease', transitionDelay:`${0.2+i*0.15}s` }}>
+          <div style={{ background:'rgba(13,17,28,.85)', backdropFilter:'blur(20px)', WebkitBackdropFilter:'blur(20px)',
+            border:`1px solid ${f.color}25`, borderRadius:14, padding:'12px 16px', minWidth:160,
+            boxShadow:`0 8px 32px rgba(0,0,0,.4), 0 0 0 1px ${f.color}15, inset 0 1px 0 rgba(255,255,255,.05)` }}>
+            <div style={{ display:'flex', alignItems:'center', gap:6, marginBottom:6 }}>
+              <div style={{ width:6, height:6, borderRadius:'50%', background:f.color, animation:'mx-ping-dot 2s ease-in-out infinite', animationDelay:f.delay }}/>
+              <span style={{ fontFamily:FB, fontSize:10, color:'rgba(255,255,255,.4)', textTransform:'uppercase', letterSpacing:'.07em' }}>{f.label}</span>
+            </div>
+            <div style={{ fontFamily:FD, fontWeight:800, fontSize:22, color:'#fff', letterSpacing:'-.03em', lineHeight:1 }}>{f.val}</div>
+            <div style={{ fontFamily:FB, fontSize:10, color:'rgba(255,255,255,.35)', marginTop:3 }}>{f.sub}</div>
+          </div>
+        </div>
+      ))}
+
+      {/* center content */}
+      <div style={{ position:'relative', zIndex:10, maxWidth:680, margin:'0 auto', textAlign:'center' }}>
+
+        {/* badge */}
+        <div className={`flex justify-center mb-8 transition-all duration-700 ${inView?'opacity-100 translate-y-0':'opacity-0 translate-y-6'}`}>
+          <div style={{ display:'inline-flex', alignItems:'center', gap:8,
+            background:'rgba(108,99,255,.1)', border:'1px solid rgba(108,99,255,.25)',
+            borderRadius:99, padding:'7px 16px' }}>
+            <div style={{ width:6, height:6, borderRadius:'50%', background:'#6C63FF', boxShadow:'0 0 10px #6C63FF', animation:'mx-ping-dot 2s ease-in-out infinite' }}/>
+            <span style={{ fontFamily:FB, fontSize:11, fontWeight:600, color:'rgba(108,99,255,.9)', letterSpacing:'.08em', textTransform:'uppercase' }}>
+              Mastexo Platform · AI-Powered
+            </span>
+          </div>
+        </div>
+
+        {/* headline */}
+        <h2 className={`transition-all duration-700 ${inView?'opacity-100 translate-y-0':'opacity-0 translate-y-8'}`}
+          style={{ transitionDelay:'.1s', fontFamily:FD, fontWeight:800, fontSize:'clamp(32px,5vw,62px)', lineHeight:1.1, letterSpacing:'-.04em', color:'#fff', marginBottom:20 }}>
+          Tu negocio merece operar<br/>
+          <span style={{
+            background:'linear-gradient(90deg,#6C63FF,#a78bfa,#00D4FF,#6C63FF)',
+            backgroundSize:'300% 100%',
+            WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text',
+            animation:'mx-grad-shift 5s ease infinite',
+          }}>
+            como una empresa moderna.
+          </span>
+        </h2>
+
+        {/* subheadline */}
+        <p className={`transition-all duration-700 ${inView?'opacity-100 translate-y-0':'opacity-0 translate-y-6'}`}
+          style={{ transitionDelay:'.2s', fontFamily:FB, fontSize:'clamp(15px,2vw,18px)', color:'rgba(255,255,255,.5)', lineHeight:1.75, marginBottom:48, maxWidth:520, margin:'0 auto 48px' }}>
+          Mastexo automatiza, organiza y optimiza tu negocio para conseguir más clientes con menos trabajo manual.
+        </p>
+
+        {/* CTA button */}
+        <div className={`transition-all duration-700 ${inView?'opacity-100 translate-y-0':'opacity-0 translate-y-6'}`}
+          style={{ transitionDelay:'.3s', display:'flex', flexDirection:'column', alignItems:'center', gap:16 }}>
+
+          <button
+            onClick={() => scrollTo('contacto')}
+            onMouseEnter={() => setBtnHov(true)}
+            onMouseLeave={() => setBtnHov(false)}
+            style={{
+              position:'relative', display:'inline-flex', alignItems:'center', gap:12,
+              padding:'18px 40px', borderRadius:14, cursor:'pointer',
+              background: btnHov
+                ? 'linear-gradient(135deg,rgba(108,99,255,.25),rgba(0,212,255,.15))'
+                : 'rgba(255,255,255,.06)',
+              backdropFilter:'blur(24px)', WebkitBackdropFilter:'blur(24px)',
+              border:`1px solid ${btnHov?'rgba(108,99,255,.6)':'rgba(255,255,255,.12)'}`,
+              boxShadow: btnHov
+                ? '0 0 40px rgba(108,99,255,.35), 0 0 80px rgba(108,99,255,.15), inset 0 1px 0 rgba(255,255,255,.1)'
+                : 'inset 0 1px 0 rgba(255,255,255,.06)',
+              transform: btnHov ? 'translateY(-3px) scale(1.02)' : 'translateY(0) scale(1)',
+              transition:'all .3s cubic-bezier(.16,1,.3,1)',
+              fontFamily:FD, fontWeight:700, fontSize:16, color:'#fff', letterSpacing:'-.01em',
+            }}>
+            {/* inner shimmer */}
+            <span style={{ position:'absolute', inset:0, borderRadius:14, overflow:'hidden', pointerEvents:'none' }}>
+              <span style={{
+                position:'absolute', top:0, left: btnHov?'110%':'-60%', width:'50%', height:'100%',
+                background:'linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent)',
+                transform:'skewX(-20deg)', transition:'left .6s ease',
+              }}/>
+            </span>
+            Solicitar diagnóstico gratuito
+            <span style={{ opacity:.7, fontSize:18 }}>→</span>
+          </button>
+
+          <p style={{ fontFamily:FB, fontSize:12, color:'rgba(255,255,255,.25)', letterSpacing:'.04em' }}>
+            Sin costo · Sin compromiso · Respuesta hoy
+          </p>
+        </div>
+
+        {/* trust strip */}
+        <div className={`flex flex-wrap items-center justify-center gap-6 mt-14 transition-all duration-700 ${inView?'opacity-100':'opacity-0'}`}
+          style={{ transitionDelay:'.45s' }}>
+          {[
+            ['85+','negocios activos'],
+            ['14 días','primer cliente'],
+            ['LATAM','Chile · México · Arg.'],
+          ].map(([n,l]) => (
+            <div key={l} style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:2 }}>
+              <span style={{ fontFamily:FD, fontWeight:800, fontSize:20, color:'rgba(255,255,255,.8)', letterSpacing:'-.02em' }}>{n}</span>
+              <span style={{ fontFamily:FB, fontSize:10, color:'rgba(255,255,255,.3)', textTransform:'uppercase', letterSpacing:'.08em' }}>{l}</span>
+            </div>
+          ))}
+          <div style={{ width:1, height:28, background:'rgba(255,255,255,.08)' }} className="hidden sm:block"/>
+          <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+            <div style={{ width:8, height:8, borderRadius:'50%', background:'#10b981', boxShadow:'0 0 8px #10b981' }}/>
+            <span style={{ fontFamily:FB, fontSize:11, color:'rgba(255,255,255,.4)' }}>Plataforma operando · 24/7</span>
+          </div>
         </div>
       </div>
     </section>
@@ -1551,7 +2246,7 @@ export default function HomeClient() {
         <ProcessSection/>
         <SectionDivider/>
         <WhySection/>
-        <SectionDivider/>
+        <FinalCTASection/>
         <CTASection/>
       </main>
       <Footer/>
