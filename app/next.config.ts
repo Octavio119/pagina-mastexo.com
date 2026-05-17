@@ -22,7 +22,7 @@ const securityHeaders = [
   { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
   // Prevents cross-origin requests from reading this site's resources (e.g. OG image embeds)
   // NOTE: set to "cross-origin" if you need og:image to be loadable by social crawlers
-  { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
+  { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
   // Disables browser DNS prefetching (minor timing-fingerprint reduction, small latency cost)
   { key: "X-DNS-Prefetch-Control", value: "off" },
   // Content Security Policy

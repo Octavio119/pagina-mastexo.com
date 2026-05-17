@@ -56,8 +56,8 @@ const T = {
     nav: { solutions: 'Soluciones', process: 'Proceso', results: 'Resultados', contact: 'Contacto', cta: 'Diagnóstico gratis' },
     hero: {
       badge: '+85 negocios ya confían en Mastexo · LATAM',
-      h1a: 'Resultados digitales,', h1b: 'no complicaciones.',
-      sub: 'Diseñamos páginas web y soluciones digitales que convierten visitantes en clientes reales. Para restaurantes, barberías, salones y tiendas en LATAM.',
+      h1a: 'Automatización digital,', h1b: 'restaurantes y negocios en Chile.',
+      sub: 'Automatizamos reservas, WhatsApp, CRM y marketing para restaurantes, barberías y tiendas. Primeros clientes reales en 14 días. Sin conocimientos técnicos.',
       cta1: 'Solicitar diagnóstico gratis', cta2: 'Ver cómo funciona',
       s1n: '+85', s1l: 'Negocios activos', s2n: '14', s2l: 'Días al primer cliente', s3n: '3×', s3l: 'Más reservas promedio',
       cardName: 'Barbería Ali - Santiago', cardQuote: 'En dos semanas llegaban clientes por Instagram',

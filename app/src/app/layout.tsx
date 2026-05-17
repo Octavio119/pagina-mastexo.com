@@ -21,20 +21,20 @@ const BASE_URL = "https://mastexo.com";
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "Mastexo — Resultados, no complicaciones",
+    default: "Automatización Digital para Restaurantes y Negocios en Chile | Mastexo",
     template: "%s | Mastexo",
   },
   description:
-    "Diseñamos páginas web y soluciones digitales que convierten visitantes en clientes reales. Para restaurantes, barberías, salones y tiendas en LATAM.",
+    "Mastexo automatiza reservas, WhatsApp, CRM y marketing para restaurantes, barberías y tiendas en Chile. Primeros clientes en 14 días. Sin conocimientos técnicos.",
   keywords: [
-    "marketing digital Chile",
-    "páginas web negocios LATAM",
-    "más clientes para restaurantes",
-    "publicidad barberías",
-    "marketing salones belleza",
-    "negocios locales Chile",
-    "leads clientes nuevos",
-    "Mastexo Digital",
+    "automatización restaurantes Chile",
+    "CRM para negocios Chile",
+    "chatbot WhatsApp negocios",
+    "automatización marketing digital LATAM",
+    "POS restaurantes Chile",
+    "más clientes para restaurantes Chile",
+    "marketing digital negocios locales",
+    "Mastexo Digital automatización",
   ],
   authors: [{ name: "Mastexo", url: BASE_URL }],
   creator: "Mastexo",
@@ -43,9 +43,9 @@ export const metadata: Metadata = {
     locale: "es_CL",
     url: BASE_URL,
     siteName: "Mastexo",
-    title: "Mastexo — Resultados digitales, no complicaciones",
+    title: "Automatización Digital para Restaurantes y Negocios en Chile | Mastexo",
     description:
-      "Más clientes en 14 días para restaurantes, barberías, salones y tiendas. Sin complicaciones técnicas.",
+      "Automatiza reservas, WhatsApp, CRM y marketing para tu restaurante o negocio en Chile. Primeros clientes en 14 días.",
     images: [
       {
         url: "/og-image.png",
@@ -57,9 +57,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mastexo — Resultados digitales, no complicaciones",
+    title: "Automatización Digital para Restaurantes y Negocios en Chile | Mastexo",
     description:
-      "Más clientes en 14 días. Sin complicaciones técnicas. Para negocios locales en LATAM.",
+      "Automatiza reservas, WhatsApp, CRM y marketing. Primeros clientes en 14 días. Para negocios en Chile y LATAM.",
     images: ["/og-image.png"],
   },
   robots: {
@@ -75,6 +75,11 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: BASE_URL,
+    languages: {
+      'es-CL': BASE_URL,
+      'es-MX': BASE_URL,
+      'es-AR': BASE_URL,
+    },
   },
   verification: {
     google: "xbxi_pMfZwMVDOsFl7tC6N79Wi15w2DC07vWBBAwLSU",
@@ -114,39 +119,83 @@ const schemaOrganization = {
   paymentAccepted: "Transferencia bancaria, tarjeta de crédito",
   openingHours: "Mo-Fr 09:00-18:00",
   knowsAbout: [
-    "Marketing digital para restaurantes",
-    "Páginas web para barberías",
-    "Marketing para salones de belleza",
+    "Automatización digital para restaurantes Chile",
+    "CRM para negocios locales LATAM",
+    "POS para restaurantes y cafeterías",
+    "Chatbot WhatsApp para negocios",
+    "WhatsApp automation para tiendas y restaurantes",
+    "Marketing automation LATAM",
+    "Dashboard analytics para negocios locales",
+    "Websites para restaurantes y barberías",
     "Publicidad en Facebook e Instagram",
-    "Google Maps para negocios locales",
-    "Marketing digital LATAM",
+    "Google Maps para negocios locales Chile",
   ],
   hasOfferCatalog: {
     "@type": "OfferCatalog",
-    name: "Servicios de Marketing Digital",
+    name: "Ecosistema de Automatización Digital para Negocios",
     itemListElement: [
       {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "Diseño de páginas web para negocios locales",
-          description: "Páginas web optimizadas para SEO local, reservas online y captación de clientes en Chile y LATAM",
+          name: "CRM para negocios locales en Chile",
+          description: "Sistema de gestión de clientes con pipeline de ventas, seguimiento automático y reportes para restaurantes y negocios locales en Chile",
         },
       },
       {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "Publicidad en Facebook e Instagram",
-          description: "Campañas de Meta Ads geolocalizadas para restaurantes, barberías y negocios locales",
+          name: "POS Digital para Restaurantes",
+          description: "Punto de venta digital para restaurantes y cafeterías con gestión de pedidos, mesas y pagos integrado",
         },
       },
       {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "Optimización de Google Maps y SEO local",
-          description: "Posicionamiento en Google Maps y búsquedas locales para negocios en Chile",
+          name: "Websites para Restaurantes y Negocios Locales",
+          description: "Páginas web con reservas online, SEO local y captación de clientes para negocios en Chile y LATAM",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "AI Chatbots para Atención 24/7",
+          description: "Chatbots con inteligencia artificial que atienden clientes, toman reservas y responden preguntas automáticamente",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "WhatsApp Automation para Negocios",
+          description: "Automatización de mensajes de WhatsApp Business para envío masivo, seguimiento de clientes y notificaciones automáticas",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Dashboards y Analytics para Negocios",
+          description: "Paneles de métricas en tiempo real para monitorear ventas, clientes y rendimiento del negocio",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Marketing Automation",
+          description: "Automatización de campañas de email, SMS y redes sociales para restaurantes y negocios locales en LATAM",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Analytics e Inteligencia de Datos",
+          description: "Análisis de datos de clientes y campañas para tomar decisiones basadas en métricas reales",
         },
       },
     ],
