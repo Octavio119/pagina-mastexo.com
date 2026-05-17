@@ -1930,6 +1930,12 @@ function CTASection() {
               onMouseLeave={e => (e.currentTarget.style.color=C.subtle)}>
               {EMAIL}
             </a>
+            <a href="mailto:farahfo4715@gmail.com"
+              style={{ fontFamily:FB, fontSize:14, color:C.subtle, textDecoration:'none', transition:'color .2s' }}
+              onMouseEnter={e => (e.currentTarget.style.color=C.text)}
+              onMouseLeave={e => (e.currentTarget.style.color=C.subtle)}>
+              farahfo4715@gmail.com
+            </a>
           </div>
         </div>
       </div>
@@ -1999,6 +2005,8 @@ function Footer() {
               <li>
                 <a href={`mailto:${EMAIL}`} style={{ fontFamily:FB, fontSize:13, color:'rgba(241,245,249,.35)', textDecoration:'none', display:'block', transition:'color .2s' }}
                   onMouseEnter={lh} onMouseLeave={e => lh(e, true)}>{EMAIL}</a>
+                <a href="mailto:farahfo4715@gmail.com" style={{ fontFamily:FB, fontSize:13, color:'rgba(241,245,249,.35)', textDecoration:'none', display:'block', transition:'color .2s', marginTop:4 }}
+                  onMouseEnter={lh} onMouseLeave={e => lh(e, true)}>farahfo4715@gmail.com</a>
               </li>
               <li>
                 <a href={WA_GENERIC} target="_blank" rel="noopener noreferrer"
