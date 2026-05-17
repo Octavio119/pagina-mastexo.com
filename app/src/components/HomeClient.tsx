@@ -227,7 +227,7 @@ function useInView(threshold = 0.12) {
   return { ref, inView }
 }
 
-function useCounter(target: number, inView: boolean, duration = 1600) {
+function useCounter(target: number, inView: boolean, duration = 2000) {
   const [count, setCount] = useState(0)
   useEffect(() => {
     if (!inView) return
@@ -235,8 +235,8 @@ function useCounter(target: number, inView: boolean, duration = 1600) {
     const start = performance.now()
     const step = (now: number) => {
       const p = Math.min((now - start) / duration, 1)
-      const eased = 1 - Math.pow(1 - p, 4)
-      setCount(Math.floor(eased * target))
+      const eased = 1 - Math.pow(1 - p, 3)   // ease-out cubic
+      setCount(Math.round(eased * target))
       if (p < 1) { raf = requestAnimationFrame(step) } else { setCount(target) }
     }
     raf = requestAnimationFrame(step)
@@ -1306,14 +1306,14 @@ function StatCard({ prefix, target, suffix, label, inView, delay, last }:
       }}>
         {prefix}{count}{suffix}
       </div>
-      <div style={{ fontFamily:FB, fontSize:13, color:'rgba(255,255,255,.4)', marginTop:10, letterSpacing:'.05em', textTransform:'uppercase' }}>{label}</div>
+      <div style={{ fontFamily:FB, fontSize:11, color:'rgba(255,255,255,.35)', marginTop:8, letterSpacing:'.1em', textTransform:'uppercase' }}>{label}</div>
     </div>
   )
 }
 
 function StatsSection() {
   const t = useT()
-  const { ref, inView } = useInView()
+  const { ref, inView } = useInView(0.3)
 
   const stats = [
     { prefix:'+', target:85, suffix:'',  label:t.stats.l1 },
@@ -1324,11 +1324,16 @@ function StatsSection() {
 
   return (
     <section id="resultados" ref={ref} className="px-5 md:px-8"
-      style={{ background:C.surface, paddingTop:80, paddingBottom:80 }}>
+      style={{
+        background: 'rgba(124,58,237,0.03)',
+        borderTop: '1px solid rgba(255,255,255,0.06)',
+        borderBottom: '1px solid rgba(255,255,255,0.06)',
+        paddingTop: 64, paddingBottom: 64,
+      }}>
       <div className="max-w-4xl mx-auto">
         <div className="grid grid-cols-2 md:grid-cols-4">
           {stats.map((s, i) => (
-            <StatCard key={i} {...s} inView={inView} delay={i*0.12} last={i===stats.length-1}/>
+            <StatCard key={i} {...s} inView={inView} delay={i*0.1} last={i===stats.length-1}/>
           ))}
         </div>
       </div>
