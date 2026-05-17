@@ -1859,7 +1859,13 @@ function FinalCTASection() {
   ]
 
   return (
-    <section ref={ref} style={{ background:'#04060C', position:'relative', overflow:'hidden', padding:'140px 20px 160px' }}>
+    <section ref={ref} style={{
+      background:'radial-gradient(ellipse 80% 60% at 50% 100%, rgba(124,58,237,0.4) 0%, rgba(168,85,247,0.15) 40%, transparent 70%), radial-gradient(ellipse 60% 40% at 30% 20%, rgba(108,99,255,0.2) 0%, transparent 60%), #0D0A1A',
+      position:'relative', overflow:'hidden', padding:'140px 20px 160px',
+      border:'1px solid rgba(124,58,237,0.3)', borderRadius:24,
+      boxShadow:'0 0 80px rgba(124,58,237,0.15), inset 0 1px 0 rgba(255,255,255,0.06)',
+      margin:'40px 20px',
+    }}>
       <style>{`
         @keyframes mx-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
         @keyframes mx-orb{0%,100%{transform:scale(1) translate(0,0);opacity:.35}50%{transform:scale(1.12) translate(8px,-8px);opacity:.55}}
@@ -1873,6 +1879,12 @@ function FinalCTASection() {
       <div style={{ position:'absolute', inset:0, pointerEvents:'none', zIndex:0,
         backgroundImage:'radial-gradient(rgba(108,99,255,.12) 1px, transparent 1px)',
         backgroundSize:'36px 36px', opacity:.6,
+      }}/>
+
+      {/* line grid overlay */}
+      <div style={{ position:'absolute', inset:0, pointerEvents:'none', zIndex:0, borderRadius:'inherit',
+        backgroundImage:'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)',
+        backgroundSize:'40px 40px',
       }}/>
 
       {/* glow orbs */}
@@ -1930,14 +1942,13 @@ function FinalCTASection() {
         {/* headline */}
         <h2 className={`transition-all duration-700 ${inView?'opacity-100 translate-y-0':'opacity-0 translate-y-8'}`}
           style={{ transitionDelay:'.1s', fontFamily:FD, fontWeight:800, fontSize:'clamp(32px,5vw,62px)', lineHeight:1.1, letterSpacing:'-.04em', color:'#fff', marginBottom:20 }}>
-          Tu negocio merece operar<br/>
+          Mientras lees esto,<br/>
+          tu competencia<br/>
           <span style={{
-            background:'linear-gradient(90deg,#6C63FF,#a78bfa,#00D4FF,#6C63FF)',
-            backgroundSize:'300% 100%',
+            background:'linear-gradient(135deg,#7C3AED,#A855F7)',
             WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text',
-            animation:'mx-grad-shift 5s ease infinite',
           }}>
-            como una empresa moderna.
+            ya está online.
           </span>
         </h2>
 
@@ -1956,30 +1967,18 @@ function FinalCTASection() {
             onMouseEnter={() => setBtnHov(true)}
             onMouseLeave={() => setBtnHov(false)}
             style={{
-              position:'relative', display:'inline-flex', alignItems:'center', gap:12,
-              padding:'18px 40px', borderRadius:14, cursor:'pointer',
-              background: btnHov
-                ? 'linear-gradient(135deg,rgba(108,99,255,.25),rgba(0,212,255,.15))'
-                : 'rgba(255,255,255,.06)',
-              backdropFilter:'blur(24px)', WebkitBackdropFilter:'blur(24px)',
-              border:`1px solid ${btnHov?'rgba(108,99,255,.6)':'rgba(255,255,255,.12)'}`,
+              display:'block', width:'100%', maxWidth:320, margin:'0 auto',
+              padding:'14px 32px', borderRadius:50, cursor:'pointer', border:'none',
+              background:'linear-gradient(135deg,#7C3AED,#A855F7)',
               boxShadow: btnHov
-                ? '0 0 40px rgba(108,99,255,.35), 0 0 80px rgba(108,99,255,.15), inset 0 1px 0 rgba(255,255,255,.1)'
-                : 'inset 0 1px 0 rgba(255,255,255,.06)',
-              transform: btnHov ? 'translateY(-3px) scale(1.02)' : 'translateY(0) scale(1)',
+                ? '0 8px 40px rgba(124,58,237,0.6), 0 0 80px rgba(168,85,247,0.3)'
+                : '0 4px 20px rgba(124,58,237,0.4)',
+              transform: btnHov ? 'translateY(-2px)' : 'translateY(0)',
+              filter: btnHov ? 'brightness(1.1)' : 'brightness(1)',
               transition:'all .3s cubic-bezier(.16,1,.3,1)',
               fontFamily:FD, fontWeight:700, fontSize:16, color:'#fff', letterSpacing:'-.01em',
             }}>
-            {/* inner shimmer */}
-            <span style={{ position:'absolute', inset:0, borderRadius:14, overflow:'hidden', pointerEvents:'none' }}>
-              <span style={{
-                position:'absolute', top:0, left: btnHov?'110%':'-60%', width:'50%', height:'100%',
-                background:'linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent)',
-                transform:'skewX(-20deg)', transition:'left .6s ease',
-              }}/>
-            </span>
-            Solicitar diagnóstico gratuito
-            <span style={{ opacity:.7, fontSize:18 }}>→</span>
+            Quiero mi diagnóstico gratis →
           </button>
 
           <p style={{ fontFamily:FB, fontSize:12, color:'rgba(255,255,255,.25)', letterSpacing:'.04em' }}>
