@@ -483,13 +483,13 @@ function SectionLabel({ text }: { text: string }) {
 }
 
 // ─────────────────────────────────────────
-// NAVBAR
+// NAVBAR — floating glass pill
 // ─────────────────────────────────────────
 function Navbar() {
   const t = useT(); const { lang, toggle } = useLang()
   const scrollY = useScrollY()
   const [open, setOpen] = useState(false)
-  const scrolled = scrollY > 20
+  const scrolled = scrollY > 40
 
   const links = [
     { label: t.nav.solutions, id: 'soluciones' },
@@ -500,94 +500,110 @@ function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-[100] transition-all duration-300"
-        style={{
-          height: 60,
-          background: 'rgba(6,8,15,0.8)',
-          backdropFilter: 'blur(20px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
-          boxShadow: scrolled ? '0 4px 32px rgba(0,0,0,.4)' : 'none',
-          animation: 'fadeDown .5s ease both',
-        }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 h-full flex items-center gap-5">
-          {/* Logo */}
-          <button onClick={() => window.scrollTo({ top:0, behavior:'smooth' })}
-            className="flex items-center gap-2.5 cursor-pointer bg-transparent border-none flex-shrink-0">
-            <Image src="/logo1.jpg" alt="Mastexo" width={28} height={28} className="rounded-full object-cover"/>
-            <span style={{ fontFamily:FD, fontWeight:700, fontSize:18, color:'#fff', letterSpacing:'-.01em' }}>Mastexo</span>
-          </button>
+      {/* Floating pill wrapper */}
+      <div className="fixed top-5 left-0 right-0 z-[100] px-4 pointer-events-none"
+        style={{ animation: 'fadeDown .5s ease both' }}>
+        <div className="max-w-5xl mx-auto pointer-events-auto">
+          <nav style={{
+            display: 'flex', alignItems: 'center', gap: 0,
+            borderRadius: 9999,
+            background: scrolled ? 'rgba(6,8,15,0.92)' : 'rgba(6,8,15,0.65)',
+            backdropFilter: 'blur(32px) saturate(1.8)',
+            WebkitBackdropFilter: 'blur(32px) saturate(1.8)',
+            border: `1px solid ${scrolled ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.07)'}`,
+            boxShadow: scrolled
+              ? '0 8px 40px rgba(0,0,0,0.55), 0 0 0 1px rgba(108,99,255,0.06)'
+              : '0 4px 24px rgba(0,0,0,0.3)',
+            padding: '0 6px 0 18px',
+            height: 52,
+            transition: 'background .3s ease, border-color .3s ease, box-shadow .3s ease',
+          }}>
+            {/* Logo */}
+            <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="flex items-center gap-2.5 cursor-pointer bg-transparent border-none flex-shrink-0"
+              style={{ marginRight: 32 }}>
+              <Image src="/logo1.jpg" alt="Mastexo" width={26} height={26} className="rounded-full object-cover"/>
+              <span style={{ fontFamily: FD, fontWeight: 700, fontSize: 17, color: '#fff', letterSpacing: '-.01em' }}>Mastexo</span>
+            </button>
 
-          <div className="flex-1"/>
+            {/* Desktop links */}
+            <div className="hidden md:flex items-center gap-1 flex-1">
+              {links.map(l => (
+                <button key={l.id} onClick={() => scrollTo(l.id)}
+                  className="cursor-pointer bg-transparent border-none whitespace-nowrap rounded-full px-3 py-1.5"
+                  style={{ fontFamily: FB, fontSize: 13.5, fontWeight: 500, color: 'rgba(255,255,255,.5)', transition: 'color .2s ease, background .2s ease' }}
+                  onMouseEnter={e => { e.currentTarget.style.color = 'rgba(255,255,255,.9)'; e.currentTarget.style.background = 'rgba(255,255,255,.06)' }}
+                  onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,.5)'; e.currentTarget.style.background = 'transparent' }}>
+                  {l.label}
+                </button>
+              ))}
+            </div>
 
-          {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-7">
-            {links.map(l => (
-              <button key={l.id} onClick={() => scrollTo(l.id)}
-                className="cursor-pointer bg-transparent border-none transition-colors duration-200 whitespace-nowrap"
-                style={{ fontFamily:FB, fontSize:14, fontWeight:500, color:'rgba(255,255,255,.6)' }}
-                onMouseEnter={e => (e.currentTarget.style.color='#fff')}
-                onMouseLeave={e => (e.currentTarget.style.color='rgba(255,255,255,.6)')}>
-                {l.label}
-              </button>
-            ))}
-          </div>
+            {/* Language toggle */}
+            <div className="hidden md:flex items-center rounded-full px-1.5 py-1 gap-0.5 flex-shrink-0 mx-3"
+              style={{ background: 'rgba(255,255,255,.05)', border: '1px solid rgba(255,255,255,.07)' }}>
+              {(['es', 'en'] as Lang[]).map(l => (
+                <button key={l} onClick={toggle}
+                  aria-label={`Cambiar idioma a ${l === 'es' ? 'español' : 'inglés'}`}
+                  className="rounded-full px-2.5 py-1 cursor-pointer transition-all duration-200"
+                  style={{
+                    background: lang === l ? 'rgba(108,99,255,.85)' : 'transparent',
+                    color: lang === l ? '#fff' : 'rgba(255,255,255,.4)',
+                    fontFamily: FB, fontSize: 11, fontWeight: lang === l ? 700 : 400,
+                    letterSpacing: '.05em', border: 'none',
+                  }}>
+                  {l.toUpperCase()}
+                </button>
+              ))}
+            </div>
 
-          {/* Language toggle pill */}
-          <div className="flex items-center rounded-full px-1.5 py-1 gap-0.5 flex-shrink-0"
-            style={{ background:'rgba(255,255,255,.06)', border:'1px solid rgba(255,255,255,.08)' }}>
-            {(['es','en'] as Lang[]).map(l => (
-              <button key={l} onClick={toggle}
-                aria-label={`Cambiar idioma a ${l === 'es' ? 'español' : 'inglés'}`}
-                className="rounded-full px-2.5 py-1 cursor-pointer transition-all duration-200"
-                style={{
-                  background: lang===l ? 'rgba(108,99,255,.85)' : 'transparent',
-                  color: lang===l ? '#fff' : 'rgba(255,255,255,.4)',
-                  fontFamily:FB, fontSize:11, fontWeight: lang===l ? 700 : 400,
-                  letterSpacing:'.05em', border:'none',
-                }}>
-                {l.toUpperCase()}
-              </button>
-            ))}
-          </div>
+            {/* CTA pill */}
+            <button onClick={() => scrollTo('contacto')}
+              className="hidden md:flex items-center cursor-pointer flex-shrink-0"
+              style={{
+                fontFamily: FD, fontSize: 13, fontWeight: 700, letterSpacing: '.01em',
+                background: '#6C63FF', color: '#fff', border: 'none',
+                borderRadius: 9999, padding: '10px 22px',
+                boxShadow: '0 0 18px rgba(108,99,255,.4)',
+                transition: 'background .2s ease, transform .2s ease, box-shadow .2s ease',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#5B52E5'; e.currentTarget.style.transform = 'translateY(-1px)'; e.currentTarget.style.boxShadow = '0 4px 24px rgba(108,99,255,.65)' }}
+              onMouseLeave={e => { e.currentTarget.style.background = '#6C63FF'; e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 0 18px rgba(108,99,255,.4)' }}>
+              {t.nav.cta}
+            </button>
 
-          {/* CTA */}
-          <button onClick={() => scrollTo('contacto')}
-            className="hidden md:block btn-primary cursor-pointer flex-shrink-0"
-            style={{ fontFamily:FD, fontSize:13, fontWeight:700, letterSpacing:'.01em', padding:'9px 20px' }}>
-            {t.nav.cta}
-          </button>
-
-          {/* Mobile menu toggle */}
-          <button type="button" onClick={() => setOpen(o => !o)}
-            aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
-            className="md:hidden cursor-pointer bg-transparent border-none flex-shrink-0 min-w-[44px] min-h-[44px] flex items-center justify-center"
-            style={{ color:'#fff' }}>
-            {open ? <X size={20}/> : <Menu size={20}/>}
-          </button>
+            {/* Mobile hamburger */}
+            <button type="button" onClick={() => setOpen(o => !o)}
+              aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
+              className="md:hidden cursor-pointer bg-transparent border-none flex-shrink-0 min-w-[44px] min-h-[44px] flex items-center justify-center"
+              style={{ color: '#fff' }}>
+              {open ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </nav>
         </div>
-      </nav>
+      </div>
 
+      {/* Mobile fullscreen menu */}
       {open && (
         <div className="fixed inset-0 z-[99] md:hidden flex flex-col items-center justify-center gap-10"
-          style={{ background:'rgba(6,8,15,.97)', backdropFilter:'blur(32px)' }}>
+          style={{ background: 'rgba(6,8,15,.97)', backdropFilter: 'blur(32px)' }}>
           <button onClick={() => setOpen(false)} aria-label="Cerrar menú"
             className="absolute top-5 right-5 cursor-pointer bg-transparent border-none"
-            style={{ color:'rgba(255,255,255,.7)' }}>
-            <X size={26}/>
+            style={{ color: 'rgba(255,255,255,.7)' }}>
+            <X size={26} />
           </button>
           {links.map(l => (
             <button key={l.id} onClick={() => { scrollTo(l.id); setOpen(false) }}
               className="cursor-pointer bg-transparent border-none transition-colors duration-200"
-              style={{ fontFamily:FD, fontWeight:700, fontSize:32, color:'rgba(255,255,255,.85)', letterSpacing:'-.02em' }}
-              onMouseEnter={e => (e.currentTarget.style.color='#6C63FF')}
-              onMouseLeave={e => (e.currentTarget.style.color='rgba(255,255,255,.85)')}>
+              style={{ fontFamily: FD, fontWeight: 700, fontSize: 32, color: 'rgba(255,255,255,.85)', letterSpacing: '-.02em' }}
+              onMouseEnter={e => (e.currentTarget.style.color = '#6C63FF')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,.85)')}>
               {l.label}
             </button>
           ))}
           <button onClick={() => { scrollTo('contacto'); setOpen(false) }}
-            className="btn-primary px-10 py-4 cursor-pointer mt-2"
-            style={{ fontFamily:FD, fontWeight:700, fontSize:16 }}>
+            className="mx-btn-primary px-10 py-4 cursor-pointer mt-2"
+            style={{ fontFamily: FD, fontWeight: 700, fontSize: 16 }}>
             {t.nav.cta}
           </button>
         </div>
@@ -597,115 +613,288 @@ function Navbar() {
 }
 
 // ─────────────────────────────────────────
-// HERO
+// DASHBOARD MOCKUP — hero right column
 // ─────────────────────────────────────────
-function HeroSection() {
-  const t = useT()
-  const h1Parts = t.hero.h1b.split(' ')
-  const h1Word = h1Parts[0]
-  const h1Rest = h1Parts.slice(1).join(' ')
+function DashboardMockup() {
+  const sparkData = [12, 18, 14, 26, 21, 33, 28, 40, 36, 52, 46, 62]
+  const maxVal = Math.max(...sparkData)
+  const pts = sparkData.map((v, i) =>
+    `${(i / (sparkData.length - 1)) * 100},${100 - (v / maxVal) * 92}`
+  ).join(' ')
+  const areaPts = `0,100 ${pts} 100,100`
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
-      style={{ background:'radial-gradient(ellipse 80% 60% at 20% 50%, rgba(108,99,255,.12) 0%, transparent 60%), #06080F' }}>
+    <div style={{ position: 'relative', paddingTop: 24, paddingBottom: 24, paddingLeft: 28 }}>
+      {/* Glow behind card */}
+      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 70% 60% at 55% 50%, rgba(108,99,255,.1) 0%, transparent 70%)', pointerEvents: 'none', filter: 'blur(32px)' }}/>
 
-      {/* Animated purple grid */}
-      <div className="absolute inset-0 mx-hero-grid pointer-events-none"/>
-
-      {/* Orb 1 — purple top-left */}
-      <div className="absolute pointer-events-none" style={{ top:'-5%', left:'-5%', width:300, height:300, background:'radial-gradient(circle,rgba(108,99,255,.15) 0%,transparent 70%)', filter:'blur(60px)', transform:'translateZ(0)' }}/>
-
-      {/* Orb 2 — cyan bottom-right */}
-      <div className="absolute pointer-events-none" style={{ bottom:'10%', right:'5%', width:200, height:200, background:'radial-gradient(circle,rgba(0,212,255,.08) 0%,transparent 70%)', filter:'blur(50px)', transform:'translateZ(0)' }}/>
-
-      <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-8 pt-[76px] pb-24 text-center">
-        {/* Badge */}
-        <div className="inline-flex items-center gap-2 mx-glass rounded-full px-4 py-2 mb-10 mx-fade-up"
-          style={{ animationDelay:'.05s', opacity:0, borderColor:'rgba(108,99,255,.2)' }}>
-          <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background:'#6C63FF', boxShadow:'0 0 6px rgba(108,99,255,.7)' }}/>
-          <span style={{ fontFamily:FB, fontSize:12, color:'rgba(241,245,249,.6)', letterSpacing:'.03em' }}>{t.hero.badge}</span>
+      {/* Main dashboard card */}
+      <div style={{
+        position: 'relative',
+        background: 'rgba(13,17,23,0.96)',
+        backdropFilter: 'blur(32px)',
+        WebkitBackdropFilter: 'blur(32px)',
+        border: '1px solid rgba(255,255,255,0.08)',
+        borderRadius: 20,
+        overflow: 'hidden',
+        boxShadow: '0 32px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(108,99,255,0.07)',
+        animation: 'float 7s ease-in-out infinite',
+      }}>
+        {/* Header */}
+        <div style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', padding: '13px 18px', display: 'flex', alignItems: 'center', gap: 9 }}>
+          <div style={{ width: 28, height: 28, background: 'rgba(108,99,255,0.15)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <Layers size={13} color="#6C63FF" />
+          </div>
+          <span style={{ fontFamily: FD, fontWeight: 600, fontSize: 13, color: 'rgba(255,255,255,0.75)' }}>Mastexo Dashboard</span>
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 5 }}>
+            <span style={{ fontFamily: FB, fontSize: 10.5, background: 'rgba(16,185,129,0.1)', color: '#10b981', padding: '3px 10px', borderRadius: 100, border: '1px solid rgba(16,185,129,0.2)', display: 'flex', alignItems: 'center', gap: 5 }}>
+              <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#10b981', animation: 'pulseDot 1.8s ease-in-out infinite', display: 'inline-block' }}/>
+              En vivo
+            </span>
+          </div>
         </div>
 
-        {/* H1 — 3 lines each with individual fade-up */}
-        <h1 style={{
-          fontFamily:FD, fontWeight:800, lineHeight:.95, letterSpacing:'-.04em',
-          fontSize:'clamp(52px,7vw,96px)', color:C.text,
-          maxWidth:700, margin:'0 auto 28px',
-        }}>
-          <span className="mx-fade-up" style={{ display:'block', animationDelay:'.1s', opacity:0 }}>{t.hero.h1a}</span>
-          <span className="mx-fade-up" style={{ display:'inline-block', animationDelay:'.2s', opacity:0 }}>
-            <span className="mx-text-shimmer">{h1Word}</span>
-          </span>
-          {' '}
-          <span className="mx-fade-up" style={{ display:'inline-block', animationDelay:'.3s', opacity:0, background:'linear-gradient(135deg,#fff 0%,rgba(255,255,255,.6) 100%)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>{h1Rest}</span>
-        </h1>
-
-        {/* Sub */}
-        <p className="mx-fade-up" style={{
-          fontFamily:FB, fontSize:18, color:'rgba(255,255,255,.5)',
-          maxWidth:480, margin:'1.5rem auto 40px', lineHeight:1.7,
-          animationDelay:'.4s', opacity:0,
-        }}>
-          {t.hero.sub}
-        </p>
-
-        {/* CTAs */}
-        <div className="flex flex-wrap items-center justify-center gap-3 mx-fade-up" style={{ animationDelay:'.5s', opacity:0 }}>
-          <button onClick={() => scrollTo('contacto')}
-            className="btn-primary cursor-pointer"
-            style={{ fontFamily:FD, fontWeight:700, fontSize:15, letterSpacing:'.01em', padding:'14px 32px' }}>
-            {t.hero.cta1} →
-          </button>
-          <button onClick={() => scrollTo('proceso')}
-            className="btn-secondary cursor-pointer"
-            style={{ fontFamily:FD, fontWeight:600, fontSize:15, padding:'14px 32px' }}>
-            {t.hero.cta2}
-          </button>
-        </div>
-
-        {/* Proof strip */}
-        <div className="flex items-center justify-center gap-10 mt-16 mx-fade-up flex-wrap" style={{ animationDelay:'.6s', opacity:0 }}>
-          {[{n:t.hero.s1n,l:t.hero.s1l},{n:t.hero.s2n,l:t.hero.s2l},{n:t.hero.s3n,l:t.hero.s3l}].map((s,i) => (
-            <div key={i} className="flex items-center gap-10">
-              {i > 0 && <div style={{ width:1, height:28, background:'rgba(255,255,255,.1)' }}/>}
-              <div className="text-center">
-                <div className="mx-gradient-text" style={{ fontFamily:FD, fontWeight:800, fontSize:26, lineHeight:1 }}>{s.n}</div>
-                <div style={{ fontFamily:FB, fontSize:12, color:C.subtle, marginTop:4, letterSpacing:'.02em' }}>{s.l}</div>
-              </div>
+        {/* KPI row */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+          {[
+            { label: 'Clientes activos', value: '2,847', delta: '+32%', color: '#6C63FF' },
+            { label: 'Reservas hoy', value: '48', delta: '+8 hoy', color: '#00D4FF' },
+            { label: 'Conversión', value: '68%', delta: '+12%', color: '#10b981' },
+          ].map((k, i) => (
+            <div key={k.label} style={{ padding: '15px 14px', borderRight: i < 2 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
+              <div style={{ fontFamily: FB, fontSize: 9, color: 'rgba(255,255,255,0.28)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 7 }}>{k.label}</div>
+              <div style={{ fontFamily: FD, fontSize: 21, fontWeight: 800, color: '#fff', lineHeight: 1 }}>{k.value}</div>
+              <div style={{ fontFamily: FB, fontSize: 11, color: k.color, marginTop: 5 }}>↑ {k.delta}</div>
             </div>
           ))}
         </div>
+
+        {/* Sparkline */}
+        <div style={{ padding: '15px 18px 12px', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+            <span style={{ fontFamily: FB, fontSize: 10, color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase', letterSpacing: '.07em' }}>Reservas · últimas 12 semanas</span>
+            <span style={{ fontFamily: FD, fontSize: 12, fontWeight: 700, color: '#10b981' }}>↑ 3.2×</span>
+          </div>
+          <div style={{ height: 48 }}>
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ width: '100%', height: '100%' }}>
+              <defs>
+                <linearGradient id="dsbGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#6C63FF" stopOpacity=".28"/>
+                  <stop offset="100%" stopColor="#6C63FF" stopOpacity="0"/>
+                </linearGradient>
+              </defs>
+              <polygon points={areaPts} fill="url(#dsbGrad)"/>
+              <polyline points={pts} fill="none" stroke="#6C63FF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+              {/* Last point dot */}
+              <circle cx="100" cy={100 - (sparkData[sparkData.length - 1] / maxVal) * 92} r="3" fill="#6C63FF"/>
+            </svg>
+          </div>
+        </div>
+
+        {/* Activity feed */}
+        <div style={{ padding: '13px 18px' }}>
+          <div style={{ fontFamily: FB, fontSize: 9.5, color: 'rgba(255,255,255,0.28)', textTransform: 'uppercase', letterSpacing: '.08em', marginBottom: 10 }}>Actividad reciente</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
+            {[
+              { dot: '#10b981', text: 'Nueva reserva — Barbería Ali', time: '2m' },
+              { dot: '#6C63FF', text: 'Lead WhatsApp — Café Central', time: '8m' },
+              { dot: '#00D4FF', text: 'IA procesó 12 contactos nuevos', time: '15m' },
+            ].map((a, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{ width: 6, height: 6, borderRadius: '50%', background: a.dot, flexShrink: 0, boxShadow: `0 0 6px ${a.dot}88` }}/>
+                <span style={{ fontFamily: FB, fontSize: 11.5, color: 'rgba(255,255,255,0.55)', flex: 1 }}>{a.text}</span>
+                <span style={{ fontFamily: FB, fontSize: 10, color: 'rgba(255,255,255,0.2)', flexShrink: 0 }}>{a.time}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* AI bar */}
+        <div style={{ background: 'rgba(108,99,255,0.05)', borderTop: '1px solid rgba(108,99,255,0.1)', padding: '10px 18px', display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Bot size={13} color="#6C63FF" />
+          <span style={{ fontFamily: FB, fontSize: 11, color: 'rgba(255,255,255,0.38)', flex: 1 }}>IA activa · procesando 3 campañas automáticas</span>
+          <div style={{ display: 'flex', gap: 4 }}>
+            {['CRM', 'WA', 'Ads'].map(tag => (
+              <span key={tag} style={{ fontFamily: FB, fontSize: 9, fontWeight: 700, color: '#6C63FF', background: 'rgba(108,99,255,0.12)', padding: '2px 7px', borderRadius: 100, letterSpacing: '.04em' }}>{tag}</span>
+            ))}
+          </div>
+        </div>
       </div>
 
-      {/* Floating review card — entry fadeIn, then continuous float */}
-      <div className="absolute hidden lg:block"
-        style={{ right:40, top:'50%', transform:'translateY(-50%)', width:220, zIndex:20, animation:'fadeIn .6s ease .8s both' }}>
-        <div className="mx-hero-card-float">
-          <div className="rounded-2xl p-5"
-            style={{
-              background:'rgba(13,17,23,.9)',
-              backdropFilter:'blur(20px)',
-              WebkitBackdropFilter:'blur(20px)',
-              border:'1px solid rgba(108,99,255,.3)',
-              borderRadius:16,
-              boxShadow:'0 8px 32px rgba(0,0,0,.4), 0 0 0 1px rgba(108,99,255,.1)',
-            }}>
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
-                style={{ background:'rgba(108,99,255,.1)', border:'1px solid rgba(108,99,255,.15)' }}>✂️</div>
-              <div>
-                <div style={{ fontFamily:FB, fontWeight:600, fontSize:12, color:C.text }}>{t.hero.cardName}</div>
-                <div style={{ fontSize:11, color:'#FFB800', letterSpacing:'.05em' }}>★★★★★</div>
-              </div>
+      {/* Floating: new lead badge (top-right) */}
+      <div style={{
+        position: 'absolute', top: 8, right: -12,
+        background: 'rgba(10,14,20,0.97)',
+        backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
+        border: '1px solid rgba(16,185,129,0.28)',
+        borderRadius: 14, padding: '10px 14px',
+        display: 'flex', alignItems: 'center', gap: 10,
+        boxShadow: '0 8px 28px rgba(0,0,0,0.45), 0 0 0 1px rgba(16,185,129,0.06)',
+        animation: 'float 5s ease-in-out .6s infinite',
+      }}>
+        <div style={{ width: 30, height: 30, background: 'rgba(16,185,129,0.12)', borderRadius: 9, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+          <TrendingUp size={14} color="#10b981" />
+        </div>
+        <div>
+          <div style={{ fontFamily: FD, fontSize: 12, fontWeight: 700, color: '#fff', lineHeight: 1.2 }}>Nuevo cliente</div>
+          <div style={{ fontFamily: FB, fontSize: 10, color: 'rgba(255,255,255,0.38)', marginTop: 2 }}>Barbería Ali · hace 2 min</div>
+        </div>
+      </div>
+
+      {/* Floating: 14 días badge (bottom-left) */}
+      <div style={{
+        position: 'absolute', bottom: 8, left: 0,
+        background: 'rgba(10,14,20,0.97)',
+        backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
+        border: '1px solid rgba(0,212,255,0.2)',
+        borderRadius: 14, padding: '12px 18px',
+        boxShadow: '0 8px 28px rgba(0,0,0,0.4)',
+        animation: 'float 8s ease-in-out 1.2s infinite',
+      }}>
+        <div style={{ fontFamily: FB, fontSize: 9.5, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '.07em', marginBottom: 3 }}>Respuesta media</div>
+        <div style={{ fontFamily: FD, fontSize: 22, fontWeight: 800, color: '#00D4FF', lineHeight: 1 }}>14 días</div>
+        <div style={{ fontFamily: FB, fontSize: 10, color: 'rgba(255,255,255,0.3)', marginTop: 3 }}>al primer cliente</div>
+      </div>
+    </div>
+  )
+}
+
+// ─────────────────────────────────────────
+// HERO — two-column enterprise layout
+// ─────────────────────────────────────────
+function HeroSection() {
+  const t = useT()
+
+  return (
+    <section className="relative min-h-screen flex items-center overflow-hidden"
+      style={{ background: C.bg }}>
+
+      {/* Background gradient orbs */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        background: [
+          'radial-gradient(ellipse 65% 55% at 15% 55%, rgba(108,99,255,.08) 0%, transparent 60%)',
+          'radial-gradient(ellipse 50% 45% at 85% 20%, rgba(0,212,255,.05) 0%, transparent 60%)',
+          'radial-gradient(ellipse 40% 40% at 60% 80%, rgba(108,99,255,.04) 0%, transparent 60%)',
+        ].join(', '),
+      }}/>
+
+      {/* Subtle animated grid */}
+      <div className="absolute inset-0 mx-hero-grid pointer-events-none" style={{ opacity: .45 }}/>
+
+      {/* Spotlight radial behind content */}
+      <div className="absolute pointer-events-none" style={{ top: '10%', left: '-10%', width: 600, height: 600, background: 'radial-gradient(circle, rgba(108,99,255,.07) 0%, transparent 65%)', filter: 'blur(60px)', transform: 'translateZ(0)' }}/>
+      <div className="absolute pointer-events-none" style={{ bottom: '5%', right: '-5%', width: 400, height: 400, background: 'radial-gradient(circle, rgba(0,212,255,.05) 0%, transparent 65%)', filter: 'blur(60px)', transform: 'translateZ(0)' }}/>
+
+      {/* Two-column layout */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-8" style={{ paddingTop: 100, paddingBottom: 80 }}>
+        <div className="grid lg:grid-cols-[1fr_1fr] gap-12 xl:gap-20 items-center">
+
+          {/* ── LEFT: headline + CTAs ── */}
+          <div>
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2.5 mb-10 mx-fade-up"
+              style={{
+                animationDelay: '.05s', opacity: 0,
+                background: 'rgba(108,99,255,.07)',
+                border: '1px solid rgba(108,99,255,.22)',
+                borderRadius: 9999, padding: '6px 14px 6px 10px',
+              }}>
+              <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px rgba(16,185,129,.75)', animation: 'pulseDot 1.8s ease-in-out infinite', display: 'inline-block', flexShrink: 0 }}/>
+              <span style={{ fontFamily: FB, fontSize: 12.5, color: 'rgba(241,245,249,.65)', letterSpacing: '.02em' }}>{t.hero.badge}</span>
             </div>
-            <p style={{ fontFamily:FB, fontSize:12, color:C.muted, lineHeight:1.55 }}>&ldquo;{t.hero.cardQuote}&rdquo;</p>
+
+            {/* H1 */}
+            <h1 style={{
+              fontFamily: FD, fontWeight: 800,
+              lineHeight: .93, letterSpacing: '-.04em',
+              fontSize: 'clamp(44px,5.8vw,84px)',
+              color: C.text, marginBottom: 28,
+            }}>
+              {/* "Automatización" */}
+              <span className="mx-fade-up" style={{ display: 'block', animationDelay: '.1s', opacity: 0 }}>
+                Automatización{' '}
+                <span style={{
+                  background: 'linear-gradient(135deg, #7C3AED 0%, #4F46E5 45%, #00D4FF 100%)',
+                  WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+                }}>digital,</span>
+              </span>
+              {/* "restaurantes y negocios" */}
+              <span className="mx-fade-up" style={{ display: 'block', animationDelay: '.18s', opacity: 0 }}>
+                restaurantes
+              </span>
+              {/* "en Chile." — slightly muted */}
+              <span className="mx-fade-up" style={{ display: 'block', animationDelay: '.26s', opacity: 0, color: 'rgba(255,255,255,.45)' }}>
+                y negocios en Chile.
+              </span>
+            </h1>
+
+            {/* Sub */}
+            <p className="mx-fade-up" style={{
+              fontFamily: FB, fontSize: 17.5, color: 'rgba(255,255,255,.48)',
+              maxWidth: 540, marginBottom: 40, lineHeight: 1.72,
+              animationDelay: '.36s', opacity: 0,
+            }}>
+              {t.hero.sub}
+            </p>
+
+            {/* CTAs */}
+            <div className="flex flex-wrap items-center gap-3 mx-fade-up" style={{ animationDelay: '.46s', opacity: 0 }}>
+              <button onClick={() => scrollTo('contacto')} className="cursor-pointer"
+                style={{
+                  fontFamily: FD, fontWeight: 700, fontSize: 15, letterSpacing: '.01em',
+                  padding: '14px 32px',
+                  background: '#6C63FF', color: '#fff', border: 'none', borderRadius: 14,
+                  boxShadow: '0 4px 28px rgba(108,99,255,.45)',
+                  transition: 'background .2s ease, transform .2s ease, box-shadow .2s ease',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.background = '#5B52E5'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 36px rgba(108,99,255,.65)' }}
+                onMouseLeave={e => { e.currentTarget.style.background = '#6C63FF'; e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 4px 28px rgba(108,99,255,.45)' }}>
+                {t.hero.cta1} →
+              </button>
+              <button onClick={() => scrollTo('proceso')} className="cursor-pointer"
+                style={{
+                  fontFamily: FD, fontWeight: 600, fontSize: 15,
+                  padding: '14px 32px',
+                  background: 'rgba(255,255,255,.04)', color: 'rgba(255,255,255,.78)',
+                  border: '1px solid rgba(255,255,255,.1)', borderRadius: 14,
+                  backdropFilter: 'blur(12px)', transition: 'all .2s ease',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,.08)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,.2)' }}
+                onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,.04)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,.1)' }}>
+                {t.hero.cta2}
+              </button>
+            </div>
+
+            {/* Social proof glass pills */}
+            <div className="flex flex-wrap items-center gap-3 mx-fade-up" style={{ marginTop: 32, animationDelay: '.56s', opacity: 0 }}>
+              {[
+                { n: t.hero.s1n, l: t.hero.s1l, color: '#6C63FF', bg: 'rgba(108,99,255,.1)', border: 'rgba(108,99,255,.2)' },
+                { n: t.hero.s2n, l: t.hero.s2l, color: '#00D4FF', bg: 'rgba(0,212,255,.07)', border: 'rgba(0,212,255,.18)' },
+                { n: t.hero.s3n, l: t.hero.s3l, color: '#10b981', bg: 'rgba(16,185,129,.08)', border: 'rgba(16,185,129,.2)' },
+              ].map((s, i) => (
+                <div key={i} style={{
+                  display: 'flex', alignItems: 'center', gap: 10,
+                  background: s.bg, border: `1px solid ${s.border}`,
+                  borderRadius: 12, padding: '10px 16px',
+                  backdropFilter: 'blur(12px)',
+                }}>
+                  <span style={{ fontFamily: FD, fontWeight: 800, fontSize: 20, color: s.color, lineHeight: 1 }}>{s.n}</span>
+                  <span style={{ fontFamily: FB, fontSize: 12, color: 'rgba(255,255,255,.42)', lineHeight: 1.3, maxWidth: 75 }}>{s.l}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── RIGHT: dashboard mockup (desktop only) ── */}
+          <div className="hidden lg:block mx-fade-up" style={{ animationDelay: '.28s', opacity: 0 }}>
+            <DashboardMockup />
           </div>
         </div>
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 mx-fade-in" style={{ animationDelay:'1.5s', opacity:0 }}>
-        <div style={{ width:1, height:40, background:'linear-gradient(to bottom, rgba(108,99,255,.5), transparent)' }}/>
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 mx-fade-in" style={{ animationDelay: '1.4s', opacity: 0 }}>
+        <div style={{ width: 1, height: 36, background: 'linear-gradient(to bottom, rgba(108,99,255,.5), transparent)' }}/>
       </div>
     </section>
   )
