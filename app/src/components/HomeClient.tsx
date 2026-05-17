@@ -624,7 +624,7 @@ function DashboardMockup() {
   const areaPts = `0,100 ${pts} 100,100`
 
   return (
-    <div style={{ position: 'relative', paddingTop: 24, paddingBottom: 24, paddingLeft: 28 }}>
+    <div style={{ position: 'relative', paddingTop: 24, paddingBottom: 24, paddingLeft: 12, paddingRight: 24, overflow: 'visible' }}>
       {/* Glow behind card */}
       <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 70% 60% at 55% 50%, rgba(108,99,255,.1) 0%, transparent 70%)', pointerEvents: 'none', filter: 'blur(32px)' }}/>
 
@@ -766,7 +766,7 @@ function HeroSection() {
   const t = useT()
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden"
+    <section className="relative min-h-screen flex items-center overflow-visible"
       style={{ background: C.bg }}>
 
       {/* Background gradient orbs */}
@@ -791,50 +791,45 @@ function HeroSection() {
 
           {/* ── LEFT: headline + CTAs ── */}
           <div>
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2.5 mb-10 mx-fade-up"
-              style={{
-                animationDelay: '.05s', opacity: 0,
-                background: 'rgba(108,99,255,.07)',
-                border: '1px solid rgba(108,99,255,.22)',
-                borderRadius: 9999, padding: '6px 14px 6px 10px',
-              }}>
-              <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px rgba(16,185,129,.75)', animation: 'pulseDot 1.8s ease-in-out infinite', display: 'inline-block', flexShrink: 0 }}/>
-              <span style={{ fontFamily: FB, fontSize: 12.5, color: 'rgba(241,245,249,.65)', letterSpacing: '.02em' }}>{t.hero.badge}</span>
+            {/* Badge — centrado horizontalmente */}
+            <div className="flex justify-center items-center mb-10 mx-fade-up"
+              style={{ animationDelay: '.05s', opacity: 0 }}>
+              <div className="inline-flex items-center gap-2"
+                style={{
+                  background: 'rgba(108,99,255,.07)',
+                  border: '1px solid rgba(108,99,255,.22)',
+                  borderRadius: 9999, padding: '6px 14px 6px 10px',
+                }}>
+                <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#10B981', boxShadow: '0 0 8px rgba(16,185,129,.75)', animation: 'pulseDot 2s ease-in-out infinite', display: 'inline-block', flexShrink: 0 }}/>
+                <span style={{ fontFamily: FB, fontSize: 12.5, color: 'rgba(241,245,249,.65)', letterSpacing: '.02em' }}>{t.hero.badge}</span>
+              </div>
             </div>
 
-            {/* H1 */}
+            {/* H1 — 2 líneas */}
             <h1 style={{
               fontFamily: FD, fontWeight: 800,
               lineHeight: .93, letterSpacing: '-.04em',
               fontSize: 'clamp(44px,5.8vw,84px)',
               color: C.text, marginBottom: 28,
             }}>
-              {/* "Automatización" */}
-              <span className="mx-fade-up" style={{ display: 'block', animationDelay: '.1s', opacity: 0 }}>
-                Automatización{' '}
-                <span style={{
-                  background: 'linear-gradient(135deg, #7C3AED 0%, #4F46E5 45%, #00D4FF 100%)',
-                  WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-                }}>digital,</span>
+              <span className="mx-fade-up" style={{ display: 'block', animationDelay: '.1s', opacity: 0, color: '#FFFFFF' }}>
+                Tu pyme, visible.
               </span>
-              {/* "restaurantes y negocios" */}
               <span className="mx-fade-up" style={{ display: 'block', animationDelay: '.18s', opacity: 0 }}>
-                restaurantes
-              </span>
-              {/* "en Chile." — slightly muted */}
-              <span className="mx-fade-up" style={{ display: 'block', animationDelay: '.26s', opacity: 0, color: 'rgba(255,255,255,.45)' }}>
-                y negocios en Chile.
+                <span style={{
+                  background: 'linear-gradient(135deg, #7C3AED, #A855F7)',
+                  WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+                }}>Tus clientes, reales.</span>
               </span>
             </h1>
 
             {/* Sub */}
             <p className="mx-fade-up" style={{
-              fontFamily: FB, fontSize: 17.5, color: 'rgba(255,255,255,.48)',
-              maxWidth: 540, marginBottom: 40, lineHeight: 1.72,
-              animationDelay: '.36s', opacity: 0,
+              fontFamily: FB, fontSize: 16, color: 'rgba(255,255,255,.5)',
+              maxWidth: 540, marginBottom: 40, lineHeight: 1.7,
+              animationDelay: '.28s', opacity: 0,
             }}>
-              {t.hero.sub}
+              Web, reservas, WhatsApp y marketing automatizado para negocios en LATAM. Primer cliente en 14 días.
             </p>
 
             {/* CTAs */}
@@ -886,7 +881,7 @@ function HeroSection() {
           </div>
 
           {/* ── RIGHT: dashboard mockup (desktop only) ── */}
-          <div className="hidden lg:block mx-fade-up" style={{ animationDelay: '.28s', opacity: 0 }}>
+          <div className="hidden lg:block mx-fade-up" style={{ animationDelay: '.28s', opacity: 0, overflow: 'visible', maxWidth: 340 }}>
             <DashboardMockup />
           </div>
         </div>
