@@ -84,6 +84,14 @@ export const metadata: Metadata = {
   verification: {
     google: "xbxi_pMfZwMVDOsFl7tC6N79Wi15w2DC07vWBBAwLSU",
   },
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico' },
+    ],
+    apple: '/mastexo-icon.svg',
+    other: [{ rel: 'manifest', url: '/site.webmanifest' }],
+  },
 };
 
 const schemaOrganization = {
@@ -91,7 +99,7 @@ const schemaOrganization = {
   "@type": ["ProfessionalService", "LocalBusiness"],
   name: "Mastexo Digital",
   url: "https://mastexo.com",
-  logo: "https://mastexo.com/og-image.png",
+  logo: "https://mastexo.com/mastexo-logo-horizontal.svg",
   image: "https://mastexo.com/og-image.png",
   description:
     "Agencia de marketing digital en LATAM. Ayudamos a restaurantes, barberías, salones y tiendas locales a conseguir más clientes con presencia digital efectiva. Primeros clientes en 14 días.",

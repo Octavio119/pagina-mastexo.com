@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
+import { LogoMastexo } from "@/components/LogoMastexo";
 
 interface Props {
   onOpenModal: () => void;
@@ -43,17 +43,10 @@ export default function StickyHeader({ onOpenModal }: Props) {
             {/* Logo */}
             <button
               onClick={scrollToTop}
-              className="cursor-pointer"
+              className="cursor-pointer opacity-100 hover:opacity-85 transition-opacity duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 rounded"
               aria-label="Volver al inicio"
             >
-              <Image
-                src="/logo1.jpg"
-                alt="Mastexo Digital"
-                width={130}
-                height={48}
-                className="h-10 w-auto object-contain rounded-sm"
-                priority
-              />
+              <LogoMastexo width={140} height={34} />
             </button>
 
             {/* Desktop nav */}

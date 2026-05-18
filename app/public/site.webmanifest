@@ -1,0 +1,12 @@
+{
+  "name": "Mastexo Digital",
+  "short_name": "Mastexo",
+  "description": "Automatización digital para restaurantes y negocios en Chile",
+  "icons": [
+    { "src": "/mastexo-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ],
+  "theme_color": "#7C3AED",
+  "background_color": "#0D0A1A",
+  "display": "standalone",
+  "start_url": "/"
+}

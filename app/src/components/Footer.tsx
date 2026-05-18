@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
+import { LogoMastexo } from "@/components/LogoMastexo";
 
 export default function Footer() {
   return (
@@ -11,14 +11,12 @@ export default function Footer() {
         {/* Marca */}
         <div>
           <div className="mb-5">
-            <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label="Volver al inicio">
-              <Image
-                src="/logo1.jpg"
-                alt="Mastexo Digital"
-                width={130}
-                height={48}
-                className="h-11 w-auto object-contain cursor-pointer rounded-sm"
-              />
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              aria-label="Volver al inicio"
+              className="cursor-pointer opacity-100 hover:opacity-85 transition-opacity duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 rounded"
+            >
+              <LogoMastexo width={160} height={38} />
             </button>
           </div>
           <p className="text-sm text-gray-400 leading-relaxed mb-5">
