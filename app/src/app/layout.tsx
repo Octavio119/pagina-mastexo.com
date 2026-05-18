@@ -84,14 +84,7 @@ export const metadata: Metadata = {
   verification: {
     google: "xbxi_pMfZwMVDOsFl7tC6N79Wi15w2DC07vWBBAwLSU",
   },
-  icons: {
-    icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/favicon.ico' },
-    ],
-    apple: '/mastexo-icon.svg',
-    other: [{ rel: 'manifest', url: '/site.webmanifest' }],
-  },
+  manifest: '/site.webmanifest',
 };
 
 const schemaOrganization = {
