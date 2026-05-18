@@ -187,7 +187,7 @@ export const WovenLightHero = ({ onOpenModal }: WovenLightHeroProps) => {
             <motion.h1
               {...fadeUp(0.35)}
               className="text-[2.75rem] sm:text-5xl lg:text-[3.4rem] xl:text-6xl font-bold leading-[1.08] tracking-tight"
-              style={{ fontFamily: "var(--font-body)", color: "#F0F8FF" }}
+              style={{ fontFamily: "var(--font-body)", color: "#F0F8FF", position: "relative", zIndex: 10 }}
             >
               <span
                 style={{
@@ -585,8 +585,10 @@ const DashboardMockup = () => (
       initial={{ opacity: 0, x: -24, y: 8 }}
       animate={{ opacity: 1, x: 0, y: 0 }}
       transition={{ delay: 2.2, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      className="absolute -bottom-4 -left-6 rounded-2xl px-4 py-3 flex items-center gap-3"
+      className="absolute -left-6 rounded-2xl px-4 py-3 flex items-center gap-3"
       style={{
+        bottom: 40,
+        zIndex: 5,
         background: "rgba(15,23,42,0.92)",
         border: "1px solid rgba(59,130,246,0.3)",
         backdropFilter: "blur(20px)",

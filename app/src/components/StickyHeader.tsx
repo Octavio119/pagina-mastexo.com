@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 import { LogoMastexo } from "@/components/LogoMastexo";
 
 interface Props {
@@ -41,13 +42,13 @@ export default function StickyHeader({ onOpenModal }: Props) {
           <div className="mx-auto max-w-7xl flex items-center justify-between px-6 py-3.5">
 
             {/* Logo */}
-            <button
-              onClick={scrollToTop}
+            <Link
+              href="/"
               className="cursor-pointer opacity-100 hover:opacity-85 transition-opacity duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 rounded"
               aria-label="Volver al inicio"
             >
-              <LogoMastexo width={140} height={34} />
-            </button>
+              <LogoMastexo width={150} height={36} />
+            </Link>
 
             {/* Desktop nav */}
             <nav className="hidden md:flex items-center gap-6 text-[11px] uppercase tracking-widest text-white/50">
