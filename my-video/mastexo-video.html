@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080,initial-scale=1">
+<title>MASTEXO DIGITAL — Video 9:16</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+/* ── RESET ── */
+*{margin:0;padding:0;box-sizing:border-box;}
+
+/* ── VARIABLES ── */
+:root{
+  --gold:#C9A84C;
+  --teal:#2DD4BF;
+  --text:#f0ede8;
+  --green:#34d399;
+  --red:#f87171;
+  --bg:#080c12;
+  --card:#0e1420;
+  --border:rgba(201,168,76,0.18);
+  --cg:'Cormorant Garamond',serif;
+  --dm:'DM Sans',sans-serif;
+  --sm:'Space Mono',monospace;
+}
+
+/* ── BODY & STAGE ── */
+html,body{
+  width:100vw;height:100vh;
+  background:#000;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+
+#stage{
+  width:1080px;height:1920px;
+  position:relative;
+  overflow:hidden;
+  transform-origin:top left;
+  background:var(--bg);
+}
+
+/* ── GRID BACKGROUND ── */
+.grid-bg{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(201,168,76,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(201,168,76,.05) 1px,transparent 1px);
+  background-size:72px 72px;
+  pointer-events:none;
+}
+
+/* ── ORBS ── */
+.orb{
+  position:absolute;border-radius:50%;
+  filter:blur(140px);pointer-events:none;
+}
+.orb-tr{
+  width:700px;height:700px;
+  background:radial-gradient(circle,rgba(201,168,76,.2) 0%,transparent 70%);
+  top:-150px;right:-150px;
+}
+.orb-bl{
+  width:600px;height:600px;
+  background:radial-gradient(circle,rgba(45,212,191,.13) 0%,transparent 70%);
+  bottom:-120px;left:-120px;
+}
+.orb-center-red{
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(248,113,113,.09) 0%,transparent 70%);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+}
+.orb-center-gold{
+  width:900px;height:900px;
+  background:radial-gradient(circle,rgba(201,168,76,.18) 0%,transparent 70%);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+}
+
+/* ── SCENES ── */
+.scene{
+  position:absolute;inset:0;
+  opacity:0;pointer-events:none;
+  transition:opacity .8s cubic-bezier(.4,0,.2,1);
+  display:flex;flex-direction:column;
+}
+.scene.active{opacity:1;pointer-events:all;}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(40px);}
+  to{opacity:1;transform:translateY(0);}
+}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.9);}to{opacity:1;transform:scale(1);}}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+@keyframes ctaPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,.5);}
+  50%{box-shadow:0 0 0 24px rgba(201,168,76,0);}
+}
+@keyframes drawBar{from{width:0;}to{width:var(--w);}}
+
+.anim{opacity:0;}
+.anim.go{animation:fadeUp .7s ease forwards;}
+.anim-scale{opacity:0;}
+.anim-scale.go{animation:scaleIn .6s ease forwards;}
+.anim-fade{opacity:0;}
+.anim-fade.go{animation:fadeIn .6s ease forwards;}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SHARED COMPONENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.badge-pill{
+  display:inline-flex;align-items:center;gap:10px;
+  background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);
+  border-radius:50px;padding:10px 24px;
+  font-family:var(--sm);font-size:13px;color:var(--gold);letter-spacing:1.5px;
+}
+.badge-dot{
+  width:9px;height:9px;border-radius:50%;
+  background:var(--gold);animation:pulse 2s infinite;
+}
+.section-eyebrow{
+  font-family:var(--sm);font-size:12px;letter-spacing:4px;
+  color:rgba(240,237,232,.4);text-transform:uppercase;
+}
+.card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:20px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SCENE 1 — INTRO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#s1{justify-content:center;padding:0 72px;gap:0;}
+.s1-inner{display:flex;flex-direction:column;gap:32px;}
+.s1-title-block{display:flex;flex-direction:column;}
+.s1-h1{
+  font-family:var(--cg);font-size:120px;font-weight:300;
+  color:var(--text);line-height:.95;
+}
+.s1-h1-gold{
+  font-family:var(--cg);font-size:120px;font-weight:300;
+  color:var(--gold);font-style:italic;line-height:.95;margin-bottom:36px;
+}
+.s1-sub{
+  font-family:var(--dm);font-size:26px;font-weight:300;
+  color:rgba(240,237,232,.65);line-height:1.55;margin-bottom:60px;
+}
+.s1-stats{
+  display:flex;flex-direction:column;gap:0;
+  border:1px solid var(--border);border-radius:20px;overflow:hidden;
+}
+.stat-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:28px 36px;border-bottom:1px solid var(--border);
+}
+.stat-row:last-child{border-bottom:none;}
+.stat-num{
+  font-family:var(--cg);font-size:60px;font-weight:300;color:var(--gold);
+}
+.stat-label{
+  font-family:var(--sm);font-size:12px;color:rgba(240,237,232,.45);
+  letter-spacing:1px;text-align:right;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SCENE 2 — PROBLEMA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#s2{justify-content:center;padding:0 64px;gap:48px;}
+.s2-title{
+  font-family:var(--cg);font-size:88px;font-weight:300;
+  color:var(--text);line-height:1.0;
+}
+.s2-title em{color:var(--gold);font-style:italic;}
+.s2-cards{display:flex;flex-direction:column;gap:20px;}
+.prob-card{
+  padding:36px 40px;display:flex;gap:24px;align-items:flex-start;
+  border-radius:18px;background:var(--card);border:1px solid var(--border);
+}
+.prob-icon{font-size:40px;flex-shrink:0;}
+.prob-body{display:flex;flex-direction:column;gap:8px;}
+.prob-title{font-family:var(--dm);font-size:20px;font-weight:500;color:var(--text);}
+.prob-desc{font-family:var(--dm);font-size:17px;color:rgba(240,237,232,.5);line-height:1.5;}
+.prob-card.gold-card{
+  background:rgba(201,168,76,.08);border-color:var(--gold);
+}
+.gold-card .prob-title{color:var(--gold);font-size:22px;}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SCENE 3 — SERVICIOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#s3{justify-content:center;padding:0 64px;gap:40px;}
+.s3-title{
+  font-family:var(--cg);font-size:84px;font-weight:300;
+  color:var(--text);line-height:1.0;
+}
+.s3-title em{color:var(--gold);font-style:italic;}
+.s3-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.svc-card{
+  padding:32px 28px;display:flex;flex-direction:column;gap:10px;
+  border-radius:16px;background:var(--card);border:1px solid var(--border);
+}
+.svc-icon{font-size:32px;}
+.svc-name{font-family:var(--dm);font-size:18px;font-weight:500;color:var(--text);}
+.svc-desc{font-family:var(--dm);font-size:14px;color:rgba(240,237,232,.5);line-height:1.5;}
+.svc-card.svc-gold{
+  grid-column:1/-1;
+  flex-direction:row;align-items:center;gap:20px;
+  background:rgba(201,168,76,.08);border-color:var(--gold);
+}
+.svc-gold .svc-name{color:var(--gold);}
+.svc-gold .svc-desc{flex:1;}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SCENE 4 — GASTROGROWTH INTRO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#s4{justify-content:center;padding:0 64px;gap:48px;}
+.s4-heading{
+  font-family:var(--cg);font-size:96px;font-weight:300;
+  color:var(--gold);font-style:italic;line-height:.95;margin-bottom:4px;
+}
+.s4-sub{
+  font-family:var(--dm);font-size:26px;
+  color:rgba(240,237,232,.65);margin-bottom:24px;
+}
+.s4-stats-row{display:flex;gap:48px;}
+.s4-stat-num{
+  font-family:var(--cg);font-size:80px;font-weight:300;color:var(--teal);
+}
+.s4-stat-label{
+  font-family:var(--sm);font-size:12px;color:rgba(45,212,191,.6);letter-spacing:1px;
+}
+.client-card{
+  padding:44px;display:flex;flex-direction:column;gap:24px;
+  border-radius:20px;background:var(--card);border:1px solid var(--border);
+}
+.client-header{display:flex;align-items:center;gap:18px;}
+.client-avatar{
+  width:60px;height:60px;border-radius:50%;
+  background:rgba(201,168,76,.12);border:1px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;font-size:28px;
+}
+.client-name{font-family:var(--dm);font-size:22px;font-weight:500;color:var(--text);}
+.client-loc{font-family:var(--sm);font-size:12px;color:rgba(240,237,232,.35);}
+.ba-section{display:flex;flex-direction:column;gap:16px;}
+.ba-row{display:flex;justify-content:space-between;align-items:center;}
+.ba-label{font-family:var(--sm);font-size:12px;letter-spacing:1.5px;}
+.ba-val{font-family:var(--cg);font-size:52px;font-weight:300;}
+.ba-val.red{color:var(--red);}
+.ba-val.green{color:var(--green);}
+.ba-divider{height:1px;background:var(--border);}
+.client-quote{
+  font-family:var(--cg);font-size:22px;font-style:italic;
+  color:rgba(240,237,232,.7);border-left:3px solid var(--gold);
+  padding-left:24px;line-height:1.6;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SCENE 5 — DASHBOARD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#s5{flex-direction:column;background:#080c12;}
+.dash-header{
+  background:#0e1420;border-bottom:1px solid var(--border);
+  padding:0 28px;height:80px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.dash-brand{display:flex;align-items:center;gap:14px;}
+.dash-badge{
+  background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.4);
+  border-radius:8px;padding:6px 14px;
+  font-family:var(--sm);font-size:12px;color:var(--gold);letter-spacing:1px;
+}
+.dash-name{font-family:var(--dm);font-size:17px;font-weight:500;color:var(--text);}
+.dash-powered{font-family:var(--sm);font-size:10px;color:rgba(240,237,232,.3);}
+.dash-right{display:flex;align-items:center;gap:16px;}
+.live-indicator{display:flex;align-items:center;gap:7px;font-family:var(--sm);font-size:12px;color:var(--green);}
+.live-dot{width:9px;height:9px;border-radius:50%;background:var(--green);animation:blink 1.4s infinite;}
+.dash-avatar{
+  width:40px;height:40px;border-radius:50%;
+  background:rgba(201,168,76,.18);border:1px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--sm);font-size:13px;color:var(--gold);
+}
+/* Tabs (replaces sidebar for 9:16) */
+.dash-tabs{
+  display:flex;overflow-x:auto;padding:0 20px;
+  border-bottom:1px solid var(--border);background:#0e1420;
+  flex-shrink:0;gap:4px;
+}
+.dash-tabs::-webkit-scrollbar{display:none;}
+.tab{
+  padding:14px 20px;font-family:var(--sm);font-size:11px;
+  color:rgba(240,237,232,.4);white-space:nowrap;cursor:pointer;
+  border-bottom:2px solid transparent;transition:all .2s;
+}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+/* Content scroll */
+.dash-content{
+  flex:1;overflow-y:auto;padding:20px 20px 12px;
+  display:flex;flex-direction:column;gap:16px;
+}
+.dash-content::-webkit-scrollbar{width:3px;}
+.dash-content::-webkit-scrollbar-thumb{background:var(--border);}
+/* KPI cards */
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.kpi-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:20px 22px;
+  display:flex;flex-direction:column;gap:6px;
+}
+.kpi-label{font-family:var(--sm);font-size:10px;color:rgba(240,237,232,.35);letter-spacing:1px;text-transform:uppercase;}
+.kpi-val{font-family:var(--cg);font-size:44px;font-weight:300;color:var(--text);}
+.kpi-delta{font-family:var(--sm);font-size:11px;color:var(--green);display:flex;align-items:center;gap:4px;}
+/* Charts */
+.chart-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:20px 22px;
+}
+.chart-label{font-family:var(--dm);font-size:13px;color:rgba(240,237,232,.5);margin-bottom:14px;}
+.chart-wrap{position:relative;height:220px;}
+.chart-wrap-sm{position:relative;height:200px;}
+/* Bar tables */
+.table-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:20px 22px;
+}
+.table-label{font-family:var(--dm);font-size:13px;color:rgba(240,237,232,.5);margin-bottom:14px;}
+.t-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.t-name{font-family:var(--dm);font-size:13px;color:var(--text);min-width:150px;}
+.t-bar-bg{flex:1;height:7px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;}
+.t-bar{height:100%;border-radius:4px;width:0;transition:width 1.2s ease;}
+.t-pct{font-family:var(--sm);font-size:10px;color:rgba(240,237,232,.4);min-width:36px;text-align:right;}
+/* Campaign list */
+.ct-header,.ct-row2{
+  display:flex;font-family:var(--sm);font-size:11px;
+  padding:8px 0;
+}
+.ct-header{color:rgba(240,237,232,.3);font-size:10px;border-bottom:1px solid var(--border);margin-bottom:4px;}
+.ct-row2{color:var(--text);border-bottom:1px solid rgba(255,255,255,.04);}
+.ct-name{flex:3;}
+.ct-reach{flex:2;text-align:right;color:rgba(240,237,232,.4);}
+.ct-roi{flex:1;text-align:right;color:var(--green);}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SCENE 6 — PROCESO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#s6{justify-content:center;padding:0 64px;gap:56px;}
+.s6-title{
+  font-family:var(--cg);font-size:88px;font-weight:300;
+  color:var(--text);line-height:1.0;
+}
+.s6-title em{color:var(--gold);font-style:italic;}
+.steps{display:flex;flex-direction:column;gap:0;position:relative;}
+.step{display:flex;gap:28px;align-items:flex-start;position:relative;}
+.step-left{
+  display:flex;flex-direction:column;align-items:center;gap:0;
+  flex-shrink:0;width:72px;
+}
+.step-circle{
+  width:72px;height:72px;border-radius:50%;
+  border:2px solid var(--gold);background:rgba(201,168,76,.08);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.step-num{font-family:var(--sm);font-size:11px;color:var(--gold);letter-spacing:2px;}
+.step-line{width:2px;height:60px;background:linear-gradient(var(--gold),rgba(201,168,76,.1));margin:0 auto;}
+.step-body{padding-top:14px;padding-bottom:32px;}
+.step-name{font-family:var(--dm);font-size:22px;font-weight:500;color:var(--text);margin-bottom:6px;}
+.step-desc{font-family:var(--dm);font-size:17px;color:rgba(240,237,232,.5);line-height:1.5;}
+.s6-pills{display:flex;flex-wrap:wrap;gap:14px;}
+.s6-pill{
+  background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.2);
+  border-radius:50px;padding:12px 26px;
+  font-family:var(--dm);font-size:16px;color:rgba(240,237,232,.65);
+}
+.s6-pill span{color:var(--gold);margin-right:6px;}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SCENE 7 — TESTIMONIO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#s7{justify-content:center;padding:0 64px;gap:44px;}
+.s7-heading{
+  font-family:var(--cg);font-size:88px;font-weight:300;
+  color:var(--text);line-height:1.0;
+}
+.s7-heading em{color:var(--gold);font-style:italic;}
+.testimonial-card{
+  border-left:4px solid var(--gold);border-radius:0 20px 20px 0;
+  background:var(--card);border-top:1px solid var(--border);
+  border-right:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:40px 44px;display:flex;flex-direction:column;gap:24px;
+}
+.t-quote{
+  font-family:var(--cg);font-size:26px;font-style:italic;
+  color:rgba(240,237,232,.85);line-height:1.6;
+}
+.t-name{font-family:var(--dm);font-size:17px;font-weight:500;color:var(--text);}
+.t-biz{font-family:var(--sm);font-size:11px;color:rgba(240,237,232,.35);}
+.t-url{font-family:var(--sm);font-size:11px;color:var(--teal);}
+/* Browser mockup */
+.browser{
+  background:#1a1f2e;border:1px solid rgba(255,255,255,.1);
+  border-radius:16px;overflow:hidden;
+}
+.browser-bar{
+  background:#0e1420;padding:14px 18px;
+  display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.b-dot{width:13px;height:13px;border-radius:50%;}
+.b-dot.r{background:var(--red);}
+.b-dot.y{background:#fbbf24;}
+.b-dot.g{background:var(--green);}
+.b-url{
+  flex:1;background:rgba(255,255,255,.05);border-radius:8px;
+  padding:7px 16px;font-family:var(--sm);font-size:11px;color:rgba(240,237,232,.35);
+}
+.browser-body{padding:40px 36px;display:flex;flex-direction:column;gap:18px;}
+.bc-title{font-family:var(--cg);font-size:56px;font-weight:300;color:var(--text);line-height:1.1;}
+.bc-sub{font-family:var(--cg);font-size:24px;font-style:italic;color:rgba(240,237,232,.5);}
+.bc-badges{display:flex;gap:10px;flex-wrap:wrap;}
+.bc-badge{
+  background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);
+  border-radius:50px;padding:7px 18px;
+  font-family:var(--sm);font-size:11px;color:var(--gold);
+}
+.bc-btn{
+  align-self:flex-start;background:var(--gold);color:#080c12;
+  border:none;border-radius:10px;padding:16px 32px;
+  font-family:var(--dm);font-size:16px;font-weight:500;cursor:pointer;
+}
+.s7-note{font-family:var(--dm);font-size:18px;color:rgba(240,237,232,.45);}
+.s7-note strong{color:var(--gold);}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SCENE 8 — CTA FINAL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#s8{justify-content:center;align-items:center;text-align:center;padding:0 72px;gap:32px;}
+.cta-badge{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--sm);font-size:13px;color:var(--gold);letter-spacing:2px;
+}
+.cta-badge .dot{width:9px;height:9px;border-radius:50%;background:var(--gold);animation:blink 1.2s infinite;}
+.cta-h1{
+  font-family:var(--cg);font-size:120px;font-weight:300;
+  color:var(--text);line-height:.95;
+}
+.cta-h1 em{color:var(--gold);font-style:italic;}
+.cta-sub{
+  font-family:var(--dm);font-size:24px;font-weight:300;
+  color:rgba(240,237,232,.6);line-height:1.6;
+}
+.cta-btn{
+  background:var(--gold);color:#080c12;border:none;border-radius:60px;
+  padding:28px 64px;font-family:var(--dm);font-size:22px;font-weight:500;
+  cursor:pointer;letter-spacing:.3px;
+  animation:ctaPulse 2.2s infinite;
+}
+.cta-contact{
+  display:flex;flex-direction:column;gap:8px;align-items:center;
+  font-family:var(--sm);font-size:14px;color:rgba(240,237,232,.35);letter-spacing:.5px;
+}
+.cta-pills{display:flex;flex-direction:column;gap:12px;align-items:center;}
+.cta-pill{
+  background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.18);
+  border-radius:50px;padding:12px 28px;
+  font-family:var(--sm);font-size:12px;color:rgba(240,237,232,.55);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PLAYER CONTROLS (fixed, outside stage)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#controls{
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(0,0,0,.92);border-top:1px solid rgba(201,168,76,.2);
+  padding:10px 20px;
+  display:flex;align-items:center;gap:12px;
+  z-index:9999;backdrop-filter:blur(12px);
+}
+#playBtn{
+  background:var(--gold);border:none;border-radius:50%;
+  width:40px;height:40px;cursor:pointer;font-size:16px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+#progressTrack{
+  flex:1;height:5px;background:rgba(255,255,255,.1);
+  border-radius:3px;cursor:pointer;
+}
+#progressFill{height:100%;background:var(--gold);border-radius:3px;width:0%;}
+#timeLabel{font-family:var(--sm);font-size:11px;color:rgba(240,237,232,.6);min-width:72px;}
+#sceneLabel{font-family:var(--sm);font-size:10px;color:rgba(201,168,76,.6);min-width:90px;text-align:right;}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════
+     STAGE 1080 × 1920
+═══════════════════════════════ -->
+<div id="stage">
+
+<!-- ════════════ SCENE 1 — INTRO ════════════ -->
+<div class="scene" id="s1">
+  <div class="grid-bg"></div>
+  <div class="orb orb-tr"></div>
+  <div class="orb orb-bl"></div>
+  <div class="s1-inner" style="padding:0 72px;">
+    <!-- top spacer -->
+    <div style="height:140px"></div>
+    <div class="badge-pill anim" data-d="0">
+      <div class="badge-dot"></div>MASTEXO DIGITAL · SERVICIOS
+    </div>
+    <div class="section-eyebrow anim" data-d="1" style="margin-top:28px;">SOLUCIONES PARA NEGOCIOS LOCALES</div>
+    <div class="s1-title-block anim" data-d="2" style="margin-top:20px;">
+      <div class="s1-h1">Resultados,</div>
+      <div class="s1-h1-gold">no herramientas.</div>
+    </div>
+    <div class="s1-sub anim" data-d="3">
+      Hacemos crecer tu negocio usando publicidad digital, redes sociales y automatización.
+    </div>
+    <div class="s1-stats anim" data-d="4">
+      <div class="stat-row">
+        <div class="stat-num" data-count="85" data-suffix="+">0+</div>
+        <div class="stat-label">NEGOCIOS<br>ACTIVOS</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-num" data-count="14" data-suffix=" días">0 días</div>
+        <div class="stat-label">AL PRIMER<br>CLIENTE</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-num" data-count="3" data-suffix="×">0×</div>
+        <div class="stat-label">MÁS<br>RESERVAS</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ SCENE 2 — PROBLEMA ════════════ -->
+<div class="scene" id="s2">
+  <div class="grid-bg"></div>
+  <div class="orb orb-center-red"></div>
+  <div class="orb orb-bl"></div>
+  <div style="height:120px"></div>
+  <div style="padding:0 64px;display:flex;flex-direction:column;gap:44px;">
+    <div class="s2-title anim" data-d="0">
+      Tu negocio merece<br><em>más clientes.</em>
+    </div>
+    <div class="s2-cards">
+      <div class="prob-card anim" data-d="1">
+        <div class="prob-icon">⏰</div>
+        <div class="prob-body">
+          <div class="prob-title">Sin tiempo para marketing</div>
+          <div class="prob-desc">Tu día no te deja horas para aprender publicidad digital.</div>
+        </div>
+      </div>
+      <div class="prob-card anim" data-d="2">
+        <div class="prob-icon">📉</div>
+        <div class="prob-body">
+          <div class="prob-title">Dependes de apps externas</div>
+          <div class="prob-desc">Plataformas que cobran comisión por cada reserva.</div>
+        </div>
+      </div>
+      <div class="prob-card anim" data-d="3">
+        <div class="prob-icon">🤯</div>
+        <div class="prob-body">
+          <div class="prob-title">Herramientas complejas</div>
+          <div class="prob-desc">Meta Ads, Google, Instagram… todo parece otro trabajo.</div>
+        </div>
+      </div>
+      <div class="prob-card gold-card anim-scale" data-d="4">
+        <div class="prob-icon">✅</div>
+        <div class="prob-body">
+          <div class="prob-title">MASTEXO LO RESUELVE</div>
+          <div class="prob-desc">Nos encargamos de todo. Tú solo atiendes.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ SCENE 3 — SERVICIOS ════════════ -->
+<div class="scene" id="s3">
+  <div class="grid-bg"></div>
+  <div class="orb orb-tr"></div>
+  <div class="orb orb-bl"></div>
+  <div style="height:100px"></div>
+  <div style="padding:0 64px;display:flex;flex-direction:column;gap:40px;">
+    <div class="s3-title anim" data-d="0">
+      Todo lo que necesitas<br><em>para crecer.</em>
+    </div>
+    <div class="s3-grid">
+      <div class="svc-card anim" data-d="1">
+        <div class="svc-icon">📱</div>
+        <div class="svc-name">Redes Sociales</div>
+        <div class="svc-desc">Instagram y Facebook gestionados.</div>
+      </div>
+      <div class="svc-card anim" data-d="2">
+        <div class="svc-icon">🎯</div>
+        <div class="svc-name">Publicidad Pagada</div>
+        <div class="svc-desc">Meta Ads y Google Ads.</div>
+      </div>
+      <div class="svc-card anim" data-d="3">
+        <div class="svc-icon">🌐</div>
+        <div class="svc-name">Sitio Web</div>
+        <div class="svc-desc">Reservas online + SEO local.</div>
+      </div>
+      <div class="svc-card anim" data-d="4">
+        <div class="svc-icon">🤖</div>
+        <div class="svc-name">Automatización</div>
+        <div class="svc-desc">Citas y confirmaciones auto.</div>
+      </div>
+      <div class="svc-card anim" data-d="5">
+        <div class="svc-icon">📊</div>
+        <div class="svc-name">Dashboard</div>
+        <div class="svc-desc">Métricas en tiempo real.</div>
+      </div>
+      <div class="svc-card svc-gold anim" data-d="6">
+        <div class="svc-icon" style="font-size:36px;">💬</div>
+        <div>
+          <div class="svc-name">Diagnóstico Gratuito</div>
+          <div class="svc-desc">Sin costo ni compromiso.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ SCENE 4 — GASTROGROWTH INTRO ════════════ -->
+<div class="scene" id="s4">
+  <div class="grid-bg"></div>
+  <div class="orb orb-tr"></div>
+  <div class="orb orb-bl"></div>
+  <div style="height:100px"></div>
+  <div style="padding:0 64px;display:flex;flex-direction:column;gap:40px;">
+    <div class="anim" data-d="0" style="display:flex;flex-direction:column;gap:12px;">
+      <div class="badge-pill" style="width:fit-content;">● CASO DE ÉXITO REAL</div>
+      <div class="s4-heading">GastroGrowth<br>Dashboard</div>
+      <div class="s4-sub">Triplicó sus reservas en 30 días</div>
+      <div class="s4-stats-row anim" data-d="1">
+        <div>
+          <div class="s4-stat-num">3×</div>
+          <div class="s4-stat-label">MÁS RESERVAS</div>
+        </div>
+        <div>
+          <div class="s4-stat-num">30</div>
+          <div class="s4-stat-label">DÍAS</div>
+        </div>
+      </div>
+    </div>
+    <div class="client-card anim-scale" data-d="2">
+      <div class="client-header">
+        <div class="client-avatar">🍽️</div>
+        <div>
+          <div class="client-name">Restaurante Don Pedro</div>
+          <div class="client-loc">Ñuñoa, Santiago · Chile</div>
+        </div>
+      </div>
+      <div class="ba-section">
+        <div class="ba-row">
+          <div class="ba-label" style="color:var(--red)">ANTES</div>
+          <div class="ba-val red">28 reservas/mes</div>
+        </div>
+        <div class="ba-divider"></div>
+        <div class="ba-row">
+          <div class="ba-label" style="color:var(--green)">DESPUÉS</div>
+          <div class="ba-val green" data-count="94" data-suffix=" reservas/mes">0 reservas/mes</div>
+        </div>
+      </div>
+      <div class="client-quote">
+        "Mis mesas se llenan los fines de semana sin depender de plataformas externas."
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ SCENE 5 — DASHBOARD ★ ════════════ -->
+<div class="scene" id="s5">
+  <!-- Header -->
+  <div class="dash-header anim-fade" data-d="0">
+    <div class="dash-brand">
+      <div class="dash-badge">GASTROGROWTH</div>
+      <div>
+        <div class="dash-name">Restaurante Don Pedro</div>
+        <div class="dash-powered">Dashboard Premium · Powered by Mastexo</div>
+      </div>
+    </div>
+    <div class="dash-right">
+      <div class="live-indicator"><div class="live-dot"></div>En vivo</div>
+      <div class="dash-avatar">DP</div>
+    </div>
+  </div>
+  <!-- Tabs -->
+  <div class="dash-tabs anim-fade" data-d="1">
+    <div class="tab active">📊 Resumen</div>
+    <div class="tab">📅 Reservas</div>
+    <div class="tab">💰 Ingresos</div>
+    <div class="tab">🎯 Campañas</div>
+    <div class="tab">📱 Redes</div>
+    <div class="tab">📍 Maps</div>
+    <div class="tab">⭐ Reseñas</div>
+  </div>
+  <!-- Content -->
+  <div class="dash-content">
+    <!-- KPIs -->
+    <div class="kpi-grid">
+      <div class="kpi-card anim" data-d="2">
+        <div class="kpi-label">RESERVAS MES</div>
+        <div class="kpi-val" data-count="94">0</div>
+        <div class="kpi-delta">↑ 236%</div>
+      </div>
+      <div class="kpi-card anim" data-d="3">
+        <div class="kpi-label">INGRESOS</div>
+        <div class="kpi-val" data-count-prefix="$" data-count="2.8" data-suffix="M">$0M</div>
+        <div class="kpi-delta">↑ 189%</div>
+      </div>
+      <div class="kpi-card anim" data-d="4">
+        <div class="kpi-label">SEGUIDORES</div>
+        <div class="kpi-val" data-count="1240" data-comma>0</div>
+        <div class="kpi-delta">↑ 3.4×</div>
+      </div>
+      <div class="kpi-card anim" data-d="5">
+        <div class="kpi-label">SATISFACCIÓN</div>
+        <div class="kpi-val" data-count="4.9" data-suffix="★">0★</div>
+        <div class="kpi-delta">↑ 0.4</div>
+      </div>
+    </div>
+    <!-- Line chart -->
+    <div class="chart-card anim" data-d="6">
+      <div class="chart-label">Reservas mensuales</div>
+      <div class="chart-wrap"><canvas id="lineChart"></canvas></div>
+    </div>
+    <!-- Doughnut -->
+    <div class="chart-card anim" data-d="7">
+      <div class="chart-label">Origen de reservas</div>
+      <div class="chart-wrap-sm"><canvas id="doughnutChart"></canvas></div>
+    </div>
+    <!-- Platos -->
+    <div class="table-card anim" data-d="8">
+      <div class="table-label">Platos más pedidos</div>
+      <div class="t-row">
+        <div class="t-name">Lomo saltado</div>
+        <div class="t-bar-bg"><div class="t-bar" style="--w:94%;background:var(--gold);"></div></div>
+        <div class="t-pct">94%</div>
+      </div>
+      <div class="t-row">
+        <div class="t-name">Ceviche</div>
+        <div class="t-bar-bg"><div class="t-bar" style="--w:78%;background:var(--teal);"></div></div>
+        <div class="t-pct">78%</div>
+      </div>
+      <div class="t-row">
+        <div class="t-name">Pollo asado</div>
+        <div class="t-bar-bg"><div class="t-bar" style="--w:62%;background:#60a5fa;"></div></div>
+        <div class="t-pct">62%</div>
+      </div>
+      <div class="t-row">
+        <div class="t-name">Pastel de choclo</div>
+        <div class="t-bar-bg"><div class="t-bar" style="--w:48%;background:#a78bfa;"></div></div>
+        <div class="t-pct">48%</div>
+      </div>
+    </div>
+    <!-- Campañas -->
+    <div class="table-card anim" data-d="9">
+      <div class="table-label">Campañas Meta Ads</div>
+      <div class="ct-header">
+        <div class="ct-name">Campaña</div>
+        <div class="ct-reach">Alcance</div>
+        <div class="ct-roi">ROI</div>
+      </div>
+      <div class="ct-row2"><div class="ct-name">Fin de semana VIP</div><div class="ct-reach">12,400</div><div class="ct-roi">4.2×</div></div>
+      <div class="ct-row2"><div class="ct-name">Almuerzo ejecutivo</div><div class="ct-reach">8,200</div><div class="ct-roi">3.8×</div></div>
+      <div class="ct-row2"><div class="ct-name">Reserva online</div><div class="ct-reach">6,800</div><div class="ct-roi">3.1×</div></div>
+      <div class="ct-row2"><div class="ct-name">Cumpleaños especial</div><div class="ct-reach">4,100</div><div class="ct-roi">2.9×</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ SCENE 6 — PROCESO ════════════ -->
+<div class="scene" id="s6">
+  <div class="grid-bg"></div>
+  <div class="orb orb-tr"></div>
+  <div class="orb orb-bl"></div>
+  <div style="height:100px"></div>
+  <div style="padding:0 64px;display:flex;flex-direction:column;gap:52px;">
+    <div class="s6-title anim" data-d="0"><em>Así es</em><br>nuestro proceso</div>
+    <div class="steps">
+      <div class="step anim" data-d="1">
+        <div class="step-left">
+          <div class="step-circle"><div class="step-num">01</div></div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-name">Diagnóstico gratuito</div>
+          <div class="step-desc">Cuéntanos tu negocio en 2 minutos.</div>
+        </div>
+      </div>
+      <div class="step anim" data-d="2">
+        <div class="step-left">
+          <div class="step-circle"><div class="step-num">02</div></div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-name">Diseñamos la solución</div>
+          <div class="step-desc">Estrategia personalizada: redes, publicidad, web.</div>
+        </div>
+      </div>
+      <div class="step anim" data-d="3">
+        <div class="step-left">
+          <div class="step-circle"><div class="step-num">03</div></div>
+        </div>
+        <div class="step-body">
+          <div class="step-name">Clientes en 14 días</div>
+          <div class="step-desc">Prospectos reales. Tú solo atiendes.</div>
+        </div>
+      </div>
+    </div>
+    <div class="s6-pills anim" data-d="4">
+      <div class="s6-pill"><span>✓</span>Sin tarjeta de crédito</div>
+      <div class="s6-pill"><span>✓</span>Sin contratos</div>
+      <div class="s6-pill"><span>✓</span>Cancela cuando quieras</div>
+      <div class="s6-pill"><span>✓</span>Respuesta el mismo día</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ SCENE 7 — TESTIMONIO ════════════ -->
+<div class="scene" id="s7">
+  <div class="grid-bg"></div>
+  <div class="orb orb-tr"></div>
+  <div class="orb orb-bl"></div>
+  <div style="height:100px"></div>
+  <div style="padding:0 64px;display:flex;flex-direction:column;gap:40px;">
+    <div class="s7-heading anim" data-d="0">Ellos ya<br><em>crecieron.</em></div>
+    <div class="testimonial-card anim" data-d="1">
+      <div class="t-quote">"Triplicamos las reservas en el primer mes. El equipo manejó todo, yo solo me encargué de atender."</div>
+      <div>
+        <div class="t-name">Casona Monetta · Spa &amp; Eventos</div>
+        <div class="t-biz">Mostazal, Región O'Higgins</div>
+        <div class="t-url">casona-monetta.vercel.app</div>
+      </div>
+    </div>
+    <div class="browser anim-scale" data-d="2">
+      <div class="browser-bar">
+        <div class="b-dot r"></div><div class="b-dot y"></div><div class="b-dot g"></div>
+        <div class="b-url">casona-monetta.vercel.app</div>
+      </div>
+      <div class="browser-body">
+        <div class="bc-title">Casona Monetta</div>
+        <div class="bc-sub">Spa &amp; Eventos</div>
+        <div class="bc-badges">
+          <div class="bc-badge">+500 Eventos</div>
+          <div class="bc-badge">10 años</div>
+          <div class="bc-badge">Matrimonios</div>
+        </div>
+        <button class="bc-btn">Cotizar mi evento →</button>
+      </div>
+    </div>
+    <div class="s7-note anim" data-d="3">
+      Más de <strong>85 negocios</strong> ya trabajan con Mastexo en Chile.
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ SCENE 8 — CTA FINAL ════════════ -->
+<div class="scene" id="s8">
+  <div class="grid-bg"></div>
+  <div class="orb orb-center-gold"></div>
+  <div class="cta-badge anim" data-d="0"><div class="dot"></div>MASTEXO DIGITAL</div>
+  <div class="cta-h1 anim" data-d="1">¿Tu negocio<br>es el <em>próximo?</em></div>
+  <div class="cta-sub anim" data-d="2">Diagnóstico gratuito. Sin costo.<br>Sin compromiso. Respondemos hoy.</div>
+  <button class="cta-btn anim" data-d="3">Solicitar diagnóstico gratuito →</button>
+  <div class="cta-contact anim" data-d="4">
+    <span>mastexo.com</span>
+    <span>contactos@mastexo.com</span>
+    <span>+56 9 2970 9420</span>
+  </div>
+  <div class="cta-pills anim" data-d="5">
+    <div class="cta-pill">85+ negocios activos</div>
+    <div class="cta-pill">14 días al primer cliente</div>
+    <div class="cta-pill">3× más reservas</div>
+  </div>
+</div>
+
+</div><!-- /stage -->
+
+<!-- ════════════ CONTROLS ════════════ -->
+<div id="controls">
+  <button id="playBtn">▶</button>
+  <div id="progressTrack"><div id="progressFill"></div></div>
+  <div id="timeLabel">0:00 / 1:55</div>
+  <div id="sceneLabel">Escena 1/8</div>
+  <button id="restartBtn" style="background:transparent;border:1px solid rgba(201,168,76,.3);border-radius:6px;color:#C9A84C;font-family:'Space Mono',monospace;font-size:10px;padding:6px 12px;cursor:pointer;white-space:nowrap;">↺ Reiniciar</button>
+</div>
+
+<script>
+// ═══════════════════════════════════
+//  SCALE STAGE TO FIT WINDOW
+// ═══════════════════════════════════
+const STAGE_W = 1080, STAGE_H = 1920;
+const stage = document.getElementById('stage');
+
+function scaleStage() {
+  const controlsH = 58;
+  const availW = window.innerWidth;
+  const availH = window.innerHeight - controlsH;
+  const s = Math.min(availW / STAGE_W, availH / STAGE_H);
+  stage.style.transform = `scale(${s})`;
+  stage.style.marginLeft = ((availW - STAGE_W * s) / 2) + 'px';
+  stage.style.marginTop = Math.max(0, (availH - STAGE_H * s) / 2) + 'px';
+}
+scaleStage();
+window.addEventListener('resize', scaleStage);
+
+// ═══════════════════════════════════
+//  TIMELINE  (seconds)
+// ═══════════════════════════════════
+const SCENES = [
+  { id: 's1', start: 0,   end: 10,  label: '1/8 — Intro' },
+  { id: 's2', start: 10,  end: 22,  label: '2/8 — Problema' },
+  { id: 's3', start: 22,  end: 35,  label: '3/8 — Servicios' },
+  { id: 's4', start: 35,  end: 48,  label: '4/8 — GastroGrowth' },
+  { id: 's5', start: 48,  end: 68,  label: '5/8 — Dashboard ★' },
+  { id: 's6', start: 68,  end: 82,  label: '6/8 — Proceso' },
+  { id: 's7', start: 82,  end: 98,  label: '7/8 — Testimonio' },
+  { id: 's8', start: 98,  end: 115, label: '8/8 — CTA Final' },
+];
+const TOTAL = 115;
+
+// ═══════════════════════════════════
+//  STAGGER ANIMATION ENGINE
+// ═══════════════════════════════════
+const STEP = 150; // ms per stagger level
+
+function triggerScene(sceneEl) {
+  // All .anim elements — stagger by data-d
+  sceneEl.querySelectorAll('.anim').forEach(el => {
+    const d = parseInt(el.dataset.d || 0);
+    el.style.animationDelay = (d * STEP) + 'ms';
+    // Force reflow so animation restarts
+    el.classList.remove('go');
+    void el.offsetWidth;
+    el.classList.add('go');
+  });
+  // .anim-scale
+  sceneEl.querySelectorAll('.anim-scale').forEach(el => {
+    const d = parseInt(el.dataset.d || 0);
+    el.style.animationDelay = (d * STEP) + 'ms';
+    el.classList.remove('go');
+    void el.offsetWidth;
+    el.classList.add('go');
+  });
+  // .anim-fade
+  sceneEl.querySelectorAll('.anim-fade').forEach(el => {
+    const d = parseInt(el.dataset.d || 0);
+    el.style.animationDelay = (d * STEP) + 'ms';
+    el.classList.remove('go');
+    void el.offsetWidth;
+    el.classList.add('go');
+  });
+}
+
+// ═══════════════════════════════════
+//  COUNT-UP
+// ═══════════════════════════════════
+function countUp(el) {
+  const target = parseFloat(el.dataset.count);
+  const suffix = el.dataset.suffix || '';
+  const prefix = el.dataset.countPrefix || '';
+  const comma  = el.hasAttribute('data-comma');
+  const dur = 1400;
+  const t0 = Date.now();
+  function step() {
+    const p   = Math.min((Date.now() - t0) / dur, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    const val  = target * ease;
+    let disp;
+    if (target < 10 && String(target).includes('.')) {
+      disp = val.toFixed(1);
+    } else {
+      disp = Math.floor(val);
+    }
+    if (comma) disp = Number(disp).toLocaleString('es-CL');
+    el.textContent = prefix + disp + suffix;
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+// ═══════════════════════════════════
+//  CHARTS
+// ═══════════════════════════════════
+let lineChart = null, doughnutChart = null, chartsInited = false;
+
+function initCharts() {
+  if (chartsInited) return;
+  chartsInited = true;
+
+  const lCtx = document.getElementById('lineChart').getContext('2d');
+  const grad = lCtx.createLinearGradient(0, 0, 0, 220);
+  grad.addColorStop(0, 'rgba(201,168,76,.28)');
+  grad.addColorStop(1, 'rgba(201,168,76,0)');
+
+  lineChart = new Chart(lCtx, {
+    type: 'line',
+    data: {
+      labels: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago'],
+      datasets: [{
+        data: [22,25,28,35,52,68,80,94],
+        borderColor: '#C9A84C', borderWidth: 2.5,
+        backgroundColor: grad, fill: true,
+        pointBackgroundColor: '#C9A84C', pointRadius: 5,
+        tension: .42
+      }]
+    },
+    options: {
+      animation: { duration: 1600, easing: 'easeInOutQuart' },
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,.05)' }, ticks: { color: 'rgba(240,237,232,.4)', font: { family: 'Space Mono', size: 11 } } },
+        y: { grid: { color: 'rgba(255,255,255,.05)' }, ticks: { color: 'rgba(240,237,232,.4)', font: { family: 'Space Mono', size: 11 } }, min: 0, max: 110 }
+      }
+    }
+  });
+
+  const dCtx = document.getElementById('doughnutChart').getContext('2d');
+  doughnutChart = new Chart(dCtx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Instagram','Google','Web directa','WhatsApp'],
+      datasets: [{
+        data: [38,28,22,12],
+        backgroundColor: ['#C9A84C','#2DD4BF','#60a5fa','#a78bfa'],
+        borderColor: '#0e1420', borderWidth: 3
+      }]
+    },
+    options: {
+      animation: { animateRotate: true, duration: 1300 },
+      cutout: '66%',
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { color: 'rgba(240,237,232,.6)', font: { family: 'DM Sans', size: 13 }, padding: 16, boxWidth: 14 }
+        }
+      }
+    }
+  });
+}
+
+function animateBars() {
+  document.querySelectorAll('#s5 .t-bar').forEach(bar => {
+    bar.style.width = '0%';
+    setTimeout(() => { bar.style.width = bar.style.getPropertyValue('--w'); }, 300);
+  });
+}
+
+// ═══════════════════════════════════
+//  SCENE STATE
+// ═══════════════════════════════════
+let currentScene = -1;
+const activated = new Set();
+
+function showScene(idx) {
+  if (idx === currentScene) return;
+
+  // Deactivate old
+  if (currentScene >= 0) {
+    document.getElementById(SCENES[currentScene].id).classList.remove('active');
+  }
+
+  currentScene = idx;
+  const sceneEl = document.getElementById(SCENES[idx].id);
+  sceneEl.classList.add('active');
+
+  // Trigger animations once
+  if (!activated.has(idx)) {
+    activated.add(idx);
+    triggerScene(sceneEl);
+    // Count-ups
+    setTimeout(() => {
+      sceneEl.querySelectorAll('[data-count]').forEach(el => countUp(el));
+    }, 400);
+    // Charts for scene 5
+    if (idx === 4) {
+      setTimeout(() => { initCharts(); animateBars(); }, 500);
+    }
+  }
+
+  document.getElementById('sceneLabel').textContent = SCENES[idx].label;
+}
+
+// ═══════════════════════════════════
+//  PLAYBACK
+// ═══════════════════════════════════
+let elapsed = 0, playing = false, raf = null, lastTs = null;
+
+function getSceneIdx(t) {
+  let idx = 0;
+  for (let i = 0; i < SCENES.length; i++) {
+    if (t >= SCENES[i].start) idx = i;
+  }
+  return idx;
+}
+
+function updateUI() {
+  document.getElementById('progressFill').style.width = ((elapsed / TOTAL) * 100) + '%';
+  const m = Math.floor(elapsed / 60);
+  const s = Math.floor(elapsed % 60);
+  document.getElementById('timeLabel').textContent = `${m}:${String(s).padStart(2,'0')} / 1:55`;
+  showScene(getSceneIdx(elapsed));
+}
+
+function tick(ts) {
+  if (!playing) return;
+  if (lastTs !== null) {
+    elapsed = Math.min(elapsed + (ts - lastTs) / 1000, TOTAL);
+  }
+  lastTs = ts;
+  updateUI();
+  if (elapsed >= TOTAL) { pause(); return; }
+  raf = requestAnimationFrame(tick);
+}
+
+function play() {
+  if (playing) return;
+  playing = true;
+  lastTs = null;
+  document.getElementById('playBtn').textContent = '⏸';
+  raf = requestAnimationFrame(tick);
+}
+
+function pause() {
+  playing = false;
+  lastTs = null;
+  document.getElementById('playBtn').textContent = '▶';
+  if (raf) cancelAnimationFrame(raf);
+}
+
+function reset() {
+  pause();
+  elapsed = 0;
+  currentScene = -1;
+  activated.clear();
+  chartsInited = false;
+  if (lineChart) { lineChart.destroy(); lineChart = null; }
+  if (doughnutChart) { doughnutChart.destroy(); doughnutChart = null; }
+  // Reset animation classes
+  document.querySelectorAll('.anim,.anim-scale,.anim-fade').forEach(el => el.classList.remove('go'));
+  // Deactivate all scenes
+  document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
+  updateUI();
+}
+
+// ═══════════════════════════════════
+//  EVENT LISTENERS
+// ═══════════════════════════════════
+document.getElementById('playBtn').addEventListener('click', () => {
+  playing ? pause() : play();
+});
+
+document.getElementById('restartBtn').addEventListener('click', reset);
+
+document.getElementById('progressTrack').addEventListener('click', function(e) {
+  const rect = this.getBoundingClientRect();
+  elapsed = (e.clientX - rect.left) / rect.width * TOTAL;
+  if (elapsed < 0) elapsed = 0;
+  activated.clear();
+  chartsInited = false;
+  if (lineChart) { lineChart.destroy(); lineChart = null; }
+  if (doughnutChart) { doughnutChart.destroy(); doughnutChart = null; }
+  document.querySelectorAll('.anim,.anim-scale,.anim-fade').forEach(el => el.classList.remove('go'));
+  currentScene = -1;
+  updateUI();
+});
+
+// Keyboard controls
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space') { e.preventDefault(); playing ? pause() : play(); }
+  if (e.code === 'ArrowRight') { elapsed = Math.min(elapsed + 5, TOTAL); currentScene = -1; updateUI(); }
+  if (e.code === 'ArrowLeft')  { elapsed = Math.max(elapsed - 5, 0);    currentScene = -1; updateUI(); }
+  if (e.code === 'KeyR')       { reset(); }
+});
+
+// ═══════════════════════════════════
+//  INIT
+// ═══════════════════════════════════
+updateUI(); // Shows scene 1
+</script>
+</body>
+</html>

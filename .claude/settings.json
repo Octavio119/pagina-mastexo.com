@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/Master/OneDrive/Desktop/Dashboard restaurante/**)",
+      "Bash(node -e ':*)",
+      "Bash(grep -o \"get\\(.\\\\{0,300\\\\}\" \"c:/Users/Master/OneDrive/Desktop/Dashboard restaurante/server/node_modules/node-sqlite3-wasm/dist/node-sqlite3-wasm.js\")",
+      "Bash(node -e \"const {Database} = require\\('./node_modules/node-sqlite3-wasm'\\); const db = new Database\\(':memory:'\\); db.exec\\('CREATE TABLE t \\(id INTEGER PRIMARY KEY, r INTEGER\\)'\\); db.run\\('INSERT INTO t VALUES \\(?,?\\)', [1,1]\\); const stmt = db.prepare\\('SELECT * FROM t WHERE id=? AND r=?'\\); console.log\\('array:', stmt.get\\([1,1]\\)\\); console.log\\('variadic:', stmt.get\\(1,1\\)\\); stmt.finalize\\(\\); db.close\\(\\);\" --prefix \"c:/Users/Master/OneDrive/Desktop/Dashboard restaurante/server\")",
+      "Bash(dir \"c:\\\\Users\\\\Master\\\\OneDrive\\\\Desktop\\\\mastexo.com\\\\app\" /b)",
+      "Bash(git commit -m ' *)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\Master\\OneDrive\\Desktop\\Dashboard restaurante\\src"
+    ]
+  }
+}

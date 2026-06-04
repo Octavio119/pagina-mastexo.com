@@ -1,185 +1,126 @@
-import { NextRequest } from "next/server";
-import nodemailer from "nodemailer";
+import { Resend } from 'resend'
+import { NextResponse } from 'next/server'
 
-// ── HTML escaping — prevents XSS via email template ──────────────────────────
-function esc(str: string): string {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;")
-    .replace(/\n/g, "<br>");
-}
+const resend = new Resend(process.env.RESEND_API_KEY)
 
-// ── Input validation ──────────────────────────────────────────────────────────
-function isValidEmail(email: string): boolean {
-  // No newlines (email header injection) + standard format
-  if (/[\r\n]/.test(email)) return false;
-  return /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(email);
-}
+// Rate limiting — 3 envíos por IP por hora
+const rateMap = new Map<string, { count: number; resetAt: number }>()
 
-function isValidPhone(phone: string): boolean {
-  const digits = phone.replace(/\D/g, "");
-  return digits.length >= 7 && digits.length <= 15;
-}
-
-// ── In-memory rate limiting (3 submissions / IP / hour) ──────────────────────
-type RateEntry = { count: number; resetAt: number };
-const rateMap = new Map<string, RateEntry>();
-const RATE_LIMIT = 3;
-const RATE_WINDOW_MS = 60 * 60 * 1000; // 1 hour
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateMap.get(ip);
+function checkRate(ip: string): boolean {
+  const now = Date.now()
+  const entry = rateMap.get(ip)
   if (!entry || now > entry.resetAt) {
-    rateMap.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS });
-    return true;
+    rateMap.set(ip, { count: 1, resetAt: now + 3_600_000 })
+    return true
   }
-  if (entry.count >= RATE_LIMIT) return false;
-  entry.count++;
-  return true;
+  if (entry.count >= 3) return false
+  entry.count++
+  return true
 }
 
-// ── WhatsApp via CallMeBot ────────────────────────────────────────────────────
-async function notifyWhatsApp(
-  name: string, business: string, whatsapp: string,
-  email: string, category: string, improve: string
-) {
-  const phone = process.env.CALLMEBOT_PHONE;
-  const apiKey = process.env.CALLMEBOT_APIKEY;
-  if (!phone || !apiKey) return;
-
-  const text = [
-    `🔔 *Nuevo lead Mastexo*`,
-    `👤 ${name} — ${business}`,
-    `📱 ${whatsapp}`,
-    `📧 ${email}`,
-    `🏷️ ${category}`,
-    `💬 ${improve.slice(0, 200)}`,
-  ].join("\n");
-
-  const url = `https://api.callmebot.com/whatsapp.php?phone=${encodeURIComponent(phone)}&text=${encodeURIComponent(text)}&apikey=${encodeURIComponent(apiKey)}`;
-  const res = await fetch(url, { signal: AbortSignal.timeout(10_000) });
-  if (!res.ok) throw new Error(`CallMeBot responded ${res.status}`);
+function esc(s: string) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/\n/g, '<br>')
 }
 
-// ── Email via SMTP ────────────────────────────────────────────────────────────
-async function sendEmail(
-  name: string, business: string, email: string, whatsapp: string,
-  category: string, improve: string, budget: string
-) {
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST ?? "smtp.gmail.com",
-    port: parseInt(process.env.SMTP_PORT ?? "587"),
-    secure: false,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-  });
+export async function POST(req: Request) {
+  // ── DEBUG ──
+  console.log('[contact] ▶ API hit')
+  console.log('[contact] API Key existe:', !!process.env.RESEND_API_KEY)
+  console.log('[contact] API Key prefix:', process.env.RESEND_API_KEY?.slice(0, 10))
 
-  await transporter.verify();
-
-  const safeWhatsapp = whatsapp.replace(/\D/g, "");
-
-  const html = `
-    <div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#0a0a0a;color:#fff;padding:32px;border-radius:8px;">
-      <h2 style="color:#D4A853;margin-top:0;">🔔 Nuevo diagnóstico — Mastexo</h2>
-      <table style="width:100%;border-collapse:collapse;">
-        <tr><td style="padding:8px 0;color:#888;width:140px;">Nombre</td><td style="padding:8px 0;color:#fff;">${esc(name)}</td></tr>
-        <tr><td style="padding:8px 0;color:#888;">Negocio</td><td style="padding:8px 0;color:#fff;">${esc(business)}</td></tr>
-        <tr><td style="padding:8px 0;color:#888;">Email</td><td style="padding:8px 0;color:#fff;"><a href="mailto:${esc(email)}" style="color:#D4A853;">${esc(email)}</a></td></tr>
-        <tr><td style="padding:8px 0;color:#888;">WhatsApp</td><td style="padding:8px 0;color:#fff;"><a href="https://wa.me/${safeWhatsapp}" style="color:#D4A853;">+${safeWhatsapp}</a></td></tr>
-        <tr><td style="padding:8px 0;color:#888;">Categoría</td><td style="padding:8px 0;color:#fff;">${esc(category)}</td></tr>
-        ${budget ? `<tr><td style="padding:8px 0;color:#888;">Presupuesto</td><td style="padding:8px 0;color:#fff;">${esc(budget)}</td></tr>` : ""}
-      </table>
-      <div style="margin-top:20px;padding:16px;background:#111;border-left:3px solid #D4A853;border-radius:4px;">
-        <p style="margin:0;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Qué quiere mejorar</p>
-        <p style="margin:8px 0 0;color:#fff;">${esc(improve)}</p>
-      </div>
-      <p style="margin-top:24px;font-size:12px;color:#444;">Enviado desde mastexo.com · ${new Date().toLocaleString("es-CL")}</p>
-    </div>
-  `;
-
-  await transporter.sendMail({
-    from: `"Mastexo Formulario" <${process.env.SMTP_USER}>`,
-    to: process.env.LEAD_EMAIL ?? "contactos@mastexo.com",
-    replyTo: email, // already validated above
-    subject: `Diagnóstico: ${name} — ${business} (${category})`,
-    html,
-  });
-}
-
-// ── Handler ───────────────────────────────────────────────────────────────────
-export async function POST(req: NextRequest) {
-  // Rate limiting
   const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    req.headers.get("x-real-ip") ??
-    "unknown";
+    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown'
 
-  if (!checkRateLimit(ip)) {
-    return Response.json(
-      { ok: false, error: "Demasiados intentos. Intenta de nuevo en una hora." },
+  if (!checkRate(ip)) {
+    console.log('[contact] Rate limit hit para IP:', ip)
+    return NextResponse.json(
+      { success: false, error: 'Demasiados intentos. Espera una hora.' },
       { status: 429 }
-    );
+    )
   }
 
-  const body = await req.json().catch(() => null);
-  if (!body) {
-    return Response.json({ ok: false, error: "Petición inválida" }, { status: 400 });
+  let body: Record<string, string>
+  try {
+    body = await req.json()
+  } catch {
+    console.log('[contact] Error parseando body')
+    return NextResponse.json(
+      { success: false, error: 'Petición inválida.' },
+      { status: 400 }
+    )
   }
 
-  const { name, business, email, whatsapp, category, improve, budget } = body;
+  const { nombre, negocio, servicio, clientes, contacto, mensaje } = body
 
-  // Required fields
-  if (!name || !business || !email || !whatsapp || !improve) {
-    return Response.json({ ok: false, error: "Faltan campos requeridos" }, { status: 400 });
+  console.log('[contact] Datos recibidos:', { nombre, negocio, servicio, clientes, contacto })
+
+  if (!nombre || !negocio || !servicio || !contacto) {
+    console.log('[contact] Faltan campos requeridos')
+    return NextResponse.json(
+      { success: false, error: 'Faltan campos requeridos.' },
+      { status: 400 }
+    )
   }
 
-  // Length limits — prevent abuse
-  if (
-    String(name).length > 100 ||
-    String(business).length > 100 ||
-    String(email).length > 254 ||
-    String(whatsapp).length > 20 ||
-    String(improve).length > 2000
-  ) {
-    return Response.json({ ok: false, error: "Datos demasiado largos" }, { status: 400 });
+  console.log('[contact] Enviando email via Resend...')
+  const { data, error } = await resend.emails.send({
+    from: 'Mastexo Web <onboarding@resend.dev>',
+    to: ['farahfo4715@gmail.com'],
+    subject: `🔥 Nuevo lead: ${nombre} — ${negocio}`,
+    html: `
+      <div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#111111;color:#fff;padding:32px;border-radius:12px;">
+        <div style="background:#7C3AED;padding:16px 24px;border-radius:8px;margin-bottom:24px;">
+          <h1 style="margin:0;font-size:20px;color:#fff;">🚀 Nuevo lead en Mastexo</h1>
+        </div>
+
+        <table style="width:100%;border-collapse:collapse;">
+          <tr style="border-bottom:1px solid #2a2a2a;">
+            <td style="padding:12px 0;color:#888888;width:160px;">Nombre</td>
+            <td style="padding:12px 0;color:#fff;font-weight:600;">${esc(nombre)}</td>
+          </tr>
+          <tr style="border-bottom:1px solid #2a2a2a;">
+            <td style="padding:12px 0;color:#888888;">Negocio</td>
+            <td style="padding:12px 0;color:#fff;font-weight:600;">${esc(negocio)}</td>
+          </tr>
+          <tr style="border-bottom:1px solid #2a2a2a;">
+            <td style="padding:12px 0;color:#888888;">Servicio</td>
+            <td style="padding:12px 0;color:#7C3AED;font-weight:600;">${esc(servicio)}</td>
+          </tr>
+          <tr style="border-bottom:1px solid #2a2a2a;">
+            <td style="padding:12px 0;color:#888888;">Clientes actuales</td>
+            <td style="padding:12px 0;color:#fff;">${esc(clientes ?? 'No especificado')}</td>
+          </tr>
+          <tr style="border-bottom:1px solid #2a2a2a;">
+            <td style="padding:12px 0;color:#888888;">Contacto</td>
+            <td style="padding:12px 0;color:#fff;">${esc(contacto)}</td>
+          </tr>
+          <tr>
+            <td style="padding:12px 0;color:#888888;">Mensaje</td>
+            <td style="padding:12px 0;color:#fff;">${esc(mensaje || 'Sin mensaje adicional')}</td>
+          </tr>
+        </table>
+
+        <div style="margin-top:24px;padding:16px;background:#1a1a1a;border-radius:8px;border-left:3px solid #7C3AED;">
+          <p style="margin:0;color:#888888;font-size:12px;">
+            Lead recibido desde mastexo.com &middot; ${new Date().toLocaleString('es-CL')}
+          </p>
+        </div>
+      </div>
+    `,
+  })
+
+  console.log('[contact] Resend response → data:', JSON.stringify(data))
+  console.log('[contact] Resend response → error:', JSON.stringify(error))
+
+  if (error) {
+    console.error('[contact] ✕ Resend falló:', error)
+    return NextResponse.json({ success: false, error }, { status: 400 })
   }
 
-  // Format validation
-  if (!isValidEmail(String(email))) {
-    return Response.json({ ok: false, error: "Email inválido" }, { status: 400 });
-  }
-
-  if (!isValidPhone(String(whatsapp))) {
-    return Response.json({ ok: false, error: "Número de WhatsApp inválido" }, { status: 400 });
-  }
-
-  const results = await Promise.allSettled([
-    sendEmail(
-      String(name), String(business), String(email), String(whatsapp),
-      String(category ?? "General"), String(improve), String(budget ?? "")
-    ),
-    notifyWhatsApp(
-      String(name), String(business), String(whatsapp),
-      String(email), String(category ?? "General"), String(improve)
-    ),
-  ]);
-
-  const [emailResult, waResult] = results;
-  if (emailResult.status === "rejected") console.error("[contact] Email failed:", emailResult.reason);
-  if (waResult.status === "rejected") console.error("[contact] WhatsApp failed:", waResult.reason);
-
-  if (results.every((r) => r.status === "rejected")) {
-    return Response.json(
-      { ok: false, error: "No se pudo enviar la solicitud. Contáctanos por WhatsApp." },
-      { status: 500 }
-    );
-  }
-
-  return Response.json({ ok: true });
+  console.log('[contact] ✓ Email enviado. ID:', data?.id)
+  return NextResponse.json({ success: true, data })
 }

@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PlatformX — Soluciones Empresariales All-in-One</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    body { background-color: #070B18; }
+
+    .dot-grid {
+      background-image: radial-gradient(rgba(255,255,255,0.07) 1px, transparent 1px);
+      background-size: 30px 30px;
+    }
+    .glow-blue-left  { background: radial-gradient(ellipse at 15% 50%, rgba(59,130,246,0.18) 0%, transparent 55%); }
+    .glow-purple-top { background: radial-gradient(ellipse at 80% 10%, rgba(139,92,246,0.13) 0%, transparent 50%); }
+    .glow-cyan-bot   { background: radial-gradient(ellipse at 55% 90%, rgba(6,182,212,0.10) 0%, transparent 50%); }
+
+    .nav-blur {
+      background: rgba(7,11,24,0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .glass {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(16px);
+    }
+    .glass-featured {
+      background: linear-gradient(135deg, rgba(59,130,246,0.12), rgba(6,182,212,0.10));
+      border: 1px solid rgba(59,130,246,0.28);
+      backdrop-filter: blur(16px);
+    }
+
+    .grad-text {
+      background: linear-gradient(100deg, #fff 30%, #93C5FD 65%, #22D3EE 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .grad-text-subtle {
+      background: linear-gradient(135deg, #E2E8F0, #93C5FD);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #3B82F6, #06B6D4);
+      color: #fff; font-weight: 600; cursor: pointer;
+      transition: transform .25s ease, box-shadow .25s ease;
+      border: none;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 35px rgba(59,130,246,.45); }
+    .btn-outline {
+      background: transparent; color: #E2E8F0; font-weight: 500; cursor: pointer;
+      border: 1px solid rgba(255,255,255,.15);
+      transition: background .2s, border-color .2s;
+    }
+    .btn-outline:hover { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.28); }
+
+    .tag-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(59,130,246,.13); border: 1px solid rgba(59,130,246,.28);
+      color: #93C5FD; padding: 4px 14px; border-radius: 100px;
+      font-size: 12px; font-weight: 500;
+    }
+
+    .stat-num {
+      font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1;
+      background: linear-gradient(180deg, #fff, #93C5FD);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    /* Feature list left panel */
+    .feat-row {
+      padding: 12px 16px; border-radius: 10px;
+      border: 1px solid transparent; cursor: pointer;
+      transition: background .2s, border-color .2s;
+    }
+    .feat-row:hover { background: rgba(59,130,246,.08); border-color: rgba(59,130,246,.18); }
+    .feat-row.active { background: rgba(59,130,246,.13); border-color: rgba(59,130,246,.35); }
+
+    /* Mockup window */
+    .mockup { background: #0D1117; border: 1px solid rgba(255,255,255,.1); border-radius: 14px; overflow: hidden; box-shadow: 0 0 60px rgba(59,130,246,.22), 0 0 120px rgba(59,130,246,.08); }
+    .mockup-bar { background: #161B22; padding: 11px 16px; border-bottom: 1px solid rgba(255,255,255,.06); display: flex; align-items: center; gap: 7px; }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .code-b { color: #79C0FF; } .code-o { color: #FFA657; } .code-g { color: #7EE787; }
+    .code-p { color: #D2A8FF; } .code-r { color: #F85149; } .code-w { color: #E6EDF3; }
+
+    /* Bento grid */
+    .bento { display: grid; grid-template-columns: 1fr 1.35fr 1fr; grid-template-rows: auto auto; gap: 14px; }
+    @media (max-width: 900px) { .bento { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 600px) { .bento { grid-template-columns: 1fr; } }
+
+    .bento-card {
+      border-radius: 18px; padding: 28px; cursor: pointer;
+      transition: border-color .25s, transform .25s;
+    }
+    .bento-card:hover { transform: translateY(-3px); border-color: rgba(59,130,246,.35) !important; }
+
+    .icon-wrap {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 18px; transition: background .2s;
+    }
+
+    /* Testimonial */
+    .testi-card { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08); border-radius: 20px; overflow: hidden; }
+    .testi-left { border-right: 1px solid rgba(255,255,255,.07); }
+
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-9px)} }
+    .animate-float { animation: float 3.5s ease-in-out infinite; }
+    @keyframes pulse-glow { 0%,100%{opacity:.6} 50%{opacity:1} }
+    .animate-pg { animation: pulse-glow 2s ease-in-out infinite; }
+
+    /* Reveal on scroll */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body class="text-white antialiased">
+
+  <!-- Background layers -->
+  <div class="fixed inset-0 dot-grid pointer-events-none opacity-60"></div>
+  <div class="fixed inset-0 glow-blue-left pointer-events-none"></div>
+  <div class="fixed inset-0 glow-purple-top pointer-events-none"></div>
+  <div class="fixed inset-0 glow-cyan-bot pointer-events-none"></div>
+
+  <!-- ─── NAVBAR ─── -->
+  <nav class="fixed top-0 left-0 right-0 z-50 nav-blur">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <span class="font-bold text-lg tracking-tight">PlatformX</span>
+      </div>
+
+      <div class="hidden md:flex items-center gap-8 text-sm text-slate-400">
+        <a href="#oferta"    class="hover:text-white transition-colors">Oferta</a>
+        <a href="#productos" class="hover:text-white transition-colors">Plataforma</a>
+        <a href="#features"  class="hover:text-white transition-colors">Soluciones</a>
+        <a href="#testi"     class="hover:text-white transition-colors">Recursos</a>
+        <a href="#"          class="hover:text-white transition-colors">Empresa</a>
+        <a href="#"          class="hover:text-white transition-colors">Academia</a>
+      </div>
+
+      <button class="btn-primary text-sm py-2.5 px-5 rounded-lg">Comenzar</button>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ─── -->
+  <section class="relative pt-36 pb-24 px-6 text-center">
+    <div class="max-w-5xl mx-auto">
+      <div class="tag-pill mb-7">
+        <div class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></div>
+        Plataforma All-in-One para Empresas
+      </div>
+
+      <h1 class="text-5xl md:text-6xl lg:text-[4.2rem] font-extrabold leading-[1.12] mb-7 tracking-tight">
+        Acelera la productividad e impulsa<br>
+        la innovación con potentes
+        <span class="grad-text"> Soluciones Empresariales</span> —<br>
+        <span class="text-white">El futuro ocurre ahora</span>
+      </h1>
+
+      <p class="text-slate-400 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+        Una plataforma unificada que integra CRM, marketing, RRHH, LMS, análisis de datos y más
+        para potenciar cada área de tu empresa — sin código, sin fricciones.
+      </p>
+
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <button class="btn-primary rounded-lg py-3 px-7 text-base">Comenzar gratis</button>
+        <button class="btn-outline rounded-lg py-3 px-7 text-base flex items-center gap-2">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor"/></svg>
+          Ver demo
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── STATS ─── -->
+  <section class="py-16 px-6 border-y border-white/[0.06]" id="oferta">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold text-center grad-text-subtle mb-16">El futuro ocurre ahora</h2>
+      <div class="grid grid-cols-3 gap-10 text-center">
+        <div class="reveal">
+          <div class="stat-num">400+</div>
+          <div class="text-slate-400 text-sm mt-2 font-medium">Empresas Atendidas</div>
+        </div>
+        <div class="reveal" style="transition-delay:.1s">
+          <div class="stat-num">2015</div>
+          <div class="text-slate-400 text-sm mt-2 font-medium">Establecidos desde</div>
+        </div>
+        <div class="reveal" style="transition-delay:.2s">
+          <div class="stat-num">1000+</div>
+          <div class="text-slate-400 text-sm mt-2 font-medium">Usuarios Globales</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FEATURE SPLIT ─── -->
+  <section class="py-28 px-6" id="features">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+
+      <!-- Left: feature list -->
+      <div class="space-y-1.5 reveal">
+        <div class="feat-row">
+          <span class="text-slate-400 text-sm font-medium">Capacidades Todo-en-Uno</span>
+        </div>
+        <div class="feat-row">
+          <span class="text-slate-400 text-sm font-medium">Framework de Plataforma Potente</span>
+        </div>
+
+        <!-- Active/highlighted row -->
+        <div class="feat-row active" id="feat-nocode">
+          <div class="flex items-start gap-3">
+            <div class="mt-0.5 w-9 h-9 rounded-xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center flex-shrink-0">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            </div>
+            <div>
+              <div class="font-semibold text-white text-sm mb-1">Herramientas Sin Código</div>
+              <div class="text-slate-400 text-xs leading-relaxed">Permite que más equipos en tu organización usen la plataforma sin necesitar habilidades de programación — mientras mantienen control y personalización total.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="feat-row">
+          <span class="text-slate-400 text-sm font-medium">Integración Neutral de Tecnología</span>
+        </div>
+        <div class="feat-row">
+          <span class="text-slate-400 text-sm font-medium">Historial de Innovación y Resultados</span>
+        </div>
+      </div>
+
+      <!-- Right: Mockup window -->
+      <div class="reveal animate-float" style="transition-delay:.15s">
+        <div class="mockup">
+          <div class="mockup-bar">
+            <div class="dot bg-red-500"></div>
+            <div class="dot bg-yellow-500"></div>
+            <div class="dot bg-green-500"></div>
+            <span class="ml-3 text-slate-500 text-xs font-mono">workflow.js</span>
+          </div>
+
+          <div class="flex" style="height:280px">
+            <!-- Sidebar -->
+            <div class="w-36 border-r border-white/[0.05] p-3 flex flex-col gap-1.5 text-xs">
+              <div class="flex items-center gap-2 px-2 py-1.5 rounded text-slate-500">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4"/></svg>
+                Input
+              </div>
+              <div class="flex items-center gap-2 px-2 py-1.5 rounded text-slate-500">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81"/></svg>
+                Postman
+              </div>
+              <div class="flex items-center gap-2 px-2 py-1.5 rounded bg-blue-500/20 border border-blue-500/30 text-blue-400 font-medium">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                Función
+              </div>
+              <div class="flex items-center gap-2 px-2 py-1.5 rounded text-slate-500">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                Condición
+              </div>
+              <div class="flex items-center gap-2 px-2 py-1.5 rounded text-slate-500">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                Fin
+              </div>
+            </div>
+
+            <!-- Code -->
+            <div class="flex-1 p-5 font-mono text-[11px] leading-[1.75] overflow-hidden">
+              <div><span class="code-b">def</span> <span class="code-o">function8001</span><span class="code-w">():</span></div>
+              <div class="ml-4"><span class="code-p">try</span><span class="code-w">:</span></div>
+              <div class="ml-8"><span class="code-w">result = </span><span class="code-g">do_something</span><span class="code-w">()</span></div>
+              <div class="ml-8"><span class="code-g">on_success</span><span class="code-w">(result)</span></div>
+              <div class="ml-4"><span class="code-p">except</span> <span class="code-b">Exception</span> <span class="code-w">as e:</span></div>
+              <div class="ml-8"><span class="code-g">on_failure</span><span class="code-w">(e)</span></div>
+              <div class="mt-3"><span class="code-b">def</span> <span class="code-o">on_success</span><span class="code-w">(data):</span></div>
+              <div class="ml-4"><span class="code-g">print</span><span class="code-w">(</span><span class="code-r">"Success:"</span><span class="code-w">, data)</span></div>
+              <div class="mt-2"><span class="code-b">def</span> <span class="code-o">on_failure</span><span class="code-w">(error):</span></div>
+              <div class="ml-4"><span class="code-g">print</span><span class="code-w">(</span><span class="code-r">"Failed:"</span><span class="code-w">, err...</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── BENTO GRID ─── -->
+  <section class="py-24 px-6" id="productos">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16 reveal">
+        <div class="tag-pill mb-5">Nuestros Productos</div>
+        <h2 class="text-4xl md:text-5xl font-bold grad-text-subtle">Todo lo que necesitas, en un solo lugar</h2>
+      </div>
+
+      <div class="bento reveal" style="transition-delay:.1s">
+
+        <!-- Col 1 -->
+        <div class="flex flex-col gap-3.5">
+          <div class="bento-card glass">
+            <div class="icon-wrap bg-blue-500/18 border border-blue-500/28">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="1.6"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+            </div>
+            <h3 class="font-semibold text-white mb-2">CRM Inteligente</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">Gestiona relaciones con clientes, pipelines de ventas y seguimientos automáticos desde un centro unificado.</p>
+          </div>
+
+          <div class="bento-card glass">
+            <div class="icon-wrap bg-violet-500/18 border border-violet-500/28">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="1.6"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            </div>
+            <h3 class="font-semibold text-white mb-2">Recursos Humanos</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">Administración de equipos, onboarding, nóminas y evaluaciones de desempeño integradas.</p>
+          </div>
+        </div>
+
+        <!-- Col 2 (featured, center) -->
+        <div class="bento-card glass-featured text-center" style="box-shadow: 0 0 40px rgba(6,182,212,.15);">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mb-6 mx-auto animate-pg">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.6"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Automatización de Marketing</h3>
+          <p class="text-blue-200/65 text-sm leading-relaxed mb-6">Las herramientas potencian la colaboración del equipo a través de automatización escalable e inteligente.</p>
+
+          <div class="flex flex-col gap-2 mb-6">
+            <div class="flex gap-2 justify-center flex-wrap">
+              <span class="tag-pill text-[11px]">Sync en Tiempo Real</span>
+              <span class="tag-pill text-[11px]">Automatización</span>
+            </div>
+            <div class="flex gap-2 justify-center flex-wrap">
+              <span class="tag-pill text-[11px]">Sugerencias Smart</span>
+              <span class="tag-pill text-[11px]">Multiplataforma</span>
+            </div>
+          </div>
+
+          <!-- Mini workflow nodes -->
+          <div class="flex items-center justify-center gap-4">
+            <div class="flex flex-col gap-2">
+              <div class="w-6 h-6 rounded-md bg-blue-500/30 border border-blue-500/50 flex items-center justify-center"><svg width="9" height="9" viewBox="0 0 24 24" fill="#3B82F6"><path d="M20 6L9 17l-5-5"/></svg></div>
+              <div class="w-6 h-6 rounded-md bg-blue-500/30 border border-blue-500/50 flex items-center justify-center"><svg width="9" height="9" viewBox="0 0 24 24" fill="#3B82F6"><path d="M20 6L9 17l-5-5"/></svg></div>
+              <div class="w-6 h-6 rounded-md bg-blue-500/30 border border-blue-500/50 flex items-center justify-center"><svg width="9" height="9" viewBox="0 0 24 24" fill="#3B82F6"><path d="M20 6L9 17l-5-5"/></svg></div>
+            </div>
+            <div class="w-11 h-11 rounded-xl bg-blue-500/20 border border-blue-500/40 flex items-center justify-center">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4"/></svg>
+            </div>
+            <div class="flex flex-col gap-2">
+              <div class="w-6 h-6 rounded-md bg-cyan-500/30 border border-cyan-500/50 flex items-center justify-center"><svg width="9" height="9" viewBox="0 0 24 24" fill="#06B6D4"><path d="M20 6L9 17l-5-5"/></svg></div>
+              <div class="w-6 h-6 rounded-md bg-cyan-500/30 border border-cyan-500/50 flex items-center justify-center"><svg width="9" height="9" viewBox="0 0 24 24" fill="#06B6D4"><path d="M20 6L9 17l-5-5"/></svg></div>
+              <div class="w-6 h-6 rounded-md bg-cyan-500/30 border border-cyan-500/50 flex items-center justify-center"><svg width="9" height="9" viewBox="0 0 24 24" fill="#06B6D4"><path d="M20 6L9 17l-5-5"/></svg></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Col 3 -->
+        <div class="flex flex-col gap-3.5">
+          <div class="bento-card glass">
+            <div class="icon-wrap bg-emerald-500/18 border border-emerald-500/28">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="1.6"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <h3 class="font-semibold text-white mb-2">Herramientas de Email</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">Mantente al tanto con recordatorios y alertas inteligentes impulsadas por automatización — sin esfuerzo manual.</p>
+          </div>
+
+          <div class="bento-card glass">
+            <div class="icon-wrap bg-orange-500/18 border border-orange-500/28">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="1.6"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            </div>
+            <h3 class="font-semibold text-white mb-2">Análisis de Datos</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">Unifica fuentes de datos para obtener insights en tiempo real y decisiones más inteligentes.</p>
+          </div>
+        </div>
+
+        <!-- Bottom row -->
+        <div class="bento-card glass text-center">
+          <div class="icon-wrap bg-sky-500/18 border border-sky-500/28 mx-auto">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#0EA5E9" stroke-width="1.6"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <h3 class="font-semibold text-white mb-2">Ventas & Pipeline</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">Sistemas de ventas rápidos y confiables para procesamiento eficiente con IA integrada.</p>
+        </div>
+
+        <div class="bento-card glass text-center">
+          <div class="icon-wrap bg-purple-500/18 border border-purple-500/28 mx-auto">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="1.6"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+          </div>
+          <h3 class="font-semibold text-white mb-2">LMS / E-learning</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">Plataforma de aprendizaje adaptable para capacitar equipos y certificar conocimientos.</p>
+        </div>
+
+        <div class="bento-card glass text-center">
+          <div class="icon-wrap bg-cyan-500/18 border border-cyan-500/28 mx-auto">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#06B6D4" stroke-width="1.6"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          </div>
+          <h3 class="font-semibold text-white mb-2">Constructor de Sitios Web</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">Crea sitios web profesionales con integración completa a todos los módulos.</p>
+        </div>
+
+      </div>
+
+      <div class="text-center mt-9 reveal">
+        <span class="text-slate-500 text-sm flex items-center gap-2 justify-center">
+          <span class="w-1.5 h-1.5 rounded-full bg-blue-400 inline-block"></span>
+          Y muchos más...
+          <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 inline-block"></span>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── TESTIMONIALS ─── -->
+  <section class="py-24 px-6" id="testi">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="text-4xl md:text-5xl font-bold grad-text-subtle text-center mb-14 reveal">Opiniones Reales, Resultados Reales</h2>
+
+      <div class="testi-card flex flex-col md:flex-row reveal" style="transition-delay:.1s">
+        <!-- Left -->
+        <div class="testi-left md:w-60 p-8 flex flex-col justify-between gap-6">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </div>
+            <span class="font-bold text-sm">TechCorp</span>
+          </div>
+
+          <div>
+            <div class="text-white font-semibold text-sm mb-2.5">Director de Operaciones</div>
+            <div class="flex gap-2 flex-wrap">
+              <span class="bg-white/8 text-xs text-slate-300 px-2.5 py-1 rounded-full border border-white/10">Experiencia Cliente</span>
+              <span class="bg-white/8 text-xs text-slate-300 px-2.5 py-1 rounded-full border border-white/10">Retail</span>
+            </div>
+          </div>
+
+          <div class="flex gap-2">
+            <button class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-all cursor-pointer">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-all cursor-pointer">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right -->
+        <div class="flex-1 p-8 md:p-10">
+          <div class="text-slate-500 text-xs mb-5 tracking-wide uppercase">Elevando la Experiencia del Cliente con Plataforma Inteligente</div>
+          <p class="text-white/90 text-lg leading-relaxed">
+            Después de probar múltiples soluciones, <strong class="text-white">esta plataforma destacó con su enfoque todo-en-uno.</strong>
+            Empoderó a nuestro equipo para resolver problemas más rápido e intuitivamente.
+            Hemos visto una caída del 35% en tiempo de resolución — un cambio radical para nuestra estrategia operativa.
+          </p>
+          <a href="#" class="inline-flex items-center gap-1.5 text-blue-400 text-sm mt-6 hover:text-blue-300 transition-colors font-medium">
+            Leer reseña completa
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FINAL CTA ─── -->
+  <section class="py-24 px-6">
+    <div class="max-w-3xl mx-auto text-center reveal">
+      <div class="glass rounded-3xl p-14" style="background:linear-gradient(135deg,rgba(59,130,246,.08),rgba(6,182,212,.06));border:1px solid rgba(59,130,246,.2);">
+        <h2 class="text-4xl font-bold grad-text mb-4">Comienza hoy mismo</h2>
+        <p class="text-slate-400 mb-9 text-lg">Únete a miles de empresas que ya transformaron su operación con nuestra plataforma all-in-one.</p>
+        <div class="flex flex-wrap gap-4 justify-center">
+          <button class="btn-primary rounded-lg py-3 px-8 text-base">Comenzar gratis</button>
+          <button class="btn-outline rounded-lg py-3 px-8 text-base">Hablar con ventas</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="border-t border-white/[0.06] py-16 px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
+        <div class="col-span-2 md:col-span-1">
+          <div class="flex items-center gap-2.5 mb-4">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </div>
+            <span class="font-bold">PlatformX</span>
+          </div>
+          <p class="text-slate-500 text-sm">Trabajemos juntos</p>
+        </div>
+
+        <div>
+          <h4 class="font-semibold text-sm mb-4 text-slate-300">Oferta AI</h4>
+          <ul class="space-y-3 text-slate-500 text-sm">
+            <li><a href="#" class="hover:text-white transition-colors">CRM</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Marketing</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">RRHH</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">LMS</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-semibold text-sm mb-4 text-slate-300">Plataforma</h4>
+          <ul class="space-y-3 text-slate-500 text-sm">
+            <li><a href="#" class="hover:text-white transition-colors">Analytics</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Email Tools</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Ventas</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Constructor Web</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-semibold text-sm mb-4 text-slate-300">Desarrolladores</h4>
+          <ul class="space-y-3 text-slate-500 text-sm">
+            <li><a href="#" class="hover:text-white transition-colors">Comunidad</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">API Docs</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">SDK</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-semibold text-sm mb-4 text-slate-300">Recursos</h4>
+          <ul class="space-y-3 text-slate-500 text-sm">
+            <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Documentación</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Academia</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-white/[0.06] mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p class="text-slate-500 text-sm">© 2025 PlatformX. Todos los derechos reservados.</p>
+        <div class="flex gap-6 text-slate-500 text-sm">
+          <a href="#" class="hover:text-white transition-colors">Privacidad</a>
+          <a href="#" class="hover:text-white transition-colors">Términos</a>
+          <a href="#" class="hover:text-white transition-colors">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Feature row click
+    document.querySelectorAll('.feat-row').forEach(row => {
+      row.addEventListener('click', () => {
+        document.querySelectorAll('.feat-row').forEach(r => r.classList.remove('active'));
+        row.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>

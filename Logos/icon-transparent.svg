@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <title>Mastexo Icon</title>
+  <desc>Ícono Mastexo Digital fondo transparente</desc>
+  <g transform="translate(32,32)">
+    <circle cx="0" cy="0" r="28" fill="none" stroke="#7C3AED" stroke-width="2.5" stroke-dasharray="140,35" stroke-linecap="round"/>
+    <circle cx="0" cy="0" r="18" fill="none" stroke="#7C3AED" stroke-width="1.8" stroke-dasharray="90,23" stroke-linecap="round" transform="rotate(50 0 0)"/>
+    <circle cx="0" cy="0" r="9" fill="none" stroke="#7C3AED" stroke-width="1.4" stroke-dasharray="45,13" stroke-linecap="round" transform="rotate(-30 0 0)"/>
+    <circle cx="0" cy="0" r="3.2" fill="#7C3AED"/>
+  </g>
+</svg>

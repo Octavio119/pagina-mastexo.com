@@ -7,3 +7,7 @@ node_modules/
 .DS_Store
 Thumbs.db
 .claude/settings.local.json
+
+# n8n workflows — contienen credenciales
+outbound-mastexo-v*.json
+n8n-current.json

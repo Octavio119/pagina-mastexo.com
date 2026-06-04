@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Ad 2 — Resultado</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1080px;
+    height: 1080px;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .ad {
+    width: 1080px;
+    height: 1080px;
+    position: relative;
+    background: #FAFAF8;
+    display: flex;
+    flex-direction: column;
+    padding: 60px;
+    overflow: hidden;
+  }
+
+  /* Gold top bar */
+  .top-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 8px;
+    background: linear-gradient(90deg, #C9A84C, #F0D080, #C9A84C);
+  }
+
+  /* Decorative corner */
+  .corner-accent {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 320px;
+    height: 320px;
+    background: linear-gradient(135deg, transparent 60%, rgba(201,168,76,0.08) 100%);
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 52px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand-logo {
+    width: 44px;
+    height: 44px;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #E5E5E5;
+  }
+
+  .brand-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .brand-name {
+    font-size: 16px;
+    font-weight: 800;
+    color: #1A1A1A;
+    letter-spacing: 1px;
+  }
+
+  .brand-sub {
+    font-size: 11px;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
+  .badge {
+    background: #1A1A1A;
+    color: #C9A84C;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 8px 18px;
+    border-radius: 100px;
+  }
+
+  /* Big number hero */
+  .number-hero {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 24px;
+  }
+
+  .big-number {
+    font-size: 200px;
+    font-weight: 900;
+    color: #1A1A1A;
+    line-height: 0.85;
+    letter-spacing: -10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .big-number .unit {
+    font-size: 80px;
+    font-weight: 900;
+    color: #C9A84C;
+    letter-spacing: -2px;
+    margin-top: 20px;
+  }
+
+  .number-context {
+    font-size: 28px;
+    font-weight: 600;
+    color: #555;
+    margin-top: 8px;
+    letter-spacing: -0.5px;
+  }
+
+  /* Headline */
+  .headline {
+    font-size: 52px;
+    font-weight: 900;
+    color: #1A1A1A;
+    line-height: 1.1;
+    letter-spacing: -2px;
+    margin-bottom: 32px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .headline .accent {
+    color: #C9A84C;
+  }
+
+  /* Proof items */
+  .proof-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 44px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .proof-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .check {
+    width: 28px;
+    height: 28px;
+    background: #C9A84C;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .check svg {
+    width: 14px;
+    height: 14px;
+    fill: none;
+    stroke: #0F0F0F;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .proof-text {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  /* CTA block */
+  .cta-block {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .cta-btn {
+    background: #1A1A1A;
+    color: #C9A84C;
+    font-size: 20px;
+    font-weight: 800;
+    padding: 22px 52px;
+    border-radius: 8px;
+    white-space: nowrap;
+    letter-spacing: -0.3px;
+  }
+
+  .cta-meta {
+    font-size: 14px;
+    color: #999;
+    line-height: 1.8;
+  }
+
+  .cta-meta strong {
+    color: #555;
+  }
+
+  /* Bottom strip */
+  .bottom-strip {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 60px;
+    background: #1A1A1A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 48px;
+  }
+
+  .strip-item {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .strip-dot {
+    width: 4px;
+    height: 4px;
+    background: #C9A84C;
+    border-radius: 50%;
+  }
+</style>
+</head>
+<body>
+<div class="ad">
+  <div class="top-bar"></div>
+  <div class="corner-accent"></div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="brand">
+      <div class="brand-logo">
+        <img src="../app/public/logo1.jpg" alt="Mastexo">
+      </div>
+      <div>
+        <div class="brand-name">MASTEXO</div>
+        <div class="brand-sub">Digital · Chile</div>
+      </div>
+    </div>
+    <div class="badge">Marketing local</div>
+  </div>
+
+  <!-- Big number -->
+  <div class="number-hero">
+    <div class="big-number">
+      14<span class="unit"> días</span>
+    </div>
+    <div class="number-context">para tener tus primeros clientes nuevos</div>
+  </div>
+
+  <!-- Headline -->
+  <h2 class="headline">
+    Nosotros manejamos todo.<br>
+    Tú solo <span class="accent">recibes clientes.</span>
+  </h2>
+
+  <!-- Proof list -->
+  <div class="proof-list">
+    <div class="proof-item">
+      <div class="check">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <div class="proof-text">Publicidad que atrae gente ya buscando tu servicio</div>
+    </div>
+    <div class="proof-item">
+      <div class="check">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <div class="proof-text">Redes sociales + anuncios + agendamiento automático</div>
+    </div>
+    <div class="proof-item">
+      <div class="check">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <div class="proof-text">Sin conocimiento técnico — nosotros nos encargamos</div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-block">
+    <div class="cta-btn">Quiero empezar</div>
+    <div class="cta-meta">
+      <strong>Diagnóstico 100% gratuito</strong><br>
+      Sin contrato · Cancelas cuando quieras
+    </div>
+  </div>
+
+  <!-- Bottom strip -->
+  <div class="bottom-strip">
+    <span class="strip-item">85+ negocios</span>
+    <div class="strip-dot"></div>
+    <span class="strip-item">Resultados reales</span>
+    <div class="strip-dot"></div>
+    <span class="strip-item">mastexo.com</span>
+  </div>
+</div>
+</body>
+</html>
