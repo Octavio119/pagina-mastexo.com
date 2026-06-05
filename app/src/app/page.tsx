@@ -38,13 +38,9 @@ export default function Home() {
         <Hero />
         {SEPARATOR}
         <ServicesOrbit />
-        {SEPARATOR}
         <Services />
-        {SEPARATOR}
         <Portfolio />
-        {SEPARATOR}
         <Process />
-        {SEPARATOR}
         <Nosotros />
         {SEPARATOR}
         <Contact />
