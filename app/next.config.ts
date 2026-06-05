@@ -25,6 +25,8 @@ const securityHeaders = [
   { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
   // Disables browser DNS prefetching (minor timing-fingerprint reduction, small latency cost)
   { key: "X-DNS-Prefetch-Control", value: "off" },
+  // Legacy XSS filter for older browsers
+  { key: "X-XSS-Protection", value: "1; mode=block" },
   // Content Security Policy
   {
     key: "Content-Security-Policy",

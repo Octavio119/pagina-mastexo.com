@@ -66,6 +66,23 @@ export async function POST(req: Request) {
     )
   }
 
+  if (nombre.length < 2) {
+    return NextResponse.json({ success: false, error: 'Nombre inválido.' }, { status: 400 })
+  }
+  if (negocio.length < 2) {
+    return NextResponse.json({ success: false, error: 'Negocio inválido.' }, { status: 400 })
+  }
+  if (contacto.length < 5) {
+    return NextResponse.json({ success: false, error: 'Contacto inválido.' }, { status: 400 })
+  }
+
+  const spamPatterns = ['http://', 'https://', '<script', 'SELECT ', 'DROP TABLE']
+  const allFields = [nombre, negocio, mensaje ?? ''].join(' ')
+  if (spamPatterns.some(p => allFields.toLowerCase().includes(p.toLowerCase()))) {
+    console.log('[contact] Contenido spam detectado')
+    return NextResponse.json({ success: false, error: 'Contenido no permitido.' }, { status: 400 })
+  }
+
   console.log('[contact] Enviando email via Resend...')
   const { data, error } = await resend.emails.send({
     from: 'Mastexo Web <onboarding@resend.dev>',
