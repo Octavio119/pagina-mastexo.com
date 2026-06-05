@@ -1,7 +1,6 @@
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
 import { Banner } from '@/components/ui/banner'
-import { HeroPill } from '@/components/ui/hero-pill'
 import ServicesOrbit from '@/components/ServicesOrbit'
 import Services from '@/components/Services'
 import Portfolio from '@/components/Portfolio'
@@ -37,29 +36,6 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
-
-        {/* HeroPills — transición visual entre Hero y Orbit */}
-        <div className="flex flex-col items-center gap-3 py-10 bg-[#111111]">
-          <HeroPill
-            href="#servicios"
-            announcement="🚀 Nuevo"
-            label="Automatización con IA para pymes LATAM"
-            className="bg-purple-500/20 ring-purple-500/40 [&_div]:bg-purple-500 [&_div]:text-white [&_p]:text-purple-300 [&_svg_path]:fill-purple-300"
-          />
-          <HeroPill
-            href="#resultados"
-            announcement="📈 +214%"
-            label="Reservas promedio en los primeros 60 días"
-            className="bg-purple-500/10 ring-purple-500/30 [&_div]:bg-purple-700 [&_div]:text-white [&_p]:text-purple-400 [&_svg_path]:fill-purple-400"
-          />
-          <HeroPill
-            href="#contacto"
-            announcement="⚡ Gratis"
-            label="Diagnóstico digital sin costo ni compromiso"
-            className="bg-purple-500/10 ring-purple-500/30 [&_div]:bg-purple-700 [&_div]:text-white [&_p]:text-purple-400 [&_svg_path]:fill-purple-400"
-          />
-        </div>
-
         {SEPARATOR}
         <ServicesOrbit />
         {SEPARATOR}

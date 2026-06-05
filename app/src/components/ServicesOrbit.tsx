@@ -21,10 +21,6 @@ export default function ServicesOrbit() {
             <br />
             <span className="text-[#7C3AED]">todo esto.</span>
           </h2>
-          <p className="mt-5 text-gray-400 text-xl max-w-[600px] mx-auto leading-relaxed">
-            Cuatro servicios que trabajan juntos para que crezcas online sin complicaciones,
-            sin tecnicismos, con resultados reales.
-          </p>
         </div>
 
         {/* ── Desktop orbit ── */}
@@ -142,12 +138,6 @@ export default function ServicesOrbit() {
           </div>
         </div>
 
-        {/* CTA */}
-        <div className="mt-8 text-center">
-          <a href="#contacto" className="btn-primary text-base px-8 py-3.5">
-            Ver todos los servicios
-          </a>
-        </div>
       </div>
     </section>
   )
