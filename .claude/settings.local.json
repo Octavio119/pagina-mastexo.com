@@ -45,7 +45,8 @@
       "Bash(curl -s -o /dev/null -w \" | /guia-gratuita → %{http_code}\" http://localhost:3000/guia-gratuita)",
       "Bash(curl -s -o /dev/null -w \"/resultados → %{http_code}\" http://localhost:3000/resultados)",
       "Bash(curl -s -X POST http://localhost:3000/api/contact -H \"Content-Type: application/json\" -d \"{\\\\\"nombre\\\\\":\\\\\"Test Debug\\\\\",\\\\\"negocio\\\\\":\\\\\"Prueba\\\\\",\\\\\"servicio\\\\\":\\\\\"SEO local\\\\\",\\\\\"clientes\\\\\":\\\\\"10-50 clientes\\\\\",\\\\\"contacto\\\\\":\\\\\"+56912345678\\\\\",\\\\\"mensaje\\\\\":\\\\\"Test desde curl\\\\\"}\")",
-      "Bash(git reset *)"
+      "Bash(git reset *)",
+      "Bash(dir *)"
     ],
     "additionalDirectories": [
       "c:\\Users\\Master\\OneDrive\\Desktop\\Dashboard restaurante\\server"
