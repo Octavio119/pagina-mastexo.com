@@ -32,6 +32,7 @@ const COLS = [
       { label: 'WhatsApp', href: WA, external: true },
       { label: 'contactos@mastexo.com', href: 'mailto:contactos@mastexo.com', external: true },
       { label: 'Privacidad', href: '/privacidad' },
+      { label: 'Términos', href: '/terminos' },
     ],
   },
 ]

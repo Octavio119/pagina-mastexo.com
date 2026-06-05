@@ -51,7 +51,7 @@ export const metadata: Metadata = {
       "Sitios web, automatización, SEO y seguridad para pymes en Chile y LATAM. Sin tecnicismos. Con resultados.",
     images: [
       {
-        url: "/og-image.png",
+        url: "/opengraph-image",
         width: 1200,
         height: 630,
         alt: "Mastexo Digital — Agencia web para pymes en Chile y LATAM",
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     title: "Agencia Web para Pymes en Chile | Mastexo Digital",
     description:
       "Sitios web, automatización y SEO. Primeros clientes en 14 días. Chile y LATAM.",
-    images: ["/og-image.png"],
+    images: ["/opengraph-image"],
   },
   robots: {
     index: true,
@@ -79,6 +79,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: BASE_URL,
     languages: {
+      "x-default": BASE_URL,
       "es-CL": BASE_URL,
       "es-MX": BASE_URL,
       "es-AR": BASE_URL,
