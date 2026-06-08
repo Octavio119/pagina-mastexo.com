@@ -31,8 +31,9 @@ const COLS = [
       { label: 'Diagnóstico gratis', href: '#contacto' },
       { label: 'WhatsApp', href: WA, external: true },
       { label: 'contactos@mastexo.com', href: 'mailto:contactos@mastexo.com', external: true },
-      { label: 'Privacidad', href: '/privacidad' },
-      { label: 'Términos', href: '/terminos' },
+      { label: 'Política de Privacidad', href: '/legal/privacidad' },
+      { label: 'Política de Cookies', href: '/legal/cookies' },
+      { label: 'Términos y Condiciones', href: '/legal/terminos' },
     ],
   },
 ]
@@ -108,10 +109,10 @@ function Newsletter() {
 
 export default function Footer() {
   return (
-    <footer className="bg-[#111111] border-t border-[#2A2A2A] pt-16 pb-8">
+    <footer className="bg-[#111111] border-t border-[#2A2A2A] pt-10 pb-6">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Main grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 mb-14">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
           {/* Col 1 — Brand (wider) */}
           <div className="lg:col-span-2 flex flex-col gap-4">
             <Link
