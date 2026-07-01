@@ -62,8 +62,6 @@ function checkAdminAccess(req: NextRequest): 'ok' | 'locked' | 'unauthorized' {
 
   if (entry && now < entry.lockedUntil) return 'locked'
 
-  console.log('[auth] ADMIN_PASSWORD definida:', !!process.env.ADMIN_PASSWORD)
-  console.log('[auth] Header x-admin-key:', req.headers.get('x-admin-key'))
   const authorized = req.headers.get('x-admin-key') === process.env.ADMIN_PASSWORD
 
   if (!authorized) {
