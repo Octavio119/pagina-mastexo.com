@@ -153,8 +153,11 @@ export async function GET(req: NextRequest) {
     .order('created_at', { ascending: false })
 
   if (error) {
-    console.error('[leads GET]', error.message)
-    return NextResponse.json({ error: 'Error interno' }, { status: 500 })
+    console.error('[leads GET] Supabase error:', error.code, error.message, error.details)
+    return NextResponse.json(
+      { error: 'Error interno', detail: error.message, code: error.code },
+      { status: 500 }
+    )
   }
 
   // Retorna array plano para compatibilidad con el panel /admin
