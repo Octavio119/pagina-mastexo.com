@@ -75,9 +75,9 @@ export default function Contact() {
   }
 
   return (
-    <section id="contacto" className="bg-[#111111] py-14 sm:py-20">
+    <section id="contacto" className="bg-[#111111] py-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
 
           {/* ── Left: Studio60 title ── */}
           <div className="flex flex-col gap-8">
