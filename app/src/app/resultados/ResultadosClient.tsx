@@ -31,6 +31,7 @@ const PROJECTS = [
     ],
     image: '/portfolio/mastexoposcom.png.webp',
     imageAlt: 'Dashboard de Mastexo POS mostrando ventas del día, pedidos y reservas en tiempo real',
+    domain: 'mastexopos.com',
     ctaHref: 'https://www.mastexopos.com/',
     ctaLabel: 'Ver sistema',
     secondaryHref: 'https://www.mastexopos.com/',
@@ -50,6 +51,7 @@ const PROJECTS = [
     ],
     image: '/portfolio/intimidadconsciente.png.webp',
     imageAlt: 'Hero de la landing page Intimidad Consciente, fondo negro con titular en rojo y blanco',
+    domain: 'intimidadconsciente.es',
     ctaHref: 'https://intimidadconsciente.es/',
     ctaLabel: 'Ver sitio',
     secondaryHref: null,
@@ -134,6 +136,37 @@ function MetricPill({ children }: { children: React.ReactNode }) {
   )
 }
 
+function BrowserMockup({ domain, image, imageAlt }: { domain: string; image: string; imageAlt: string }) {
+  return (
+    <div className="group/mockup rounded-xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.5),0_0_0_1px_rgba(124,58,237,0.2)] transition-all duration-300 ease-in-out hover:scale-[1.02] hover:shadow-[0_20px_60px_rgba(0,0,0,0.6),0_0_0_1px_rgba(124,58,237,0.5),0_0_50px_rgba(124,58,237,0.4)]">
+      {/* Barra superior del browser */}
+      <div className="h-8 bg-[#1e1e1e] flex items-center pl-3 pr-3">
+        <div className="flex items-center gap-1.5 flex-shrink-0">
+          <span className="w-3 h-3 rounded-full bg-[#ff5f57]" />
+          <span className="w-3 h-3 rounded-full bg-[#febc2e]" />
+          <span className="w-3 h-3 rounded-full bg-[#28c840]" />
+        </div>
+        <div className="flex-1 flex justify-center">
+          <div className="w-2/5 bg-[#2a2a2a] rounded px-3 py-1">
+            <span className="block text-center text-[11px] text-[#888888] truncate">{domain}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Contenido (imagen) */}
+      <div className="relative aspect-video overflow-hidden">
+        <Image
+          src={image}
+          alt={imageAlt}
+          fill
+          className="object-cover transition-transform duration-500 group-hover/mockup:scale-105"
+          sizes="(min-width: 768px) 50vw, 100vw"
+        />
+      </div>
+    </div>
+  )
+}
+
 function ProjectCard({ project }: { project: (typeof PROJECTS)[number] }) {
   return (
     <motion.div
@@ -141,19 +174,11 @@ function ProjectCard({ project }: { project: (typeof PROJECTS)[number] }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-100px' }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="group bg-[#1a1a1a] border border-[#2a1f3d] rounded-2xl overflow-hidden transition-all duration-300 hover:border-[#7C3AED] hover:shadow-[0_0_50px_-15px_rgba(124,58,237,0.4)] flex flex-col"
+      className="bg-[#1a1a1a] border border-[#2a1f3d] rounded-2xl overflow-hidden transition-all duration-300 hover:border-[#7C3AED] hover:shadow-[0_0_50px_-15px_rgba(124,58,237,0.4)] flex flex-col"
     >
-      {/* Imagen enmarcada */}
+      {/* Mockup browser */}
       <div className="p-4">
-        <div className="relative aspect-video rounded-xl overflow-hidden shadow-[0_0_40px_rgba(124,58,237,0.15)]">
-          <Image
-            src={project.image}
-            alt={project.imageAlt}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
-            sizes="(min-width: 768px) 50vw, 100vw"
-          />
-        </div>
+        <BrowserMockup domain={project.domain} image={project.image} imageAlt={project.imageAlt} />
       </div>
 
       {/* Contenido */}
