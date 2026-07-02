@@ -174,10 +174,10 @@ function ProjectCard({ project }: { project: (typeof PROJECTS)[number] }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-100px' }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="bg-[#1a1a1a] border border-[#2a1f3d] rounded-2xl overflow-hidden transition-all duration-300 hover:border-[#7C3AED] hover:shadow-[0_0_50px_-15px_rgba(124,58,237,0.4)] flex flex-col"
+      className="flex flex-col transition-all duration-300 hover:shadow-[0_0_50px_-15px_rgba(124,58,237,0.4)]"
     >
-      {/* Mockup browser */}
-      <div className="p-4">
+      {/* Bloque 1: mockup */}
+      <div className="mb-6 rounded-xl bg-[#0d0d0d] p-4">
         {project.id === 'mastexo-pos' ? (
           <>
             <div className="rounded-xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.4)] bg-[#f5f5f0]">
@@ -198,8 +198,8 @@ function ProjectCard({ project }: { project: (typeof PROJECTS)[number] }) {
         )}
       </div>
 
-      {/* Contenido */}
-      <div className="p-8 flex flex-col gap-4">
+      {/* Bloque 2: contenido */}
+      <div className="rounded-xl bg-[#1a1a1a] p-8 flex flex-col gap-4">
         <span className="brand-badge self-start">{project.badge}</span>
         <h3 className="font-[family-name:var(--font-space-grotesk)] text-2xl sm:text-3xl font-bold text-white">
           {project.title}
