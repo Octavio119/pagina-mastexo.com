@@ -3,7 +3,6 @@ import Hero from '@/components/Hero'
 import { Banner } from '@/components/ui/banner'
 import ServicesOrbit from '@/components/ServicesOrbit'
 import Services from '@/components/Services'
-import Portfolio from '@/components/Portfolio'
 import Process from '@/components/Process'
 import Nosotros from '@/components/Nosotros'
 import Contact from '@/components/Contact'
@@ -39,7 +38,6 @@ export default function Home() {
         {SEPARATOR}
         <ServicesOrbit />
         <Services />
-        <Portfolio />
         <Process />
         <Nosotros />
         {SEPARATOR}
