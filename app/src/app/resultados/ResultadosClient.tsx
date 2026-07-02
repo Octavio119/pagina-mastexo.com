@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { motion, useInView } from 'framer-motion'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
-import { ArrowRight, Zap, Target, Headphones } from 'lucide-react'
+import { ArrowRight, Check, Zap, Target, Headphones } from 'lucide-react'
 
 /* ═══════════════════════ DATA ═══════════════════════ */
 
@@ -31,7 +31,6 @@ const PROJECTS = [
     ],
     image: '/portfolio/mastexoposcom.png.webp',
     imageAlt: 'Dashboard de Mastexo POS mostrando ventas del día, pedidos y reservas en tiempo real',
-    imageSide: 'left' as const,
     ctaHref: 'https://www.mastexopos.com/',
     ctaLabel: 'Ver sistema',
     secondaryHref: 'https://www.mastexopos.com/',
@@ -51,7 +50,6 @@ const PROJECTS = [
     ],
     image: '/portfolio/intimidadconsciente.png.webp',
     imageAlt: 'Hero de la landing page Intimidad Consciente, fondo negro con titular en rojo y blanco',
-    imageSide: 'right' as const,
     ctaHref: 'https://intimidadconsciente.es/',
     ctaLabel: 'Ver sitio',
     secondaryHref: null,
@@ -129,79 +127,79 @@ function StatCounter({ value, suffix, label }: { value: number; suffix: string; 
 
 function MetricPill({ children }: { children: React.ReactNode }) {
   return (
-    <div className="inline-flex items-center gap-2 bg-[#0F0F0F] border border-[#2A2A2A] rounded-full px-3.5 py-2 text-xs sm:text-sm text-white">
-      <span className="w-1.5 h-1.5 rounded-full bg-[#7C3AED] flex-shrink-0" />
+    <div className="inline-flex items-center gap-1.5 bg-[#0F0F0F] border border-[#2A2A2A] rounded-full px-3.5 py-2 text-xs sm:text-sm text-white">
+      <Check size={14} className="text-[#7C3AED] flex-shrink-0" />
       {children}
     </div>
   )
 }
 
 function ProjectCard({ project }: { project: (typeof PROJECTS)[number] }) {
-  const imageOnRight = project.imageSide === 'right'
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-100px' }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="group card-dark rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_60px_-15px_rgba(124,58,237,0.5)]"
+      className="group bg-[#1a1a1a] border border-[#2a1f3d] rounded-2xl overflow-hidden transition-all duration-300 hover:border-[#7C3AED] hover:shadow-[0_0_50px_-15px_rgba(124,58,237,0.4)] flex flex-col"
     >
-      <div className="grid grid-cols-1 lg:grid-cols-5">
-        <div className={`lg:col-span-3 relative aspect-[16/10] overflow-hidden ${imageOnRight ? 'lg:order-2' : ''}`}>
+      {/* Imagen enmarcada */}
+      <div className="p-4">
+        <div className="relative aspect-video rounded-xl overflow-hidden shadow-[0_0_40px_rgba(124,58,237,0.15)]">
           <Image
             src={project.image}
             alt={project.imageAlt}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-105"
-            sizes="(min-width: 1024px) 60vw, 100vw"
+            sizes="(min-width: 768px) 50vw, 100vw"
           />
         </div>
+      </div>
 
-        <div className={`lg:col-span-2 p-8 sm:p-10 flex flex-col justify-center ${imageOnRight ? 'lg:order-1' : ''}`}>
-          <span className="brand-badge self-start mb-4">{project.badge}</span>
-          <h3 className="font-[family-name:var(--font-space-grotesk)] text-2xl sm:text-3xl font-bold text-white mb-3">
-            {project.title}
-          </h3>
-          <p className="text-[#888888] leading-relaxed mb-5">{project.description}</p>
+      {/* Contenido */}
+      <div className="p-8 flex flex-col gap-4">
+        <span className="brand-badge self-start">{project.badge}</span>
+        <h3 className="font-[family-name:var(--font-space-grotesk)] text-2xl sm:text-3xl font-bold text-white">
+          {project.title}
+        </h3>
+        <p className="text-[#888888] leading-relaxed">{project.description}</p>
 
-          <div className="flex flex-wrap gap-2 mb-6">
-            {project.stack.map((s) => (
-              <span
-                key={s}
-                className="text-[11px] font-medium text-[#7C3AED] bg-[rgba(124,58,237,0.08)] border border-[rgba(124,58,237,0.25)] px-2.5 py-1 rounded-full"
-              >
-                {s}
-              </span>
-            ))}
-          </div>
+        <div className="flex flex-wrap gap-2">
+          {project.stack.map((s) => (
+            <span
+              key={s}
+              className="text-[11px] font-medium text-[#7C3AED] bg-[rgba(124,58,237,0.08)] border border-[rgba(124,58,237,0.25)] px-2.5 py-1 rounded-full"
+            >
+              {s}
+            </span>
+          ))}
+        </div>
 
-          <div className="flex flex-col gap-2 mb-7">
-            {project.metrics.map((m) => (
-              <MetricPill key={m}>{m}</MetricPill>
-            ))}
-          </div>
+        <div className="flex flex-wrap gap-2">
+          {project.metrics.map((m) => (
+            <MetricPill key={m}>{m}</MetricPill>
+          ))}
+        </div>
 
-          <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-3 mt-2">
+          <a
+            href={project.ctaHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-[#7C3AED] hover:bg-[#6D28D9] text-white font-semibold text-sm px-6 py-3 rounded-full transition-colors duration-200"
+          >
+            {project.ctaLabel} <ArrowRight size={16} />
+          </a>
+          {project.secondaryHref && project.secondaryLabel && (
             <a
-              href={project.ctaHref}
+              href={project.secondaryHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-[#7C3AED] hover:bg-[#6D28D9] text-white font-semibold text-sm px-6 py-3 rounded-full transition-colors duration-200"
+              className="inline-flex items-center gap-2 bg-transparent border border-[#2A2A2A] hover:border-[#7C3AED] text-white font-medium text-sm px-6 py-3 rounded-full transition-colors duration-200"
             >
-              {project.ctaLabel} <ArrowRight size={16} />
+              {project.secondaryLabel}
             </a>
-            {project.secondaryHref && project.secondaryLabel && (
-              <a
-                href={project.secondaryHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-transparent border border-[#2A2A2A] hover:border-[#7C3AED] text-white font-medium text-sm px-6 py-3 rounded-full transition-colors duration-200"
-              >
-                {project.secondaryLabel}
-              </a>
-            )}
-          </div>
+          )}
         </div>
       </div>
     </motion.div>
@@ -228,7 +226,7 @@ function ChatbotCard() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-100px' }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="rounded-2xl p-10 sm:p-14 text-center overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_60px_-15px_rgba(124,58,237,0.5)]"
+      className="rounded-2xl p-12 sm:p-16 text-center overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_60px_-15px_rgba(124,58,237,0.5)]"
       style={{ background: 'linear-gradient(135deg, #1A1330 0%, #3B1F6B 55%, #7C3AED 130%)' }}
     >
       <span className="brand-badge mb-5 inline-flex">AUTOMATIZACIÓN · Demo en vivo 🤖</span>
@@ -239,15 +237,15 @@ function ChatbotCard() {
         ¿Cómo sería tener un asistente que responde a tus clientes 24/7, conoce tus productos y nunca se cansa? Pruébalo ahora mismo — gratis.
       </p>
 
-      <div className="max-w-md mx-auto flex flex-col gap-3 mb-10 text-left">
+      <div className="max-w-lg mx-auto flex flex-col gap-4 mb-10 text-left">
         <div
-          className={`self-end bg-[#7C3AED] text-white text-sm px-4 py-2.5 rounded-2xl rounded-br-sm transition-opacity duration-500 ${
+          className={`self-end bg-[#7C3AED] text-white text-base px-5 py-3 rounded-2xl rounded-br-sm transition-opacity duration-500 ${
             inView ? 'opacity-100' : 'opacity-0'
           }`}
         >
           {CHAT_USER_MSG}
         </div>
-        <div className="self-start bg-[#111111] border border-[#2A2A2A] text-white text-sm px-4 py-2.5 rounded-2xl rounded-bl-sm min-h-[2.75rem]">
+        <div className="self-start bg-[#111111] border border-[#2A2A2A] text-white text-base px-5 py-3 rounded-2xl rounded-bl-sm min-h-[3.25rem]">
           {botText}
           {showBot && botText.length < CHAT_BOT_MSG.length && <span className="animate-pulse">▍</span>}
         </div>
@@ -255,9 +253,9 @@ function ChatbotCard() {
 
       <Link
         href="/demo/chatbot"
-        className="inline-flex items-center justify-center gap-2 bg-white text-[#7C3AED] font-[family-name:var(--font-space-grotesk)] font-bold text-base px-8 py-4 rounded-full hover:bg-white/90 transition-colors duration-200"
+        className="inline-flex items-center justify-center gap-2 bg-white text-[#7C3AED] font-[family-name:var(--font-space-grotesk)] font-bold text-lg px-10 py-5 rounded-full hover:bg-white/90 transition-colors duration-200"
       >
-        Probar chatbot en vivo <ArrowRight size={18} />
+        Probar chatbot en vivo <ArrowRight size={20} />
       </Link>
       <p className="mt-4 text-xs text-[#D9CCFB]">Sin registro · Sin tarjeta · 100% gratis</p>
     </motion.div>
@@ -274,7 +272,7 @@ export default function ResultadosClient() {
       <main className="bg-[#111111] min-h-screen">
 
         {/* ── HERO ── */}
-        <section className="pt-32 pb-20 px-4 sm:px-6 max-w-6xl mx-auto text-center">
+        <section className="pt-40 pb-20 px-4 sm:px-6 max-w-6xl mx-auto text-center">
           <h1 className="section-heading">
             Nuestro trabajo
             <br />
@@ -292,15 +290,17 @@ export default function ResultadosClient() {
         </section>
 
         {/* ── PROYECTOS ── */}
-        <section className="px-4 sm:px-6 max-w-6xl mx-auto pb-8 flex flex-col gap-8">
-          {PROJECTS.map((p) => (
-            <ProjectCard key={p.id} project={p} />
-          ))}
+        <section className="px-4 sm:px-6 max-w-6xl mx-auto pb-24">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            {PROJECTS.map((p) => (
+              <ProjectCard key={p.id} project={p} />
+            ))}
+          </div>
           <ChatbotCard />
         </section>
 
         {/* ── POR QUÉ ELEGIRNOS ── */}
-        <section className="px-4 sm:px-6 max-w-6xl mx-auto py-20">
+        <section className="px-4 sm:px-6 max-w-6xl mx-auto py-24">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-10">
             {WHY_US.map(({ icon: Icon, title, desc }) => (
               <motion.div
