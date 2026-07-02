@@ -11,3 +11,6 @@ Thumbs.db
 # n8n workflows — contienen credenciales
 outbound-mastexo-v*.json
 n8n-current.json
+
+.vercel
+.env*
