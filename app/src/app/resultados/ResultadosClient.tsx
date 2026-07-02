@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { motion, useInView } from 'framer-motion'
 import Navbar from '@/components/Navbar'
@@ -31,7 +30,6 @@ const PROJECTS = [
     ],
     image: '/portfolio/mastexopos.png.png',
     imageAlt: 'Dashboard de Mastexo POS mostrando ventas del día, pedidos y reservas en tiempo real',
-    domain: 'mastexopos.com',
     ctaHref: 'https://www.mastexopos.com/',
     ctaLabel: 'Ver sistema',
     secondaryHref: 'https://www.mastexopos.com/',
@@ -51,7 +49,6 @@ const PROJECTS = [
     ],
     image: '/portfolio/intimidadconsciente.png.png',
     imageAlt: 'Hero de la landing page Intimidad Consciente, fondo negro con titular en rojo y blanco',
-    domain: 'intimidadconsciente.es',
     ctaHref: 'https://intimidadconsciente.es/',
     ctaLabel: 'Ver sitio',
     secondaryHref: null,
@@ -136,37 +133,6 @@ function MetricPill({ children }: { children: React.ReactNode }) {
   )
 }
 
-function BrowserMockup({ domain, image, imageAlt }: { domain: string; image: string; imageAlt: string }) {
-  return (
-    <div className="group/mockup rounded-xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.5),0_0_0_1px_rgba(124,58,237,0.2)] transition-all duration-300 ease-in-out hover:scale-[1.02] hover:shadow-[0_20px_60px_rgba(0,0,0,0.6),0_0_0_1px_rgba(124,58,237,0.5),0_0_50px_rgba(124,58,237,0.4)]">
-      {/* Barra superior del browser */}
-      <div className="h-8 bg-[#1e1e1e] flex items-center pl-3 pr-3">
-        <div className="flex items-center gap-1.5 flex-shrink-0">
-          <span className="w-3 h-3 rounded-full bg-[#ff5f57]" />
-          <span className="w-3 h-3 rounded-full bg-[#febc2e]" />
-          <span className="w-3 h-3 rounded-full bg-[#28c840]" />
-        </div>
-        <div className="flex-1 flex justify-center">
-          <div className="w-2/5 bg-[#2a2a2a] rounded px-3 py-1">
-            <span className="block text-center text-[11px] text-[#888888] truncate">{domain}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Contenido (imagen) */}
-      <div className="relative aspect-video overflow-hidden">
-        <Image
-          src={image}
-          alt={imageAlt}
-          fill
-          className="object-cover transition-transform duration-500 group-hover/mockup:scale-105"
-          sizes="(min-width: 768px) 50vw, 100vw"
-        />
-      </div>
-    </div>
-  )
-}
-
 function ProjectCard({ project }: { project: (typeof PROJECTS)[number] }) {
   return (
     <motion.div
@@ -178,24 +144,18 @@ function ProjectCard({ project }: { project: (typeof PROJECTS)[number] }) {
     >
       {/* Bloque 1: mockup */}
       <div className="mb-6 rounded-xl bg-[#0d0d0d] p-4">
-        {project.id === 'mastexo-pos' ? (
-          <>
-            <div className="rounded-xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.4)] bg-[#f5f5f0]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/portfolio/mastexopos.png.png" alt={project.imageAlt} className="w-full object-cover" />
-            </div>
-            <a
-              href="https://www.mastexopos.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block text-center text-sm text-[#7C3AED] pt-2"
-            >
-              Visitar sitio →
-            </a>
-          </>
-        ) : (
-          <BrowserMockup domain={project.domain} image={project.image} imageAlt={project.imageAlt} />
-        )}
+        <div className="rounded-xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.4)] bg-[#f5f5f0]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={project.image} alt={project.imageAlt} className="w-full object-cover" />
+        </div>
+        <a
+          href={project.ctaHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block text-center text-sm text-[#7C3AED] pt-2"
+        >
+          Visitar sitio →
+        </a>
       </div>
 
       {/* Bloque 2: contenido */}
