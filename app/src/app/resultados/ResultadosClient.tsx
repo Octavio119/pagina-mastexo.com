@@ -29,7 +29,7 @@ const PROJECTS = [
       '8 pedidos simultáneos',
       '4 reservas en tiempo real',
     ],
-    image: '/portfolio/mastexoposcom.png.webp',
+    image: '/portfolio/mastexopos.png.png',
     imageAlt: 'Dashboard de Mastexo POS mostrando ventas del día, pedidos y reservas en tiempo real',
     domain: 'mastexopos.com',
     ctaHref: 'https://www.mastexopos.com/',
@@ -49,7 +49,7 @@ const PROJECTS = [
       'Entregado en 48h',
       'Diseño a medida',
     ],
-    image: '/portfolio/intimidadconsciente.png.webp',
+    image: '/portfolio/intimidadconsciente.png.png',
     imageAlt: 'Hero de la landing page Intimidad Consciente, fondo negro con titular en rojo y blanco',
     domain: 'intimidadconsciente.es',
     ctaHref: 'https://intimidadconsciente.es/',
@@ -178,7 +178,24 @@ function ProjectCard({ project }: { project: (typeof PROJECTS)[number] }) {
     >
       {/* Mockup browser */}
       <div className="p-4">
-        <BrowserMockup domain={project.domain} image={project.image} imageAlt={project.imageAlt} />
+        {project.id === 'mastexo-pos' ? (
+          <>
+            <div className="rounded-xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.4)] bg-[#f5f5f0]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/portfolio/mastexopos.png.png" alt={project.imageAlt} className="w-full object-cover" />
+            </div>
+            <a
+              href="https://www.mastexopos.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block text-center text-sm text-[#7C3AED] pt-2"
+            >
+              Visitar sitio →
+            </a>
+          </>
+        ) : (
+          <BrowserMockup domain={project.domain} image={project.image} imageAlt={project.imageAlt} />
+        )}
       </div>
 
       {/* Contenido */}
