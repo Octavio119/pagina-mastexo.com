@@ -14,7 +14,7 @@ const SERVICES_ITEMS = [
 
 const NAV_LINKS = [
   { label: 'Proceso',    href: '/#proceso' },
-  { label: 'Resultados', href: '/#resultados' },
+  { label: 'Resultados', href: '/resultados', hardNav: true },
   { label: 'Nosotros',   href: '/#nosotros' },
   { label: 'Contacto',   href: '/#contacto' },
 ]
@@ -118,16 +118,27 @@ export default function Navbar() {
           </div>
 
           {/* Resto de links */}
-          {NAV_LINKS.map(({ label, href }) => (
-            <Link
-              key={href}
-              href={href}
-              className="text-base font-medium text-gray-300 hover:text-white transition-colors duration-200 whitespace-nowrap px-1 py-2"
-              style={scrolled ? { textShadow: '0 1px 3px rgba(0,0,0,0.6)' } : undefined}
-            >
-              {label}
-            </Link>
-          ))}
+          {NAV_LINKS.map(({ label, href, hardNav }) =>
+            hardNav ? (
+              <a
+                key={href}
+                href={href}
+                className="text-base font-medium text-gray-300 hover:text-white transition-colors duration-200 whitespace-nowrap px-1 py-2"
+                style={scrolled ? { textShadow: '0 1px 3px rgba(0,0,0,0.6)' } : undefined}
+              >
+                {label}
+              </a>
+            ) : (
+              <Link
+                key={href}
+                href={href}
+                className="text-base font-medium text-gray-300 hover:text-white transition-colors duration-200 whitespace-nowrap px-1 py-2"
+                style={scrolled ? { textShadow: '0 1px 3px rgba(0,0,0,0.6)' } : undefined}
+              >
+                {label}
+              </Link>
+            )
+          )}
         </nav>
 
         {/* Guía gratuita */}
@@ -188,16 +199,26 @@ export default function Navbar() {
             </div>
           )}
 
-          {NAV_LINKS.map(({ label, href }) => (
-            <Link
-              key={href}
-              href={href}
-              onClick={() => setOpen(false)}
-              className="text-base font-medium text-gray-300 hover:text-white transition-colors duration-200 py-2 px-1 cursor-pointer"
-            >
-              {label}
-            </Link>
-          ))}
+          {NAV_LINKS.map(({ label, href, hardNav }) =>
+            hardNav ? (
+              <a
+                key={href}
+                href={href}
+                className="text-base font-medium text-gray-300 hover:text-white transition-colors duration-200 py-2 px-1 cursor-pointer"
+              >
+                {label}
+              </a>
+            ) : (
+              <Link
+                key={href}
+                href={href}
+                onClick={() => setOpen(false)}
+                className="text-base font-medium text-gray-300 hover:text-white transition-colors duration-200 py-2 px-1 cursor-pointer"
+              >
+                {label}
+              </Link>
+            )
+          )}
 
           <a
             href={WA_DIAG}
