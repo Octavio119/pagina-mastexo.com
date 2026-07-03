@@ -146,12 +146,7 @@ function ProjectCard({ project }: { project: (typeof PROJECTS)[number] }) {
       <div className="mb-6 rounded-xl bg-[#0d0d0d] p-4">
         <div className="rounded-xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.4)] bg-[#111111]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={project.image}
-            alt={project.imageAlt}
-            className="w-full object-cover"
-            style={{ mixBlendMode: 'multiply', filter: 'contrast(1.1)' }}
-          />
+          <img src={project.image} alt={project.imageAlt} className="w-full object-cover" />
         </div>
         <a
           href={project.ctaHref}
